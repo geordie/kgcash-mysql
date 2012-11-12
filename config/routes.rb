@@ -1,5 +1,7 @@
 Kgcash::Application.routes.draw do
 
+  resources :categories
+
 root :to => 'users#index'
 resources :user_sessions
 resources :users
