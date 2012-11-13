@@ -24,6 +24,12 @@ class BudgetsController < ApplicationController
     end
   end
 
+ # GET /users/1/edit
+  def edit
+    @user = User.find(params[:user_id])
+    @budget = Budget.find(params[:id])
+  end
+
 
   def create
     @user = User.find(params[:user_id])
@@ -40,24 +46,48 @@ class BudgetsController < ApplicationController
     end
   end
 
+  # PUT /users/1/budgets/2
+  # PUT /users/1/budgets/2.json
+  def update
+    @budget = Budget.find(params[:id])
+
+    respond_to do |format|
+      if @budget.update_attributes(params[:budget])
+        format.html { redirect_to :action => 'show', notice: 'Budget was successfully updated.' }
+        format.json { head :ok }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @budget.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
   # GET /users/1/budgets/new
   # GET /users/1/budgets/new.json
   def new
 
     @user = User.find(params[:user_id])
-    @budget = @user.budgets.build
+    @budget = Budget.new
+
+    @user.budgets << @budget
 
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to(:users, :notice => 'Budget was successfully created for user.') }
-        format.json { render json: @user, status: :created, location: @user }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+      format.html # new.html.erb
+      format.json { render json: @budget }
     end
- 
   end
 
+  # DELETE /users/1/budgets/2
+  # DELETE /users/1/budgets/2.json
+  def destroy
+    @user = User.find(params[:user_id])
+    @category = @user.budgets.find(params[:id])
+    @category.destroy
 
+    respond_to do |format|
+      format.html { redirect_to :action => 'index' }
+      format.json { head :ok }
+    end
+  end
 end

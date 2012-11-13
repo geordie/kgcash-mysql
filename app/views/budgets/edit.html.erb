@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @budget %> |
-<%= link_to 'Back', budgets_path %>
+<%= link_to 'Show', user_budget_path(@user,@budget) %> |
+<%= link_to 'Back', user_budgets_path(@user) %>
