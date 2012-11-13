@@ -5,6 +5,7 @@ class BudgetsController < ApplicationController
     @user = User.find(params[:user_id])
     @budgets = @user.budgets
 
+    logger.debug "hello from here"
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @budgets }

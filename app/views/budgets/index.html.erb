@@ -13,9 +13,9 @@
   <tr>
     <td><%= budget.name %></td>
     <td><%= budget.description %></td>
-    <td><%= link_to 'Show', user_budget_path(budget) %></td>
-    <td><%= link_to 'Edit', edit_user_budget_path(budget) %></td>
-    <td><%= link_to 'Destroy', user_budget_path(budget), confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to 'Show', user_budget_path(@user,budget) %></td>
+    <td><%= link_to 'Edit', edit_user_budget_path(@user,budget) %></td>
+    <td><%= link_to 'Destroy', user_budget_path(@user.id,budget.id), confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
