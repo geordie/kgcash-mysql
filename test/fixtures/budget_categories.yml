@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  amount: 9.99
+  period: MyString
+  budget: 
+  category: 
+
+two:
+  amount: 9.99
+  period: MyString
+  budget: 
+  category: 

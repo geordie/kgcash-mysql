@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121113022247) do
+ActiveRecord::Schema.define(:version => 20121114062837) do
+
+  create_table "budget_categories", :force => true do |t|
+    t.decimal  "amount",      :precision => 10, :scale => 0
+    t.string   "period"
+    t.integer  "budget_id"
+    t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "budget_categories", ["budget_id"], :name => "index_budget_categories_on_budget_id"
+  add_index "budget_categories", ["category_id"], :name => "index_budget_categories_on_category_id"
 
   create_table "budgets", :force => true do |t|
     t.string   "name"
