@@ -2,7 +2,7 @@ class BudgetsController < ApplicationController
   # GET /users/1/budgets
   # GET /users/1/budgets.json
   def index
-    @user = User.find(params[:user_id])
+    @user = current_user
     @budgets = @user.budgets
 
     logger.debug "hello from here"
@@ -15,7 +15,7 @@ class BudgetsController < ApplicationController
   # GET /users/1/budgets/2
   # GET /users/1/budgets/2.json
   def show
-    @user = User.find(params[:user_id])
+    @user = current_user
     @budget = @user.budgets.find(params[:id])
 
     respond_to do |format|
@@ -26,13 +26,13 @@ class BudgetsController < ApplicationController
 
  # GET /users/1/edit
   def edit
-    @user = User.find(params[:user_id])
+    @user = current_user
     @budget = Budget.find(params[:id])
   end
 
 
   def create
-    @user = User.find(params[:user_id])
+    @user = current_user
     @budget = @user.budgets.create(params[:budget])
 
     respond_to do |format|
@@ -67,7 +67,7 @@ class BudgetsController < ApplicationController
   # GET /users/1/budgets/new.json
   def new
 
-    @user = User.find(params[:user_id])
+    @user = current_user
     @budget = Budget.new
 
     @user.budgets << @budget
@@ -81,7 +81,7 @@ class BudgetsController < ApplicationController
   # DELETE /users/1/budgets/2
   # DELETE /users/1/budgets/2.json
   def destroy
-    @user = User.find(params[:user_id])
+    @user = current_user
     @category = @user.budgets.find(params[:id])
     @category.destroy
 

@@ -6,9 +6,9 @@ resources :categories
 
 resources :user_sessions
 
-resources :users do
-  resources :budgets
-end
+resources :users
+
+resources :budgets
 
 match 'login' => 'user_sessions#new', :as => :login
 match 'logout' => 'user_sessions#destroy', :as => :logout
