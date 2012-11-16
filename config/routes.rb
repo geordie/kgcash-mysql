@@ -9,7 +9,7 @@ resources :user_sessions
 resources :users
 
 resources :budgets do
-  resources :budget_categories
+  resources :budget_categories, :path=> '/categories'
 end
 
 match 'login' => 'user_sessions#new', :as => :login
