@@ -2,7 +2,8 @@ class BudgetCategoriesController < ApplicationController
   # GET /budgets/1/categories
   # GET /budgets/1/categories.json
   def index
-    @budget_categories = BudgetCategory.includes(:category).where(:budget_id => 1)
+    @budget = Budget.find(params[:budget_id])
+    @budget_categories = BudgetCategory.includes(:category).where(:budget_id => @budget)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,7 +15,7 @@ class BudgetCategoriesController < ApplicationController
   # GET /users/1/budgets/2.json
   def show
     @user = current_user
-    @budget = @user.budgets.find(params[:id])
+    @budget_category = BudgetCategory.includes(:category).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
