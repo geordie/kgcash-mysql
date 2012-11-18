@@ -1,4 +1,4 @@
-<h1>Listing budgets</h1>
+<h1>Listing budget categories</h1>
 
 <table>
   <tr>
@@ -15,7 +15,7 @@
     <td><%= budget_category.category.name %></td>
     <td><%= budget_category.amount %></td> 
     <td><%= budget_category.period %></td>
-    <td><%= link_to 'Show', budget_category_path(1,1) %></td>
+    <td><%= link_to 'Show', budget_category_path(params[:budget_id],budget_category) %></td>
   </tr>
 <% end %>
 </table>
