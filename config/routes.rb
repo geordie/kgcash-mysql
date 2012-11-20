@@ -8,6 +8,8 @@ resources :user_sessions
 
 resources :users
 
+resources :transactions
+
 resources :budgets do
   resources :budget_categories, :path=> '/categories', :as => 'categories'
 end

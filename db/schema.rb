@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121114062837) do
+ActiveRecord::Schema.define(:version => 20121120073201) do
 
   create_table "budget_categories", :force => true do |t|
     t.decimal  "amount",      :precision => 10, :scale => 0
@@ -41,6 +41,23 @@ ActiveRecord::Schema.define(:version => 20121114062837) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "transactions", :force => true do |t|
+    t.string   "hash"
+    t.datetime "tx_date"
+    t.decimal  "debit",       :precision => 10, :scale => 0
+    t.decimal  "credit",      :precision => 10, :scale => 0
+    t.string   "type"
+    t.string   "details"
+    t.string   "notes"
+    t.integer  "category_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "transactions", ["category_id"], :name => "index_transactions_on_category_id"
+  add_index "transactions", ["user_id"], :name => "index_transactions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "username",         :null => false

@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  hash: MyString
+  tx_date: 2012-11-20 08:32:01
+  debit: 9.99
+  credit: 9.99
+  type: 
+  details: MyString
+  notes: MyString
+  category: 
+  user: 
+
+two:
+  hash: MyString
+  tx_date: 2012-11-20 08:32:01
+  debit: 9.99
+  credit: 9.99
+  type: 
+  details: MyString
+  notes: MyString
+  category: 
+  user: 
