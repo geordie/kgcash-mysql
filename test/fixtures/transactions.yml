@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
 
 one:
-  hash: MyString
+  hash: hash1
   tx_date: 2012-11-20 08:32:01
   debit: 9.99
   credit: 9.99
@@ -12,7 +12,7 @@ one:
   user: 
 
 two:
-  hash: MyString
+  hash: hash2
   tx_date: 2012-11-20 08:32:01
   debit: 9.99
   credit: 9.99

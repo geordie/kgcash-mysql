@@ -1,1 +1,3 @@
+rake db:test:prepare
 ruby -Itest ./test/unit/category_test.rb
+ruby -Itest ./test/unit/transaction_test.rb

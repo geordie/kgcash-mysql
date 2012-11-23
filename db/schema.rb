@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20121120073201) do
 
   add_index "transactions", ["category_id"], :name => "index_transactions_on_category_id"
   add_index "transactions", ["user_id"], :name => "index_transactions_on_user_id"
+  add_index "transactions", ["hash"], :unique => true, :name => "index_transactions_on_hash_unique"
 
   create_table "users", :force => true do |t|
     t.string   "username",         :null => false
