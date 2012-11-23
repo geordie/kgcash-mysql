@@ -1,9 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
 
-one:
-  name: MyString
+empty:
+  name: ""
+  description: ""
+
+shortName:
+  name: ab
   description: MyText
 
-two:
-  name: MyString
+noDesc:
+  name: abc
   description: MyText
+
+one:
+  name: Groceries
+  description: "Food bought at the grocery store!"

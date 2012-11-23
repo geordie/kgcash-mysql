@@ -6,26 +6,22 @@ class CategoryTest < ActiveSupport::TestCase
   # end
 
   test "category will not save without a name" do
-    category = Category.new
+    category = categories(:empty)
     assert !category.save 
   end
 
   test "category will not save without name longer than 3 characers" do
-    category = Category.new
-    category.name = "ab"
+    category = categories(:shortName)
     assert !category.save
   end
 
   test "category will save with valid name" do
-    category = Category.new
-    category.name = "Groceries"
+    category = categories(:noDesc)
     assert category.save
   end
 
   test "category will save with name and desc" do
-    category = Category.new
-    category.name = "Salary"
-    category.description = "Money earned"
+    category = categories(:one)
     assert category.save
   end
 end
