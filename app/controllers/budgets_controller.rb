@@ -5,7 +5,6 @@ class BudgetsController < ApplicationController
     @user = current_user
     @budgets = @user.budgets
 
-    logger.debug "hello from here"
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @budgets }
@@ -27,7 +26,7 @@ class BudgetsController < ApplicationController
  # GET /users/1/edit
   def edit
     @user = current_user
-    @budget = Budget.find(params[:id])
+    @budget = @user.budgets.find(params[:id])
   end
 
 
