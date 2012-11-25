@@ -4,7 +4,10 @@
 # Examples:
 #
 
-users = User.create([{username: 'geordie', email: 'geordie.a.henderson@gmail.com', crypted_password: '$2a$10$Ub1mJwax0nZpN5JU9ED5eu4EE.ad1.95K1dXi.J8DAdLBHPDn6oi6', salt: 'VTKmPVJFsaivMbFxVv5F'} ])
+users = User.create([
+    {username: 'geordie', email: 'geordie.a.henderson@gmail.com', crypted_password: "$2a$10$Ub1mJwax0nZpN5JU9ED5eu4EE.ad1.95K1dXi.J8DAdLBHPDn6oi6", salt: 'VTKmPVJFsaivMbFxVv5F'}
+  ])
+
 budgets = Budget.create([{name: 'joint', description: 'kt and geordie joint', user_id: users[0]}])
 
 categories = Category.create(

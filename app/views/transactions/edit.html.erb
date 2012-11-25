@@ -1,2 +1,6 @@
-<h1>Transactions#edit</h1>
-<p>Find me in app/views/transactions/edit.html.erb</p>
+<h1>Edit transaction</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Show', transaction_path(@transaction) %> |
+<%= link_to 'Back', transactions_path %>

@@ -12,7 +12,7 @@ class TransactionsController < ApplicationController
 
   def show
   	@user = current_user
-  	@transaction = @user.transations.find(params[:id])
+  	@transaction = @user.transactions.find(params[:id])
 
   	respond_to do |format|
   		format.html #show.html.erb
@@ -22,7 +22,7 @@ class TransactionsController < ApplicationController
 
   def edit
   	@user = current_user
-  	@transaction = @user.transactions.find(parmams[:id])
+  	@transaction = @user.transactions.find(params[:id])
   end
 
   def create
@@ -30,18 +30,20 @@ class TransactionsController < ApplicationController
     @transaction = @user.transactions.create(params[:transaction])
 
     respond_to do |format|
-      if @user.save
+      if @transaction.save
         format.html { redirect_to(:users, :notice => 'Transaction was successfully created for user.') }
-        format.json { render json: @user, status: :created, location: @user }
+        format.json { render json: @transaction, status: :created, location: @user }
       else
         format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: @transaction.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update
     @transaction = Transaction.find(params[:id])
+
+    @transaction.tx_date = DateTime.now
 
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
