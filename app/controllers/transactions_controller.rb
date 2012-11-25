@@ -43,8 +43,6 @@ class TransactionsController < ApplicationController
   def update
     @transaction = Transaction.find(params[:id])
 
-    @transaction.tx_date = DateTime.now
-
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
         format.html { redirect_to :action => 'show', notice: 'Transaction was successfully updated.' }
