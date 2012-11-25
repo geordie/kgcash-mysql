@@ -62,6 +62,12 @@ budgetcategories = BudgetCategory.create([
  {amount:150, period:'MONTHLY', budget_id: budgets[0].id, category_id: categories[18].id }
   ])
 
+transactions = Transaction.create([
+  {tx_hash:'abc',   tx_date:DateTime.now, debit:100.23, category_id:categories[0], user_id:users[0]},
+  {tx_hash:'defg', tx_date:DateTime.now, debit: 56.78, category_id:categories[1], user_id:users[0]},
+  {tx_hash:'hij',  tx_date:DateTime.now, debit: 18.68, category_id:categories[2], user_id:users[0]}
+  ])
+
 puts 'DONE SEED'
 
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])

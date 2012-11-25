@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(:version => 20121120073201) do
   create_table "transactions", :force => true do |t|
     t.string   "tx_hash"
     t.datetime "tx_date"
-    t.decimal  "debit",       :precision => 10, :scale => 0
-    t.decimal  "credit",      :precision => 10, :scale => 0
+    t.decimal  "debit",       :precision => 12, :scale => 2
+    t.decimal  "credit",      :precision => 12, :scale => 2
     t.string   "tx_type"
     t.string   "details"
     t.string   "notes"
@@ -57,8 +57,8 @@ ActiveRecord::Schema.define(:version => 20121120073201) do
   end
 
   add_index "transactions", ["category_id"], :name => "index_transactions_on_category_id"
+  add_index "transactions", ["tx_hash"], :name => "index_transactions_on_hash_unique", :unique => true
   add_index "transactions", ["user_id"], :name => "index_transactions_on_user_id"
-  add_index "transactions", ["tx_hash"], :unique => true, :name => "index_transactions_on_hash_unique"
 
   create_table "users", :force => true do |t|
     t.string   "username",         :null => false
