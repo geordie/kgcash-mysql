@@ -23,6 +23,7 @@ class TransactionsController < ApplicationController
   def edit
   	@user = current_user
   	@transaction = @user.transactions.find(params[:id])
+    @categories = Transaction.category_selector
   end
 
   def create
@@ -58,6 +59,7 @@ class TransactionsController < ApplicationController
   def new
   	@user = current_user
   	@transaction = Transaction.new
+    @categories = Transaction.category_selector
 
   	@user.transactions << @transaction
 

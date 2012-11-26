@@ -18,6 +18,7 @@
     <td><%= transaction.tx_type %></td>
     <td><%= transaction.details %></td>
     <td><%= transaction.credit %></td>
+    <% #TODO: Make this a dropdown that enables category selection %>
     <td><%= transaction.category %></td>
     <td><%= link_to 'Show', transaction_path(transaction) %></td>
     <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
