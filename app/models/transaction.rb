@@ -11,16 +11,4 @@ class Transaction < ActiveRecord::Base
     #TODO - generate unique transaction hash
   end
 
-  def self.category_selector
-  	results = Array.new
-
-  	Category.select( "id, name" ).each do |cat|
-  		rec = Array.new
-  		rec.push cat.name
-  		rec.push cat.id
-  		results.push rec 
-  	end
-   	return results
-  end
-
 end

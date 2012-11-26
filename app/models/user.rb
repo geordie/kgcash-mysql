@@ -8,4 +8,18 @@ class User < ActiveRecord::Base
   has_many :budgets
   has_many :transactions
   has_many :categories
+
+  def category_selector
+
+  	#Build an array of pairs as expected by a form dropdown
+  	results = Array.new
+
+  	categories.each do |cat|
+  		rec = Array.new
+  		rec.push cat.name
+  		rec.push cat.id
+  		results.push rec 
+  	end
+   	return results
+  end
 end
