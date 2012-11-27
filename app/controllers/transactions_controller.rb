@@ -46,8 +46,9 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
-        format.html { redirect_to :action => 'show', notice: 'Transaction was successfully updated.' }
+        format.html { redirect_to :action => 'show', notice: 'Transaction was successfully updated yo.' }
         format.json { head :ok }
+        format.js {render :nothing => true }
       else
         format.html { render action: "edit" }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }

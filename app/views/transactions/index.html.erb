@@ -10,6 +10,7 @@
     <th>Category</th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
 
 <% @transactions.each do |transaction| %>
@@ -18,8 +19,10 @@
     <td><%= transaction.tx_type %></td>
     <td><%= transaction.details %></td>
     <td><%= transaction.credit %></td>
-    <% #TODO: Make this a dropdown that enables category selection %>
-    <td><%= transaction.category.name %></td>
+    <td><%= form_for transaction, :remote => true do |f| %> 
+            <%= f.select :category_id, current_user.category_selector, {}, :class => 'transaction_update' %>
+        <% end %>
+    </td>
     <td><%= link_to 'Show', transaction_path(transaction) %></td>
     <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
     <td><%= link_to 'Destroy', transaction_path(transaction), confirm: 'Are you sure?', method: :delete, remote: true, class: 'delete_post' %></td> 
