@@ -59,7 +59,9 @@ class TransactionsController < ApplicationController
   def new
   	@user = current_user
   	@transaction = Transaction.new
+    @transaction.tx_date = DateTime.now
     @categories = @user.category_selector
+
 
   	@user.transactions << @transaction
 
@@ -76,6 +78,7 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :action => 'index' }
+      format.js   { render :nothing => true }
       format.json { head :ok }
     end
   end

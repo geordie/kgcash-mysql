@@ -19,10 +19,10 @@
     <td><%= transaction.details %></td>
     <td><%= transaction.credit %></td>
     <% #TODO: Make this a dropdown that enables category selection %>
-    <td><%= transaction.category %></td>
+    <td><%= transaction.category.name %></td>
     <td><%= link_to 'Show', transaction_path(transaction) %></td>
     <td><%= link_to 'Edit', edit_transaction_path(transaction) %></td>
-    <td><%= link_to 'Destroy', transaction_path(transaction), confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to 'Destroy', transaction_path(transaction), confirm: 'Are you sure?', method: :delete, remote: true, class: 'delete_post' %></td> 
   </tr>
 <% end %>
 </table>
