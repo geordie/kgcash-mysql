@@ -3,8 +3,8 @@ class CreateTransactions < ActiveRecord::Migration
     create_table :transactions do |t|
       t.string :hash
       t.datetime :tx_date
-      t.decimal :debit
-      t.decimal :credit
+      t.decimal  :debit,       :precision => 12, :scale => 2
+      t.decimal  :credit,      :precision => 12, :scale => 2
       t.string :type
       t.string :details
       t.string :notes
