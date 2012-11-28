@@ -3,7 +3,6 @@
 <table>
   <tr>
     <th>Date</th>
-    <th>Type</th>
     <th>Details</th>
     <th>Debit</th>
     <th>Credit</th>
@@ -15,9 +14,9 @@
 
 <% @transactions.each do |transaction| %>
   <tr>
-    <td><%= transaction.tx_date %></td>
-    <td><%= transaction.tx_type %></td>
+    <td><%= transaction.tx_date.strftime("%Y-%b-%d") %></td>
     <td><%= transaction.details %></td>
+    <td><%= transaction.debit %></td>
     <td><%= transaction.credit %></td>
     <td><%= form_for transaction, :remote => true do |f| %> 
             <%= f.select :category_id, current_user.category_selector, {}, :class => 'transaction_update' %>

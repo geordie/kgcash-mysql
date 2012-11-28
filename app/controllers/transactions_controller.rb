@@ -2,7 +2,7 @@ class TransactionsController < ApplicationController
   
   def index
   	@user = current_user
-  	@transactions = @user.transactions
+  	@transactions = @user.transactions.order("tx_date DESC")
 
   	respond_to do |format|
   		format.html #index.html.erb
