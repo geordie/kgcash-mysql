@@ -4,9 +4,12 @@ class TransactionsController < ApplicationController
   	@user = current_user
   	@transactions = @user.transactions.order("tx_date DESC")
 
+    dateStart = params[:start]
+    dateEnd = params[:end] 
+
   	respond_to do |format|
   		format.html #index.html.erb
-  		format.json {render json: @transations }
+  		format.json {render json: @transactions }
   	end
   end
 
