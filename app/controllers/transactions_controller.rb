@@ -4,8 +4,9 @@ class TransactionsController < ApplicationController
   	@user = current_user
   	@transactions = @user.transactions.order("tx_date DESC")
 
-    dateStart = params[:start]
-    dateEnd = params[:end] 
+    #TODO - Enable filtering by date range
+    # dateStart = params Date.strptime([:start], "{ %Y, %m, %d }")
+    # dateEnd = params[:end]
 
   	respond_to do |format|
   		format.html #index.html.erb
@@ -35,8 +36,8 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       if @transaction.save
-        format.html { redirect_to(:users, :notice => 'Transaction was successfully created for user.') }
-        format.json { render json: @transaction, status: :created, location: @user }
+        format.html { redirect_to(transactions_path, :notice => 'Transaction was successfully created for user.') }
+        format.json { render json: @transaction, status: :created, location: @transaction }
       else
         format.html { render action: "new" }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }
@@ -49,7 +50,7 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
-        format.html { redirect_to :action => 'show', notice: 'Transaction was successfully updated yo.' }
+        format.html { redirect_to transactions_path, notice: 'Transaction was successfully updated yo.' }
         format.json { head :ok }
         format.js {render :nothing => true }
       else

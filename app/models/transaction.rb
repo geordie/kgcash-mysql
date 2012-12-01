@@ -5,9 +5,9 @@ class Transaction < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
 
-  before_save :default_values
+  before_save :build_hash
   
-  def default_values
+  def build_hash
     #TODO - generate unique transaction hash
   end
 
