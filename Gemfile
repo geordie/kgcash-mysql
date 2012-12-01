@@ -33,4 +33,9 @@ group :test do
   # Pretty printed test output
   gem 'turn', :require => false
   gem "minitest"
+  gem "factory_girl_rails", ">= 1.6.0"
+  gem "cucumber-rails", ">= 1.2.1"
+  gem "capybara", ">= 1.1.2"
+  gem "database_cleaner"
+  gem "launchy"
 end
