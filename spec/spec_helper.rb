@@ -43,8 +43,10 @@ end
 module Sorcery
   module TestHelpers
     module Rails
-      def login_user_post(user, password)
-        page.driver.post(user_sessions_url, { username: user, password: password}) 
+      def user_login(user, password)
+        page.driver.post(user_sessions_url, { username: user, password: password})
+        #puts page.response_headers.to_s 
+        
       end
     end
   end
