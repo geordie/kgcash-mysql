@@ -1,5 +1,7 @@
 Kgcash::Application.routes.draw do
 
+  get "static_pages/home"
+
 root :to => 'users#index'
 
 resources :categories
