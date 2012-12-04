@@ -1,4 +1,5 @@
 require 'digest/md5'
+require 'doorkeeper'
 
 class Transaction < ActiveRecord::Base
   

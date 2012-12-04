@@ -1,5 +1,7 @@
 Kgcash::Application.routes.draw do
 
+  use_doorkeeper
+
   get "static_pages/home"
 
 root :to => 'users#index'

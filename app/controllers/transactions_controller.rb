@@ -1,4 +1,6 @@
 class TransactionsController < ApplicationController
+
+  doorkeeper_for :all, :if => lambda { request.xhr? }
   
   def index
   	@user = current_user
