@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   protected
   def not_authenticated
-    redirect_to login_path, :alert => "Please login first."
+  	if request.format.html?
+    	redirect_to login_path, :alert => "Please login first."
+    end
   end
 end

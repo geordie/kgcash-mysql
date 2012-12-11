@@ -1,9 +1,13 @@
 class TransactionsController < ApplicationController
 
-  doorkeeper_for :all, :if => lambda { request.xhr? }
+  doorkeeper_for :all, :if => lambda { request.format.json? }
   
   def index
+
   	@user = current_user
+    if @user == nil 
+        @user = User.last
+    end 
   	@transactions = @user.transactions.order("tx_date DESC")
 
     #TODO - Enable filtering by date range
@@ -17,7 +21,11 @@ class TransactionsController < ApplicationController
   end
 
   def show
+
   	@user = current_user
+    if @user == nil 
+        @user = User.last
+    end 
   	@transaction = @user.transactions.find(params[:id])
 
   	respond_to do |format|
@@ -34,6 +42,9 @@ class TransactionsController < ApplicationController
 
   def create
     @user = current_user
+    if @user == nil 
+        @user = User.last
+    end 
     @transaction = @user.transactions.create(params[:transaction])
 
     respond_to do |format|
@@ -52,7 +63,7 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
-        format.html { redirect_to transactions_path, notice: 'Transaction was successfully updated yo.' }
+        format.html { redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
         format.json { head :ok }
         format.js {render :nothing => true }
       else

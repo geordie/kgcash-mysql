@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121204072740) do
+ActiveRecord::Schema.define(:version => 20121204080350) do
 
   create_table "budget_categories", :force => true do |t|
     t.decimal  "amount",      :precision => 10, :scale => 0
@@ -92,8 +92,11 @@ ActiveRecord::Schema.define(:version => 20121204072740) do
     t.string   "redirect_uri", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "owner_id"
+    t.string   "owner_type"
   end
 
+  add_index "oauth_applications", ["owner_id", "owner_type"], :name => "index_oauth_applications_on_owner_id_and_owner_type"
   add_index "oauth_applications", ["uid"], :name => "index_oauth_applications_on_uid", :unique => true
 
   create_table "oauth_nonces", :force => true do |t|

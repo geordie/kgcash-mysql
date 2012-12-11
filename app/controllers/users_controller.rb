@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 # GET /users
   # GET /users.json
   def index
+    logger.info( "HELLO GEORDIE");
     @users = User.all
 
     respond_to do |format|

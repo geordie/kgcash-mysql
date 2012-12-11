@@ -11,7 +11,10 @@ class Transaction < ActiveRecord::Base
   before_save :build_hash
   
   def build_hash
-  	self.tx_hash = Digest::MD5.hexdigest( self.tx_date.to_s + (self.details or '')  + (self.debit.to_s or '') + (self.credit or '') )
+  	self.tx_hash = Digest::MD5.hexdigest( self.tx_date.to_s + 
+  		(self.details or '')  + 
+  		(self.debit.to_s or '') + 
+  		(self.credit.to_s or '') )
     #TODO - generate unique transaction hash
   end
 
