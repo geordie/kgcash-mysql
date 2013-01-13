@@ -20,6 +20,6 @@ class User < ActiveRecord::Base
   		rec.push cat.id
   		results.push rec 
   	end
-   	return results
+   	return results.sort
   end
 end
