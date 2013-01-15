@@ -18,8 +18,8 @@
 <% @transactions.each do |transaction| %>
   <tr>
     <td><%= transaction.tx_date.strftime("%Y-%b-%d") %></td>
-    <td><%= transaction.details %></td>
-    <td><%= best_in_place transaction, :notes %></td>
+    <td><%= best_in_place transaction, :details, :type => :textarea %></td>
+    <td><%= best_in_place transaction, :notes%></td>
     <td><%= transaction.debit %></td>
     <td><%= transaction.credit %></td>
     <td><%= form_for transaction, :remote => true do |f| %> 
