@@ -6,6 +6,7 @@
   <tr>
     <th>Date</th>
     <th>Details</th>
+    <th>Notes</th>
     <th>Debit</th>
     <th>Credit</th>
     <th>Category</th>
@@ -18,6 +19,7 @@
   <tr>
     <td><%= transaction.tx_date.strftime("%Y-%b-%d") %></td>
     <td><%= transaction.details %></td>
+    <td><%= best_in_place transaction, :notes %></td>
     <td><%= transaction.debit %></td>
     <td><%= transaction.credit %></td>
     <td><%= form_for transaction, :remote => true do |f| %> 

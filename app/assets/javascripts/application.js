@@ -6,6 +6,7 @@
 //
 //= require jquery
 //= require jquery-ui
+//= require best_in_place
 //= require jquery_ujs
 //= require_tree .
 //= require d3

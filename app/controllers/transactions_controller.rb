@@ -1,6 +1,6 @@
 class TransactionsController < ApplicationController
 
-  doorkeeper_for :all, :if => lambda { request.format.json? }
+  doorkeeper_for :all, :if => lambda { current_user.nil? && request.format.json? }
   
   def index
 
@@ -64,7 +64,7 @@ class TransactionsController < ApplicationController
     respond_to do |format|
       if @transaction.update_attributes(params[:transaction])
         format.html { redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
-        format.json { head :ok }
+        format.json { respond_with_bip(@transaction) }
         format.js {render :nothing => true }
       else
         format.html { render action: "edit" }
