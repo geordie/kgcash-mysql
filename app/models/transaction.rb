@@ -9,6 +9,8 @@ class Transaction < ActiveRecord::Base
   belongs_to :user
 
   before_save :build_hash
+
+  scope :by_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
   
   def build_hash
   	self.tx_hash = Digest::MD5.hexdigest( self.tx_date.to_s + 
