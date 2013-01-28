@@ -14,6 +14,8 @@ resources :users
 
 resources :transactions
 
+resources :reports
+
 resources :budgets do
   resources :budget_categories, :path=> '/categories', :as => 'categories'
 end
