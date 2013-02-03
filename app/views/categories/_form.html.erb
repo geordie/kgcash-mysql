@@ -16,6 +16,10 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
+    <%= f.label :cat_type %><br />
+    <%= f.select :cat_type, ["Expense","Income"] %>
+  </div>
+  <div class="field">
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>

@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>Type</th>
     <th>Description</th>
     <th></th>
     <th></th>
@@ -12,6 +13,7 @@
 <% @categories.each do |category| %>
   <tr>
     <td><%= category.name %></td>
+    <td><%= category.cat_type %></td>
     <td><%= category.description %></td>
     <td><%= link_to 'Show', category %></td>
     <td><%= link_to 'Edit', edit_category_path(category) %></td>
