@@ -13,30 +13,36 @@ class ReportsController < ApplicationController
     @month = params.has_key?(:month) ? params[:month].to_i : time.month
     @year = params.has_key?(:year) ? params[:year].to_i : time.year
 
-  	@transactions = @user.transactions.select("transactions.*, categories.name AS category_name").by_month_year( @month, @year).joins(:category).order("tx_date DESC").limit(20)
+  	@transactions = @user.transactions.select("transactions.*, categories.name AS category_name")
+      .by_month_year( @month, @year).joins(:category)
 
-    @categories = Hash.new
+    @expense_categories = Hash.new
+    
+
     @transactions.each do |t|
+
+      next unless t.category.cat_type == "Expense" || t.category.cat_type.nil?
 
       @amount = (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
 
-      if @categories.has_key? t.category_name
-        @categories[ t.category_name ] += @amount
+      if @expense_categories.has_key? t.category_name
+        @expense_categories[ t.category_name ] += @amount
       else
-        @categories[ t.category_name ] = @amount
+        @expense_categories[ t.category_name ] = @amount
       end
 
     end
 
-    # Use this format becaus it's nice for D3 JSON - maybe should do this client side instead, but whatev
+    # Use this format because it's nice for D3 JSON - maybe should do this client side instead, but whatev
     @category_amounts = Array.new
-    @categories.each_pair do |key,val|
+
+    @expense_categories.each_pair do |key,val|
       @category_amounts.push( CategoryAmount.new( key, val ))
     end
 
   	respond_to do |format|
   		format.html #index.html.erb
-  		format.json {render json: @categories }
+  		format.json {render json: @expense_categories }
   	end
   end
 
