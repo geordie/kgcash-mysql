@@ -1,10 +1,11 @@
 <h2>And the content...</h2>
 
+<%= j @category_amounts.to_json.html_safe %>
+
+
 <script>
 
-var categories = <%= j @transactions.to_json.html_safe %> ;
 var category_amounts = <%= j @category_amounts.to_json.html_safe %> ;
-
 
 var color = d3.scale.category20();
 
