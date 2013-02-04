@@ -16,6 +16,8 @@ class Transaction < ActiveRecord::Base
           Date.new(year,month,1), 
           month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1) )
     }
+
+  scope :by_category, lambda { |category_id| where("category_id = ?", category_id) unless category_id.nil? }
   
   def build_hash
   	self.tx_hash = Digest::MD5.hexdigest( self.tx_date.to_s + 
