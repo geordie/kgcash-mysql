@@ -8,7 +8,14 @@ class TransactionsController < ApplicationController
     if @user == nil 
         @user = User.last
     end 
-  	@transactions = @user.transactions.order("tx_date DESC")
+
+    time = Time.new
+    @month = params.has_key?(:month) ? params[:month].to_i : time.month
+    @year = params.has_key?(:year) ? params[:year].to_i : time.year
+
+    @category = params.has_key?(:category) ? params[:category].to_i : nil
+
+  	@transactions = @user.transactions.by_category(@category).by_month_year(@month,@year).order("tx_date DESC")
 
     #TODO - Enable filtering by date range
     # dateStart = params Date.strptime([:start], "{ %Y, %m, %d }")
