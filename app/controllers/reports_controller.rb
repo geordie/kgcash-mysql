@@ -18,12 +18,16 @@ class ReportsController < ApplicationController
 
     @expense_categories = Hash.new
     
+    @totalAmount = 0;
 
     @transactions.each do |t|
 
       next unless t.category.cat_type == "Expense" || t.category.cat_type.nil?
+      next if t.category.name == "Not defined"
 
-      @amount = (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
+      @amount = -1 * (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
+
+      @totalAmount += @amount;
 
       if @expense_categories.has_key? t.category_name
         @expense_categories[ t.category_name ] += @amount
@@ -39,6 +43,8 @@ class ReportsController < ApplicationController
     @expense_categories.each_pair do |key,val|
       @category_amounts.push( CategoryAmount.new( key, val ))
     end
+
+    @category_amounts.sort!{|a,b| b.amount <=> a.amount}
 
   	respond_to do |format|
   		format.html #index.html.erb
