@@ -17,7 +17,7 @@
 
 <% @transactions.each do |transaction| %>
   <tr>
-    <td><%= transaction.tx_date.strftime("%Y-%b-%d") %></td>
+    <td><%= transaction.tx_date.strftime("%Y-%b-%d") unless transaction.tx_date.nil? %></td>
     <td><%= best_in_place transaction, :details, :type => :textarea %></td>
     <td><%= best_in_place transaction, :notes%></td>
     <td><%= transaction.debit %></td>
