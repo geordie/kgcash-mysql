@@ -1,46 +1,47 @@
-<h2>Spending Report for <%= Date::MONTHNAMES[@month] %>, <%= @year %></h2>
+<h2>Report for <%= Date::MONTHNAMES[@month] %>, <%= @year %></h2>
 
-<%= j @totalAmount %>
-<br/>
-<%= j @category_amounts.to_json.html_safe %>
-
+<!-- <%= j @totalAmount %> -->
 
 <script>
-
 
 var category_amounts = <%= j @category_amounts.to_json.html_safe %> ;
 var totalAmount = <%= j @totalAmount %>;
 
 var color = d3.scale.category20();
 
-var width = 960,
+var heightTitle = 80,
+    width = 960,
     height = 500,
-    radius = Math.min(width, height) / 2;
+    radius = Math.min(width, height - heightTitle) / 2;
 
 var arc = d3.svg.arc()
     .outerRadius(radius - 10)
-    .innerRadius(100);
+    .innerRadius(80);
 
 var pie = d3.layout.pie()
     .value(function(d) { return d.amount; });
 
 var body = d3.select("body")
 
-var svg = body.append("svg")
+var canvas = body.append("svg")
     .attr("width", width)
     .attr("height", height)
-    .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+var title = canvas.append("text")
+    .attr("fill","#FFFFFF")
+    .text("Hello");
+
+var chart = canvas.append("g")
+    .attr("transform", "translate(" + width / 2 + "," + ( (heightTitle+height)/2)  + ")");
 
 category_amounts.forEach(function(d) {
   d.amount = +d.amount;
 });
 
-var g = svg.selectAll(".arc")
+var g = chart.selectAll(".arc")
     .data(pie(category_amounts))
     .enter().append("g")
-    .attr("class", function(d,i){ return "arc-" + i + " " + this.startAngle});
+    .attr("class", function(d,i){ return "arc-" + i });
 
 g.append("path")
     .attr("d", arc)
@@ -65,9 +66,6 @@ g.filter(function(d){ return d.endAngle - d.startAngle > (Math.PI/10)})
 function catDetail( show, elem )
 {
   return function( d, i) {
-
-    // console.log(d);
-    
 
     // save selection of infobox so that we can later change it's position
     var infobox = d3.select(".infobox");
@@ -101,5 +99,22 @@ function catDetail( show, elem )
   };
 }
 
+chart.append("svg:text")
+   .attr("x", 0)
+   .attr("y", -30)
+   .attr("text-anchor","middle")
+   .attr("dominant-baseline","central")
+   .attr("font-size", "32px")
+   .attr("stroke", "#999999")
+   .attr("fill", "#999999")
+   .text("Total");
+
+chart.append("svg:text")
+   .attr("x", 0)
+   .attr("y", 10)
+   .attr("text-anchor","middle")
+   .attr("dominant-baseline","central")
+   .attr("font-size", "28pt")
+   .text("$" + Math.round(totalAmount));
 
 </script>
