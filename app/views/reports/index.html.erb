@@ -1,16 +1,18 @@
 <h2>Report for <%= Date::MONTHNAMES[@month] %>, <%= @year %></h2>
 
-<!-- <%= j @totalAmount %> -->
+ <%= j @category_income.to_json %>
+<br/>
+ <%= j @income_categories.to_json %>
 
 <script>
 
 var category_amounts = <%= j @category_amounts.to_json.html_safe %> ;
-var totalAmount = <%= j @totalAmount %>;
+var totalAmount = <%= j @totalExpense %>;
 
 var color = d3.scale.category20();
 
 var heightTitle = 80,
-    width = 960,
+    width = 1100,
     height = 500,
     radius = Math.min(width, height - heightTitle) / 2;
 
@@ -31,14 +33,14 @@ var title = canvas.append("text")
     .attr("fill","#FFFFFF")
     .text("Hello");
 
-var chart = canvas.append("g")
-    .attr("transform", "translate(" + width / 2 + "," + ( (heightTitle+height)/2)  + ")");
+var chartSpend = canvas.append("g")
+    .attr("transform", "translate(" + width / 4 + "," + ( (heightTitle+height)/2)  + ")");
 
 category_amounts.forEach(function(d) {
   d.amount = +d.amount;
 });
 
-var g = chart.selectAll(".arc")
+var g = chartSpend.selectAll(".arc")
     .data(pie(category_amounts))
     .enter().append("g")
     .attr("class", function(d,i){ return "arc-" + i });
@@ -84,7 +86,7 @@ function catDetail( show, elem )
      
       //console.log( this );
       // now we just position the infobox roughly where our mouse is
-      infobox.style("left", box[0] + width/2  + "px" );
+      infobox.style("left", box[0] + width/4  + "px" );
       infobox.style("top", box[1] + height/2 + 40 + "px");
       infobox.style("width", boxWidth + "px");
       infobox.style("padding", "10px");
@@ -99,7 +101,7 @@ function catDetail( show, elem )
   };
 }
 
-chart.append("svg:text")
+chartSpend.append("svg:text")
    .attr("x", 0)
    .attr("y", -30)
    .attr("text-anchor","middle")
@@ -109,7 +111,7 @@ chart.append("svg:text")
    .attr("fill", "#999999")
    .text("Total");
 
-chart.append("svg:text")
+chartSpend.append("svg:text")
    .attr("x", 0)
    .attr("y", 10)
    .attr("text-anchor","middle")

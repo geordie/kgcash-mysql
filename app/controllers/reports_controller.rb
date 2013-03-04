@@ -17,24 +17,36 @@ class ReportsController < ApplicationController
       .by_month_year( @month, @year).joins(:category)
 
     @expense_categories = Hash.new
+    @income_categories = Hash.new
     
-    @totalAmount = 0;
+    @totalExpense = 0;
+    @totalIncome = 0;
 
     @transactions.each do |t|
 
-      next unless t.category.cat_type == "Expense" || t.category.cat_type.nil?
+      next unless t.category.cat_type == "Expense" || t.category.cat_type == "Income" || t.category.cat_type.nil?
       next if t.category.name == "Not defined"
 
-      @amount = -1 * (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
+      if t.category.cat_type == "Expense" || t.category.cat_type.nil? 
+        @amountExpense = -1 * (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
+        @totalExpense += @amountExpense;
 
-      @totalAmount += @amount;
-
-      if @expense_categories.has_key? t.category_name
-        @expense_categories[ t.category_name ] += @amount
-      else
-        @expense_categories[ t.category_name ] = @amount
+        if @expense_categories.has_key? t.category_name
+          @expense_categories[ t.category_name ] += @amountExpense
+        else
+          @expense_categories[ t.category_name ] = @amountExpense
+        end
+      
+      elsif t.category.cat_type == "Income"
+        @amountIncome = (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
+        @totalIncome += @amountIncome;
+      
+        if @income_categories.has_key? t.category_name
+          @income_categories[ t.category_name ] += @amountIncome
+        else
+          @income_categories[ t.category_name ] = @amountIncome
+        end
       end
-
     end
 
     # Use this format because it's nice for D3 JSON - maybe should do this client side instead, but whatev
@@ -45,6 +57,14 @@ class ReportsController < ApplicationController
     end
 
     @category_amounts.sort!{|a,b| b.amount <=> a.amount}
+
+    @category_income = Array.new
+
+    @income_categories.each_pair do |key,val|
+      @category_income.push( CategoryAmount.new( key, val ))
+    end
+
+    @category_income.sort!{|a,b| b.amount <=> a.amount}
 
   	respond_to do |format|
   		format.html #index.html.erb
