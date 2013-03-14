@@ -1,122 +1,21 @@
 <h2>Report for <%= Date::MONTHNAMES[@month] %>, <%= @year %></h2>
 
- <%= j @category_income.to_json %>
-<br/>
- <%= j @income_categories.to_json %>
+<div id="content" style="width:1200px;">
+    <div id="divLeft" style="width:500px; height: 500px; display:inline-block; float:left;"></div>
+    <div id="divMid" style="width:200px; height: 500px; display:inline-block; float:left;"></div>
+    <div id="divRight" style="width:500px; height: 500px; display:inline-block; float:right;"></div>
+</div>
 
 <script>
 
 var category_amounts = <%= j @category_amounts.to_json.html_safe %> ;
-var totalAmount = <%= j @totalExpense %>;
+var totalExpense =<%= j @totalExpense %>;
+buildPie( category_amounts, totalExpense, 1, "#divLeft", "Expense" );
 
-var color = d3.scale.category20();
+var category_income = <%= j @category_income.to_json.html_safe %> ;
+var totalIncome =<%= j @totalIncome %>;
+buildPie( category_income, totalIncome, 1, "#divRight", "Income" );
 
-var heightTitle = 80,
-    width = 1100,
-    height = 500,
-    radius = Math.min(width, height - heightTitle) / 2;
-
-var arc = d3.svg.arc()
-    .outerRadius(radius - 10)
-    .innerRadius(80);
-
-var pie = d3.layout.pie()
-    .value(function(d) { return d.amount; });
-
-var body = d3.select("body")
-
-var canvas = body.append("svg")
-    .attr("width", width)
-    .attr("height", height)
-
-var title = canvas.append("text")
-    .attr("fill","#FFFFFF")
-    .text("Hello");
-
-var chartSpend = canvas.append("g")
-    .attr("transform", "translate(" + width / 4 + "," + ( (heightTitle+height)/2)  + ")");
-
-category_amounts.forEach(function(d) {
-  d.amount = +d.amount;
-});
-
-var g = chartSpend.selectAll(".arc")
-    .data(pie(category_amounts))
-    .enter().append("g")
-    .attr("class", function(d,i){ return "arc-" + i });
-
-g.append("path")
-    .attr("d", arc)
-    .style("fill", function(d, i) { return color(i); })
-    .on("mouseover", catDetail( true, d3.select(this) ))
-    .on("mouseout", catDetail( false, d3.select(this) ));
-
-g.filter(function(d){ return d.endAngle - d.startAngle > (Math.PI/10)})
-    .append("text")
-    .attr("transform", function(d) { return "translate(" + arc.centroid(d)[0] + "," + arc.centroid(d)[1] + ")"; })
-    .attr("dy", ".35em")
-    .style("text-anchor", "middle")
-    .text(function(d,i) { return d.data.category; });
-
-g.filter(function(d){ return d.endAngle - d.startAngle > (Math.PI/10)})
-    .append("text")
-    .attr("transform", function(d) { return "translate(" + arc.centroid(d)[0] + "," + (arc.centroid(d)[1] + 15) + ")"; })
-    .attr("dy", ".35em")
-    .style("text-anchor", "middle")
-    .text(function(d) { return Math.round((d.data.amount/totalAmount)*100) + " %"; });
-
-function catDetail( show, elem )
-{
-  return function( d, i) {
-
-    // save selection of infobox so that we can later change it's position
-    var infobox = d3.select(".infobox");
-
-    if( show )
-    {
-
-      var text = "<strong>" + d.data.category + "</strong>";
-
-      var boxWidth = text.length*3; 
-      
-      text += "<br/>$" + Math.round(d.data.amount)  + "<br/>(" + (Math.round((d.data.amount/totalAmount)*100)) + "%)" ;
-
-      // this returns x,y coordinates of the mouse in relation to our svg canvas
-      var box = d3.mouse(this);
-     
-      //console.log( this );
-      // now we just position the infobox roughly where our mouse is
-      infobox.style("left", box[0] + width/4  + "px" );
-      infobox.style("top", box[1] + height/2 + 40 + "px");
-      infobox.style("width", boxWidth + "px");
-      infobox.style("padding", "10px");
-      infobox.html( text );
-    }
-    else
-    {
-      infobox.style("width", "0px");
-      infobox.style("padding", "0px");
-      infobox.html("");
-    }
-  };
-}
-
-chartSpend.append("svg:text")
-   .attr("x", 0)
-   .attr("y", -30)
-   .attr("text-anchor","middle")
-   .attr("dominant-baseline","central")
-   .attr("font-size", "32px")
-   .attr("stroke", "#999999")
-   .attr("fill", "#999999")
-   .text("Total");
-
-chartSpend.append("svg:text")
-   .attr("x", 0)
-   .attr("y", 10)
-   .attr("text-anchor","middle")
-   .attr("dominant-baseline","central")
-   .attr("font-size", "28pt")
-   .text("$" + Math.round(totalAmount));
+buildMid( totalIncome - totalExpense, "#divMid" );
 
 </script>
