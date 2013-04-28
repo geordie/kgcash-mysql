@@ -33,24 +33,24 @@ class ReportsController < ApplicationController
 		next if t.category.name == "Not defined"
 
 		if t.category.cat_type == "Expense" || t.category.cat_type.nil? 
-		@amountExpense = -1 * (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
-		@totalExpense += @amountExpense;
+			@amountExpense = -1 * (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
+			@totalExpense += @amountExpense;
 
-		if @expense_categories.has_key? t.category_name
-			@expense_categories[ t.category_name ] += @amountExpense
-		else
-			@expense_categories[ t.category_name ] = @amountExpense
-		end
-		
+			if @expense_categories.has_key? t.category_name
+				@expense_categories[ t.category_name ] += @amountExpense
+			else
+				@expense_categories[ t.category_name ] = @amountExpense
+			end
+			
 		elsif t.category.cat_type == "Income"
-		@amountIncome = (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
-		@totalIncome += @amountIncome;
-		
-		if @income_categories.has_key? t.category_name
-			@income_categories[ t.category_name ] += @amountIncome
-		else
-			@income_categories[ t.category_name ] = @amountIncome
-		end
+			@amountIncome = (t.credit.nil? ? 0 : t.credit) + -1 * (t.debit.nil? ? 0 : t.debit)
+			@totalIncome += @amountIncome;
+			
+			if @income_categories.has_key? t.category_name
+				@income_categories[ t.category_name ] += @amountIncome
+			else
+				@income_categories[ t.category_name ] = @amountIncome
+			end
 		end
 	end
 
