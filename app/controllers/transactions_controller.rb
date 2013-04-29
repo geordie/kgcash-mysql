@@ -16,9 +16,9 @@ class TransactionsController < ApplicationController
 	@category = params.has_key?(:category) ? params[:category].to_i : nil
 
 	if @month.nil?
-		@transactions = @user.transactions.by_category(@category).by_year(@year).order("tx_date DESC")
+		@transactions = @user.transactions.in_category(@category).in_year(@year).order("tx_date DESC")
 	elsif
-		@transactions = @user.transactions.by_category(@category).by_month_year(@month,@year).order("tx_date DESC")
+		@transactions = @user.transactions.in_category(@category).in_month_year(@month,@year).order("tx_date DESC")
 	end
 
 	#TODO - Enable filtering by date range

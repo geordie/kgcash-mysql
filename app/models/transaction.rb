@@ -10,14 +10,14 @@ class Transaction < ActiveRecord::Base
 
   before_save :build_hash
 
-  scope :by_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
+  scope :in_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
   
-  scope :by_month_year, lambda { |month, year| where( 'tx_date >= ? AND tx_date < ?', 
+  scope :in_month_year, lambda { |month, year| where( 'tx_date >= ? AND tx_date < ?', 
           Date.new(year,month,1), 
           month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1) )
     }
 
-  scope :by_category, lambda { |category_id| where("category_id = ?", category_id) unless category_id.nil? }
+  scope :in_category, lambda { |category_id| where("category_id = ?", category_id) unless category_id.nil? }
   
   def build_hash
   	self.tx_hash = Digest::MD5.hexdigest( self.tx_date.to_s + 
