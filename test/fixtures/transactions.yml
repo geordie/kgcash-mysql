@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
 
-one:
+tx_1:
   tx_hash: hash1
   tx_date: 2012-11-20 08:32:01
   debit: 9.99
@@ -9,9 +9,9 @@ one:
   details: MyString
   notes: MyString
   category: 
-  user: 
+  user: user_one
 
-two:
+tx_2:
   tx_hash: hash2
   tx_date: 2012-11-20 08:32:01
   debit: 9.99
@@ -20,4 +20,15 @@ two:
   details: MyString
   notes: MyString
   category: 
-  user: 
+  user: user_one
+
+tx_3:
+  tx_hash: hash3
+  tx_date: 2012-12-22 08:32:01
+  debit: 3.99
+  credit: 4.99
+  tx_type: 
+  details: MyString
+  notes: MyString
+  category: 
+  user: user_one
