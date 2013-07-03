@@ -19,7 +19,7 @@ class BudgetCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @budget }
+      format.json { render json: @budget_category }
     end
   end
 

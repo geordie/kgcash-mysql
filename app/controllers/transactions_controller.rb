@@ -2,7 +2,7 @@ class TransactionsController < ApplicationController
 
 	doorkeeper_for :all, :if => lambda { current_user.nil? && request.format.json? }
 	
-	def index
+def index
 
 	@user = current_user
 	if @user == nil 
