@@ -25,6 +25,8 @@ class ReportsController < ApplicationController
 				.in_month_year( @month, @year)
 		end
 
+		@tx_by_month_in_year = @user.transactions.by_months_in_year( @year )
+
 		@expense_categories = Hash.new
 		@income_categories = Hash.new
 		

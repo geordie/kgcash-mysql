@@ -2,9 +2,9 @@ var heightTitle = 80;
 
 function buildPie( category_amounts, totalAmount, pieLocation, selector, chartName)
 {
-	var body = d3.select(selector);
-	var width = parseInt(body.style("width"));
-	var height = parseInt(body.style("height"));
+	var container = d3.select(selector);
+	var width = parseInt(container.style("width"));
+	var height = parseInt(container.style("height"));
 
 	var radius = Math.min(width, height - heightTitle) / 2;
 
@@ -18,7 +18,7 @@ function buildPie( category_amounts, totalAmount, pieLocation, selector, chartNa
 	    .value(function(d) { return d.amount; });
 	
 
-	var canvas = body.append("svg")
+	var canvas = container.append("svg")
 	    .attr("width", width)
 	    .attr("height", height)
 
