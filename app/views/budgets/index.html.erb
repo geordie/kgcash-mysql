@@ -11,11 +11,10 @@
 
 <% @budgets.each do |budget| %>
   <tr>
-    <td><%= budget.name %></td>
-    <td><%= budget.description %></td>
-    <td><%= link_to 'Show', budget_path(budget) %></td>
-    <td><%= link_to 'Edit', edit_budget_path(budget) %></td>
-    <td><%= link_to 'Destroy', budget_path(budget), confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= best_in_place budget, :name%></td>
+    <td><%= best_in_place budget, :description%></td>
+    <td><%= link_to 'Details', budget_path(budget) %></td>
+    <td><%= link_to 'Delete', budget_path(budget), confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
