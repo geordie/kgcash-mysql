@@ -4,23 +4,23 @@
 
 <table class="table table-striped table-condensed">
   <tr>
-    <th>Date</th>
+    <th width="100px">Date</th>
     <th>Details</th>
     <th>Notes</th>
-    <th>Debit</th>
-    <th>Credit</th>
+    <th width="75px">Amount</th>
     <th>Category</th>
     <th></th>
     <th></th>
   </tr>
 
 <% @transactions.each do |transaction| %>
+<% @txAmount = transaction.credit - transaction.debit %>
+<% @txAmountClass = @txAmount > 0 ? "credit" : "debit" %>
   <tr>
-    <td><%= transaction.tx_date.strftime("%Y-%b-%d") unless transaction.tx_date.nil? %></td>
+    <td><%= transaction.tx_date.strftime("%d-%b-%Y") unless transaction.tx_date.nil? %></td>
     <td><%= best_in_place transaction, :details, :type => :textarea %></td>
     <td><%= best_in_place transaction, :notes%></td>
-    <td><%= transaction.debit %></td>
-    <td><%= transaction.credit %></td>
+    <td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
     <td><%= form_for transaction, :remote => true do |f| %> 
             <%= f.select :category_id, current_user.category_selector, {}, :class => 'transaction_update' %>
         <% end %>
