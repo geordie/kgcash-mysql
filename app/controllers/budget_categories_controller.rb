@@ -23,10 +23,11 @@ class BudgetCategoriesController < ApplicationController
     end
   end
 
- # GET /users/1/edit
+ # GET /budgets/1/categories/1/edit
   def edit
     @user = current_user
-    @budget = Budget.find(params[:id])
+    @budget_category = BudgetCategory.find(params[:id])
+    @categories = Category.where(:user_id => @user)
   end
 
 
@@ -45,18 +46,22 @@ class BudgetCategoriesController < ApplicationController
     end
   end
 
-  # PUT /users/1/budgets/2
-  # PUT /users/1/budgets/2.json
+  # PUT /budgets/1/categories/1
+  # PUT /budgets/1/categories/1.json
   def update
-    @budget = Budget.find(params[:id])
+    @budget_category = BudgetCategory.find(params[:id])
+    
+    #replace the returned category key with a category_id key so we can update properly
+    @updateParams = params[:budget_category]
+    @updateParams['category_id'] = @updateParams.delete('category');
 
     respond_to do |format|
-      if @budget.update_attributes(params[:budget])
-        format.html { redirect_to :action => 'show', notice: 'Budget was successfully updated.' }
+      if @budget_category.update_attributes(@updateParams)
+        format.html { redirect_to :action => 'show', notice: 'Budget Category was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
-        format.json { render json: @budget.errors, status: :unprocessable_entity }
+        format.json { render json: @budget_category.errors, status: :unprocessable_entity }
       end
     end
   end
