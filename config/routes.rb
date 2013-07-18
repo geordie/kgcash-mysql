@@ -17,7 +17,7 @@ resources :transactions
 resources :reports
 
 resources :budgets do
-  resources :budget_categories, :path=> '/categories', :as => 'categories'
+  resources :budget_categories, :as => 'categories'
 end
 
 match 'login' => 'user_sessions#new', :as => :login

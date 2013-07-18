@@ -50,10 +50,13 @@ class BudgetCategoriesController < ApplicationController
   # PUT /budgets/1/categories/1.json
   def update
     @budget_category = BudgetCategory.find(params[:id])
-    
-    #replace the returned category key with a category_id key so we can update properly
+
     @updateParams = params[:budget_category]
-    @updateParams['category_id'] = @updateParams.delete('category');
+
+    #replace the returned category key with a category_id key so we can update properly
+    if @updateParams.has_key?( 'category')
+      @updateParams['category_id'] = @updateParams.delete('category');
+    end
 
     respond_to do |format|
       if @budget_category.update_attributes(@updateParams)
