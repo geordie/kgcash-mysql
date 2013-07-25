@@ -14,6 +14,8 @@ resources :users
 
 resources :transactions
 
+resources :transaction_imports
+
 resources :reports
 
 resources :budgets do

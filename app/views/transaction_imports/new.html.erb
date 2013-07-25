@@ -1,0 +1,21 @@
+<h1>Transaction Import</h1>
+
+<p>Please select a file to import. </p>
+
+<%= form_for @transaction_import do |f| %>
+  <% if @transaction_import.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@transaction_import.errors.count, "error") %> prohibited this import from completing:</h2>
+      <ul>
+      <% @transaction_import.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.file_field :file %>
+  </div>
+  <div class="buttons"><%= f.submit "Import" %></div>
+<% end %>
