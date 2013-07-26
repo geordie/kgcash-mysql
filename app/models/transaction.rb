@@ -10,6 +10,8 @@ class Transaction < ActiveRecord::Base
   
   before_save :ensure_hash
 
+  before_validation :ensure_hash
+
   scope :in_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
   
   scope :in_month_year, lambda { |month, year| where( 'tx_date >= ? AND tx_date < ?', 

@@ -34,7 +34,9 @@ class TransactionImport
   }
 
   def initialize(attributes = {})
-    attributes.each { |name, value| send("#{name}=", value) }
+    unless attributes.nil?
+      attributes.each { |name, value| send("#{name}=", value) }
+    end
   end
 
   def persisted?
@@ -42,6 +44,11 @@ class TransactionImport
   end
 
   def save
+
+    if file.nil?
+      errors.add :base, "Please select a file to to import"
+      return false
+    end
     contents = file.read
 
     contents.split("\n").each_with_index do |csvline, idx|
@@ -70,10 +77,7 @@ class TransactionImport
           end
       end
 
-      hash = Digest::MD5.hexdigest(date.to_s + desc + debit.to_s + credit.to_s)
-
       @transaction = Transaction.create(
-          :tx_hash => hash,
           :tx_date => date,
           :user_id => 1,
           :debit => debit,
@@ -82,7 +86,6 @@ class TransactionImport
           :details => desc,
           :category_id => cat
         )
-
 
       if @transaction.valid?
           @transaction.save!
@@ -93,10 +96,6 @@ class TransactionImport
       end
       
     end
-    puts "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& GEORDIE"
-    puts errors.full_messages
-    puts "AGAIN"
-    puts errors.count
     errors.count == 0
   end
 
