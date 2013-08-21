@@ -21,6 +21,12 @@ def index
 		@transactions = @user.transactions.in_category(@category).in_month_year(@month,@year).order("tx_date DESC")
 	end
 
+	@budgets = @user.budgets
+
+	logger.debug '************* CONTROLLER '
+	logger.debug @budgets[0].categories.to_yaml
+	logger.debug '************* /CONTROLLER '
+
 	#TODO - Enable filtering by date range
 	# dateStart = params Date.strptime([:start], "{ %Y, %m, %d }")
 	# dateEnd = params[:end]
