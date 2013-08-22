@@ -156,10 +156,12 @@ CREATE TABLE `transactions` (
   `user_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `account_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_transactions_on_hash_unique` (`tx_hash`),
   KEY `index_transactions_on_category_id` (`category_id`),
-  KEY `index_transactions_on_user_id` (`user_id`)
+  KEY `index_transactions_on_user_id` (`user_id`),
+  KEY `index_transactions_on_account_id` (`account_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9865 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `users` (
