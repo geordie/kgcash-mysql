@@ -18,6 +18,8 @@ resources :transaction_imports
 
 resources :reports
 
+resources :accounts
+
 resources :budgets do
   resources :budget_categories, :as => 'categories'
 end

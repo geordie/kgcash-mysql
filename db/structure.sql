@@ -1,3 +1,19 @@
+CREATE TABLE `accounts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `accounts_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `budget_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `amount` decimal(10,0) DEFAULT NULL,
@@ -174,3 +190,5 @@ INSERT INTO schema_migrations (version) VALUES ('20121204072740');
 INSERT INTO schema_migrations (version) VALUES ('20121204080350');
 
 INSERT INTO schema_migrations (version) VALUES ('20130203060617');
+
+INSERT INTO schema_migrations (version) VALUES ('20130822041111');

@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :transactions
   has_many :categories
 
+  has_and_belongs_to_many :accounts
+
   def category_selector
 
   	#Build an array of pairs as expected by a form dropdown
@@ -22,4 +24,5 @@ class User < ActiveRecord::Base
   	end
    	return results.sort
   end
+
 end

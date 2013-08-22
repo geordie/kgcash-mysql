@@ -1,0 +1,26 @@
+<h1>My Accounts</h1>
+
+<table class="table table-striped table-condensed">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @accounts.each do |account| %>
+    <tr>
+      <td><%= account.name %></td>
+      <td><%= account.description %></td>
+      <td><%= link_to 'Show', account %></td>
+      <td><%= link_to 'Edit', edit_account_path(account) %></td>
+      <td><%= link_to 'Delete', account, confirm: 'Are you sure?', method: :delete %></td>
+    </tr>
+  <% end %>
+
+</table>
+
+<br />
+
+<%= link_to 'New Account', new_account_path %>
