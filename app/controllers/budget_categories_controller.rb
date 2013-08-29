@@ -2,8 +2,9 @@ class BudgetCategoriesController < ApplicationController
   # GET /budgets/1/categories
   # GET /budgets/1/categories.json
   def index
-    @budget = Budget.find(params[:budget_id])
-    @budget_categories = BudgetCategory.includes(:category).where(:budget_id => @budget)
+    @user = current_user
+    @budget = @user.budgets.find(params[:budget_id])
+    @budget_categories = @budget.budget_categories
 
     respond_to do |format|
       format.html # index.html.erb
@@ -11,11 +12,13 @@ class BudgetCategoriesController < ApplicationController
     end
   end
 
-  # GET /users/1/budgets/2
-  # GET /users/1/budgets/2.json
+  # GET /budgets/1/categories/1
+  # GET /budgets/1/categories/1.json
   def show
+
     @user = current_user
-    @budget_category = BudgetCategory.includes(:category).find(params[:id])
+    @budget = @user.budgets.find(params[:budget_id])
+    @budget_category = @budget.budget_categories.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,22 +29,25 @@ class BudgetCategoriesController < ApplicationController
  # GET /budgets/1/categories/1/edit
   def edit
     @user = current_user
-    @budget_category = BudgetCategory.find(params[:id])
+    @budget = @user.budgets.find(params[:budget_id])
+    @budget_category = @budget.budget_categories.find(params[:id])
     @categories = Category.where(:user_id => @user)
   end
 
 
   def create
     @user = current_user
-    @budget = @user.budgets.create(params[:budget])
+    @budget = @user.budgets.find(params[:budget_id])
+    @budget_category = @budget.budget_categories.new
+
 
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to(:users, :notice => 'Budget was successfully created for user.') }
-        format.json { render json: @user, status: :created, location: @user }
+      if @budget_category.save
+        format.html { redirect_to(:budget_categories, :notice => 'Budget Category was successfully created for user.') }
+        format.json { render json: @budget_category, status: :created, location: @budget_category }
       else
         format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: @buget_category.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -70,18 +76,21 @@ class BudgetCategoriesController < ApplicationController
   end
 
 
-  # GET /users/1/budgets/new
-  # GET /users/1/budgets/new.json
+  # GET /budgets/4/budget_categories/new
+  # GET /budgets/4/budget_categories/new.json
   def new
 
     @user = current_user
-    @budget = Budget.new
+    @budget = @user.budgets.find(params[:budget_id])
 
-    @user.budgets << @budget
+    @budget_category = @budget.budget_categories.new
+
+    @budget.budget_categories << @budget_category
+    @categories = Category.where(:user_id => @user)
 
     respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @budget }
+      format.html
+      format.json { render json: @budget_category }
     end
   end
 
@@ -89,8 +98,11 @@ class BudgetCategoriesController < ApplicationController
   # DELETE /users/1/budgets/2.json
   def destroy
     @user = current_user
-    @category = @user.budgets.find(params[:id])
-    @category.destroy
+    @budget = @user.budgets.find(params[:budget_id])
+    
+    @budget_category = @budget.budget_categories.find(params[:id])
+    
+    @budget_category.destroy
 
     respond_to do |format|
       format.html { redirect_to :action => 'index' }

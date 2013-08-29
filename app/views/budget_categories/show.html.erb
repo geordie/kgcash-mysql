@@ -2,7 +2,7 @@
 
 <p>
   <b>Category:</b>
-  <%= @budget_category.category.name %>
+  <%= (@budget_category.category.nil? ? "" : @budget_category.category.name) %>
 </p>
 
 <p>
@@ -15,5 +15,5 @@
   <%= @budget_category.period %>
 </p>
 
-<%= link_to 'Edit', edit_budget_category_path(@budget_category) %> |
+<%= link_to 'Edit', edit_budget_category_path(@budget, @budget_category) %> |
 <%= link_to 'Back', budget_categories_path %>

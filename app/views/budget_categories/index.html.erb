@@ -1,4 +1,4 @@
-<h3>Budget Details</h3>
+<h3>Budget: <%= @budget.name %></h3>
 
 <table class="table table-striped">
   <tr>
@@ -6,21 +6,21 @@
     <th>Amount</th>
     <th>Period</th>
     <th></th>
+    <th></th>
   </tr>
 
 <% @budget_total = 0 %>
-<% @budget_categories.each do |budget_category| %>
+<% @budget_categories.each do |bc| %>
   <tr>
-    <td><%= budget_category.category.nil? ? 'invalid(' +  budget_category.id.to_s + ')' : budget_category.category.name %></td>
-    <td><%= budget_category.amount %></td> 
-    <td><%= budget_category.period %></td>
-    <td><%= link_to 'Show', budget_category_path(params[:budget_id],budget_category) %></td>
-    <% @budget_total += budget_category.amount %>
+    <td><%= bc.category.nil? ? 'invalid(' +  bc.id.to_s + ')' : bc.category.name %></td>
+    <td><%= best_in_place bc, :amount, :path => budget_category_path(@budget.id,bc), :display_with => :number_to_currency, :helper_options => {:precision => 0} %></td>
+    <td><%= bc.period %></td>
+    <td><%= link_to 'Show', budget_category_path(@budget.id,bc) %> <%= link_to 'Delete', budget_category_url(@budget, bc), confirm: 'Are you sure?', method: :delete %></td>
+    <% @budget_total += bc.amount.nil? ? 0 : bc.amount %>
   </tr>
 <% end %>
-  <tr><td colspan='4' align='right'>Total: <%= @budget_total %></td>
+  <tr><td colspan='4' align='right'>Total: <%= number_to_currency( @budget_total, :precision => 0) %></td>
   </tr>
 </table>
 
-<br />
-
+<%= link_to 'New Budget Category', new_budget_category_path %>

@@ -36,7 +36,7 @@ class BudgetsController < ApplicationController
     @budget = @user.budgets.create(params[:budget])
 
     respond_to do |format|
-      if @user.save
+      if @budget.save
         format.html { redirect_to(:users, :notice => 'Budget was successfully created for user.') }
         format.json { render json: @user, status: :created, location: @user }
       else

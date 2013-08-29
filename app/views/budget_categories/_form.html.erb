@@ -1,4 +1,4 @@
-<%= form_for (@budget_category) do |f| %>
+<%= form_for @budget_category, url: budget_category_path(@budget,@budget_category) do |f| %>
   <% if @budget_category.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@budget.errors.count, "error") %> prevented this category from being saved:</h2>
@@ -27,3 +27,5 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+
