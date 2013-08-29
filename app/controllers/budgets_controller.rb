@@ -37,7 +37,7 @@ class BudgetsController < ApplicationController
 
     respond_to do |format|
       if @budget.save
-        format.html { redirect_to(:users, :notice => 'Budget was successfully created for user.') }
+        format.html { redirect_to(:budgets, :notice => 'Budget was successfully created for user.') }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
@@ -82,8 +82,8 @@ class BudgetsController < ApplicationController
   # DELETE /users/1/budgets/2.json
   def destroy
     @user = current_user
-    @category = @user.budgets.find(params[:id])
-    @category.destroy
+    @budget = @user.budgets.find(params[:id])
+    @budget.destroy
 
     respond_to do |format|
       format.html { redirect_to :action => 'index' }
