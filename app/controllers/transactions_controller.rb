@@ -23,10 +23,6 @@ def index
 
 	@budgets = @user.budgets
 
-	logger.debug '************* CONTROLLER '
-	logger.debug @budgets[0].categories.to_yaml
-	logger.debug '************* /CONTROLLER '
-
 	#TODO - Enable filtering by date range
 	# dateStart = params Date.strptime([:start], "{ %Y, %m, %d }")
 	# dateEnd = params[:end]
@@ -55,9 +51,9 @@ def edit
 	@user = current_user
 	@transaction = @user.transactions.find(params[:id])
 	@categories = @user.category_selector
-	end
+end
 
-	def create
+def create
 	@user = current_user
 	if @user == nil 
 		@user = User.last
@@ -73,9 +69,9 @@ def edit
 		format.json { render json: @transaction.errors, status: :unprocessable_entity }
 		end
 	end
-	end
+end
 
-	def update
+def update
 	@transaction = Transaction.find(params[:id])
 
 	respond_to do |format|
