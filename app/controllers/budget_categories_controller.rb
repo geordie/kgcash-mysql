@@ -66,7 +66,7 @@ class BudgetCategoriesController < ApplicationController
 
     respond_to do |format|
       if @budget_category.update_attributes(@updateParams)
-        format.html { redirect_to :action => 'show', notice: 'Budget Category was successfully updated.' }
+        format.html { redirect_to :action => 'index', notice: 'Budget Category was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
