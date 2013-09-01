@@ -1,7 +1,5 @@
 <h3>Transactions</h3>
 
-
-
 <div class="row-fluid">
   <div class="span2">
     <%= label_tag(:budget, "Current Budget") %>
@@ -39,7 +37,7 @@
     <td><%= best_in_place transaction, :notes%></td>
     <td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
     <td><%= form_for transaction, :remote => true do |f| %> 
-            <%= f.select :category_id, options_from_collection_for_select(@budgets[0].categories,'id','name', transaction.category_id), {}, :class => 'transaction_update' %>
+            <%= f.select :category_id, options_from_collection_for_select(@budgets[0].sortedCategories,'id','name', transaction.category_id), {}, :class => 'transaction_update' %>
         <% end %>
     </td>
     <td><%= link_to 'Show', transaction_path(transaction) %></td>
