@@ -38,8 +38,10 @@ function buildPie( category_amounts, totalAmount, pieLocation, selector, chartNa
 	g.append("path")
 	    .attr("d", arc)
 	    .style("fill", function(d, i) { return color(i); })
-	    .on("mouseover", catDetail( true, width, totalAmount ))
-	    .on("mouseout", catDetail( false, width, totalAmount ));
+	    .on("mousemove", function (d, i) {
+            	catDetail( d, true, width, d3.event, totalAmount );
+            })
+	    .on("mouseout", function(d,i){ catDetail( d, false, width, d3.event, totalAmount )});
 
 	g.filter(function(d){ return d.endAngle - d.startAngle > (Math.PI/10)})
 	    .append("text")
@@ -105,29 +107,29 @@ function buildMid( amount, selector )
 	   .text("$" + Math.round(amount));
 }
 
-function catDetail( show, width, totalAmount )
+function catDetail( d, show, width, myEvent, totalAmount )
 {
-  return function( d, i) {
+	var elem = myEvent.toElement
+  	var coord = d3.mouse(elem);
 
     // save selection of infobox so that we can later change it's position
     var infobox = d3.select(".infobox");
-
+	
     if( show )
     {
 
-      var text = "<strong>" + d.data.category + "</strong>";
+  	  var offsetLeft = elem.viewportElement.offsetLeft;
 
-      var boxWidth = text.length*3; 
+      var text = "<strong>" + d.data.category + "</strong>";
+      var boxWidth = text.length * 3;
       
       text += "<br/>$" + Math.round(d.data.amount)  + "<br/>(" + (Math.round((d.data.amount/totalAmount)*100)) + "%)" ;
-
-      // this returns x,y coordinates of the mouse in relation to our svg canvas
-      var box = d3.mouse(this);
      
-      //console.log( this );
-      // now we just position the infobox roughly where our mouse is
-      infobox.style("left", box[0] + 500/4  + "px" );
-      infobox.style("top", box[1] + 500/2 + 40 + "px");
+      // position infobox at mouse
+      infobox.style("left", coord[0] + offsetLeft + 140 + "px" );
+	  infobox.style("top", coord[1] + 400 + "px");
+	  infobox.style("display", "inline");
+		
       infobox.style("width", boxWidth + "px");
       infobox.style("padding", "10px");
       infobox.html( text );
@@ -138,5 +140,5 @@ function catDetail( show, width, totalAmount )
       infobox.style("padding", "0px");
       infobox.html("");
     }
-  };
+
 }
