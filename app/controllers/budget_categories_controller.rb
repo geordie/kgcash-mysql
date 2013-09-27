@@ -4,11 +4,13 @@ class BudgetCategoriesController < ApplicationController
   def index
     @user = current_user
     @budget = @user.budgets.find(params[:budget_id])
-    @budget_categories = @budget.budget_categories
+
+    @budget_categories = BudgetCategory.find(:all, :joins => :category, :conditions => 
+                     ["budget_id = ? ", params[:budget_id]], :include => :category)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @budget_categories }
+      format.json { render json: @budget_categories.to_json( :include => :category ) }
     end
   end
 

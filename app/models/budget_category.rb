@@ -1,7 +1,7 @@
 class BudgetCategory < ActiveRecord::Base
   belongs_to :budget
   belongs_to :category
-
+  
   def isDebit
   	if self.category.nil?
   		return true

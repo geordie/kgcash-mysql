@@ -14,6 +14,10 @@ def index
 	@year = params.has_key?(:year) ? params[:year].to_i : time.year
 
 	@category = params.has_key?(:category) ? params[:category].to_i : nil
+	if @category && @category < 1 
+		@category = nil
+	end
+
 
 	if @month.nil?
 		@transactions = @user.transactions.in_category(@category).in_year(@year).order("tx_date DESC")

@@ -1,13 +1,21 @@
+
 <h3>Transactions</h3>
 
 <div class="row-fluid">
   <div class="span2">
-    <%= label_tag(:budget, "Current Budget") %>
+    <%= label_tag(:budget, "Budget") %>
   </div>
-  <div class="span2">
+  <div class="span3">
     <%= select_tag :budget, options_from_collection_for_select(@budgets, "id", "name") %>
   </div>
-  <div class="span5"></div>
+  <div class="span2">
+    <%= label_tag(:category, "Category") %>
+  </div>
+  <div class="span2">
+    <%= form_tag({},{:method => :get}) do %>
+      <%= select_tag( :category, options_from_collection_for_select(@budgets[0].sortedCategories(true),'id','name', @category),:class => 'transaction_filter' ) %>
+    <% end %>
+  </div>
   <div class="span2 pull-right">
     <%= link_to 'New Transaction', new_transaction_path %>
   </div>
