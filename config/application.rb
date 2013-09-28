@@ -47,6 +47,8 @@ module Kgcash
 
     config.active_record.schema_format = :sql
 
+    config.serve_static_assets = true
+
     # config.assets.initialize_on_precompile = false
   end
 end
