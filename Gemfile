@@ -11,6 +11,7 @@ gem 'd3-rails'
 gem 'doorkeeper', '~> 0.6.2'
 gem 'json', '~>1.7.7'
 gem 'bootstrap-sass', '~> 2.3.2.0'
+gem 'execjs'
 
 # Gems used only for assets and not required
 # in production environments by default.
