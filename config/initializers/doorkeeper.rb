@@ -5,7 +5,6 @@ Doorkeeper.configure do
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-  
     current_user || redirect_to( login_url ) 
 
     # Put your resource owner authentication logic here.
