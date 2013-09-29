@@ -9,52 +9,55 @@
   </head>
   <body>
 
-  <div class="navbar navbar-inverse navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container-fluid">
-      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+      <%= link_to 'kgcash', root_path, {:class=>"navbar-brand"} %>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to 'kgcash', root_path, {:class=>"brand"} %>
-      <div class="nav-collapse collapse">
-        <ul class="nav">
-          <li class="divider-vertical"></li>
-          <% if current_user %>
-            
-            <li><%= link_to 'Accounts', accounts_path %> </li>
-
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Transactions <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Show", transactions_path %></li>
-                <li><%= link_to "Import", new_transaction_import_path %></li>
-              </ul>
-            </li>
-
-            <li><%= link_to 'Reports', reports_path %></li>
-            <li><%= link_to 'Budgets', budgets_path %></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                My Profile <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
-                <li><%= link_to "Logout", :logout %></li>
-              </ul>
-            </li>
-          <% else %>
-            <li><%= link_to "Register", new_user_path %></li>
-            <li><%= link_to "Login", :login %></li>
-          <% end %>
-        </ul>
-      </div><!--/.nav-collapse -->
     </div>
-  </div>
-  </div>
+    <div class="navbar-header navbar-right">
+      <p class="navbar-text">
+      <a href="#" class="navbar-link"><%= current_user ? current_user.username : ""%></a>
+      </p>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="divider-vertical"></li>
+        <% if current_user %>
+          
+          <li><%= link_to 'Accounts', accounts_path %> </li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Transactions <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Show", transactions_path %></li>
+              <li><%= link_to "Import", new_transaction_import_path %></li>
+            </ul>
+          </li>
+
+          <li><%= link_to 'Reports', reports_path %></li>
+          <li><%= link_to 'Budgets', budgets_path %></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              My Profile <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
+              <li><%= link_to "Logout", :logout %></li>
+            </ul>
+          </li>
+        <% else %>
+          <li><%= link_to "Register", new_user_path %></li>
+          <li><%= link_to "Login", :login %></li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
 
   <div class="containter-fluid">
     <div class="row-fluid">
