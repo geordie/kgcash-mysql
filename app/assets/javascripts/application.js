@@ -10,7 +10,7 @@
 //= require jquery_ujs
 //= require_tree .
 //= require d3.v3.min
-//= require dimple.v1.min
+//= require dimple.v1.1.1.min
 //= require bootstrap
 
 
