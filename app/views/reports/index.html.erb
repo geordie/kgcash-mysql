@@ -22,3 +22,40 @@ buildPie( category_income, totalIncome, 1, "#divRight", "Income" );
 buildMid( totalIncome - totalExpense, "#divMid" );
 
 </script>
+
+<div id="chartContainer">
+  <script type="text/javascript">
+
+  	var data = <%= raw render(:file => 'transactions/index.json.rabl') %>
+  	renderData( data );
+
+    function renderData(data) {
+      // Income
+      var svgIncome = dimple.newSvg("#chartContainer", 890, 400);
+      var incomeData = dimple.filterData(data, "type", "Income");
+      build( svgIncome, incomeData );
+
+      // Expenses
+      var svgExpenses = dimple.newSvg("#chartContainer", 890, 400);
+      var expenseData = dimple.filterData(data, "type", "Expense");
+      build( svgExpenses, expenseData );
+
+      // Assets
+      var svgAsset = dimple.newSvg("#chartContainer", 890, 400);
+      var assetData = dimple.filterData(data, "type", "Asset");
+      build( svgAsset, assetData );
+
+    }
+
+    function build( svg, data )
+    {
+      var myChart = new dimple.chart(svg, data);
+      myChart.setBounds(60, 30, 810, 305)
+      var x = myChart.addCategoryAxis("x", "category");
+      x.addOrderRule("amount");
+      myChart.addMeasureAxis("y", "amount").tickFormat = ".2f";
+      myChart.addSeries(null, dimple.plot.bar);
+      myChart.draw();
+    }
+  </script>
+</div>
