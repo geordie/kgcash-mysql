@@ -38,6 +38,10 @@ buildMid( totalIncome - totalExpense, "#divMid" );
       // Expenses
       var svgExpenses = dimple.newSvg("#chartContainer", 890, 400);
       var expenseData = dimple.filterData(data, "type", "Expense");
+      expenseData = expenseData.map(function(elem, idx, ctx ){
+          elem.amount = elem.amount * -1;
+          return elem;
+        });
       build( svgExpenses, expenseData );
 
       // Assets
@@ -52,7 +56,7 @@ buildMid( totalIncome - totalExpense, "#divMid" );
       var myChart = new dimple.chart(svg, data);
       myChart.setBounds(60, 30, 810, 305)
       var x = myChart.addCategoryAxis("x", "category");
-      x.addOrderRule("amount");
+      x.addOrderRule("amount",true);
       myChart.addMeasureAxis("y", "amount").tickFormat = ".2f";
       myChart.addSeries(null, dimple.plot.bar);
       myChart.draw();
