@@ -90,7 +90,10 @@ GEM
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
       rack (~> 1.2)
+    oj (2.1.6)
     polyglot (0.3.3)
+    rabl (0.9.0)
+      activesupport (>= 2.3.14)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -179,6 +182,8 @@ DEPENDENCIES
   json (~> 1.7.7)
   minitest
   mysql2
+  oj
+  rabl
   rails (= 3.2.13)
   rspec-rails (= 2.11.0)
   sass-rails (~> 3.2.5)
