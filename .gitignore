@@ -6,4 +6,3 @@ tmp/
 .DS_Store
 txdump_prod.sql
 vagrant/
-Gemfile.lock
