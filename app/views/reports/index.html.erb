@@ -57,7 +57,7 @@ buildMid( totalIncome - totalExpense, "#divMid" );
       myChart.setBounds(60, 30, 810, 305)
       var x = myChart.addCategoryAxis("x", "category");
       x.addOrderRule("amount",true);
-      myChart.addMeasureAxis("y", "amount").tickFormat = ".2f";
+      myChart.addMeasureAxis("y", "amount").tickFormat = ".0f";
       myChart.addSeries(null, dimple.plot.bar);
       myChart.draw();
     }
