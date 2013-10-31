@@ -27,16 +27,14 @@ class ReportsController < ApplicationController
 
 		@expense_categories = Hash.new
 		@income_categories = Hash.new
+		@budget_categories = @user.budgets[0].budget_categories
 		
 		@totalExpense = 0
 		@totalIncome = 0
 
-		# puts Rabl::Renderer.json(@transactions, 'transactions/index')
-
 		@transactions.each do |t|
 
 			next unless t.category_type == "Expense" || t.category_type == "Income" || t.category_type.nil?
-			next if t.category_name == "Not defined"
 
 			if t.category_type == "Expense" || t.category_type.nil? 
 				@amountExpense = -1 * (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
@@ -58,6 +56,7 @@ class ReportsController < ApplicationController
 					@income_categories[ t.category_name ] = @amountIncome
 				end
 			end
+
 		end
 
 		# Use this format because it's nice for D3 JSON - maybe should do this client side instead, but whatev
@@ -76,6 +75,8 @@ class ReportsController < ApplicationController
 		end
 
 		@category_income.sort!{|a,b| b.amount <=> a.amount}
+
+
 
 		respond_to do |format|
 			format.html #index.html.erb

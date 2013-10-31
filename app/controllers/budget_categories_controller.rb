@@ -10,7 +10,7 @@ class BudgetCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @budget_categories.to_json( :include => :category ) }
+      format.json { @budget_categories }
     end
   end
 

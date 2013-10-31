@@ -2,7 +2,7 @@ collection @transactions, :object_root => false
 attributes :tx_date => :date
 
 node :amount do |t|
-	@amount = t.credit - t.debit
+	@amount = (t.credit.nil? ? 0 : t.credit) - t.debit
 end
 
 glue :category do

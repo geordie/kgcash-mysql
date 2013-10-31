@@ -26,23 +26,30 @@ buildMid( totalIncome - totalExpense, "#divMid" );
 <div id="chartContainer">
   <script type="text/javascript">
 
+    var bud_cats = <%= raw render(:file => 'budget_categories/index.json.rabl') %>
+
   	var data = <%= raw render(:file => 'transactions/index.json.rabl') %>
   	renderData( data );
 
     function renderData(data) {
-      // Income
-      var svgIncome = dimple.newSvg("#chartContainer", 890, 400);
-      var incomeData = dimple.filterData(data, "type", "Income");
-      build( svgIncome, incomeData );
 
-      // Expenses
+       // Expenses
       var svgExpenses = dimple.newSvg("#chartContainer", 890, 400);
       var expenseData = dimple.filterData(data, "type", "Expense");
       expenseData = expenseData.map(function(elem, idx, ctx ){
           elem.amount = elem.amount * -1;
+          elem.elemType = 'tx';
           return elem;
         });
-      build( svgExpenses, expenseData );
+
+      var budgetedExpenses = dimple.filterData(bud_cats,"type","Expense")
+
+      build( svgExpenses, expenseData.concat( budgetedExpenses ) );
+
+      // Income
+      var svgIncome = dimple.newSvg("#chartContainer", 890, 400);
+      var incomeData = dimple.filterData(data, "type", "Income");
+      build( svgIncome, incomeData );
 
       // Assets
       var svgAsset = dimple.newSvg("#chartContainer", 890, 400);
@@ -55,10 +62,10 @@ buildMid( totalIncome - totalExpense, "#divMid" );
     {
       var myChart = new dimple.chart(svg, data);
       myChart.setBounds(60, 30, 810, 305)
-      var x = myChart.addCategoryAxis("x", "category");
-      x.addOrderRule("amount",true);
       myChart.addMeasureAxis("y", "amount").tickFormat = ".0f";
-      myChart.addSeries(null, dimple.plot.bar);
+      myChart.addCategoryAxis("x", ["category", "elemType"]);
+      myChart.addSeries("elemType", dimple.plot.bar);
+
       myChart.draw();
     }
   </script>
