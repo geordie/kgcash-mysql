@@ -8,6 +8,8 @@ class ReportsController < ApplicationController
 			@user = User.last
 		end 
 
+		@budget_categories = @user.budgets[0].budget_categories
+
 		#TODO - Enable filtering by date range
 		time = Time.new
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
@@ -18,65 +20,39 @@ class ReportsController < ApplicationController
 				.select("transactions.*, categories.name AS category_name, categories.cat_type as category_type")
 				.joins(:category)
 				.in_year( @year)
+
+			@transactions_grouped = @user.transactions
+				.select("SUM(transactions.debit) + SUM(transactions.credit) as amount, categories.name AS category, categories.cat_type as category_type")
+				.joins(:category)
+				.group("categories.id")
+				.in_year( @year)
 		elsif
 			@transactions = @user.transactions
 				.select("transactions.*, categories.name AS category_name, categories.cat_type as category_type")
 				.joins(:category)
 				.in_month_year( @month, @year)
-		end
 
-		@expense_categories = Hash.new
-		@income_categories = Hash.new
-		@budget_categories = @user.budgets[0].budget_categories
+			@transactions_grouped = @user.transactions
+				.select("SUM(transactions.debit) + SUM(transactions.credit) as amount, categories.name AS category_name, categories.cat_type as category_type")
+				.joins(:category)
+				.group("categories.id")
+				.in_month_year( @month, @year)
+		end
 		
 		@totalExpense = 0
 		@totalIncome = 0
 
-		@transactions.each do |t|
+		@transactions_grouped.each do |t|
 
 			next unless t.category_type == "Expense" || t.category_type == "Income" || t.category_type.nil?
 
 			if t.category_type == "Expense" || t.category_type.nil? 
-				@amountExpense = -1 * (t.credit.nil? ? 0 : t.credit) + (t.debit.nil? ? 0 : t.debit)
-				@totalExpense += @amountExpense;
-
-				if @expense_categories.has_key? t.category_name
-					@expense_categories[ t.category_name ] += @amountExpense
-				else
-					@expense_categories[ t.category_name ] = @amountExpense
-				end
+				@totalExpense += t.amount;
 				
 			elsif t.category_type == "Income"
-				@amountIncome = (t.credit.nil? ? 0 : t.credit) + -1 * (t.debit.nil? ? 0 : t.debit)
-				@totalIncome += @amountIncome;
-				
-				if @income_categories.has_key? t.category_name
-					@income_categories[ t.category_name ] += @amountIncome
-				else
-					@income_categories[ t.category_name ] = @amountIncome
-				end
+				@totalIncome += t.amount;
 			end
-
 		end
-
-		# Use this format because it's nice for D3 JSON - maybe should do this client side instead, but whatev
-		@category_amounts = Array.new
-
-		@expense_categories.each_pair do |key,val|
-			@category_amounts.push( CategoryAmount.new( key, val ))
-		end
-
-		@category_amounts.sort!{|a,b| b.amount <=> a.amount}
-
-		@category_income = Array.new
-
-		@income_categories.each_pair do |key,val|
-			@category_income.push( CategoryAmount.new( key, val ))
-		end
-
-		@category_income.sort!{|a,b| b.amount <=> a.amount}
-
-
 
 		respond_to do |format|
 			format.html #index.html.erb

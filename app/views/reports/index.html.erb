@@ -11,13 +11,27 @@
 
 <script>
 
-var category_amounts = <%= j @category_amounts.to_json.html_safe %> ;
-var totalExpense =<%= j @totalExpense %>;
-buildPie( category_amounts, totalExpense, 1, "#divLeft", "Expense" );
+var category_totals = <%= j @transactions_grouped.to_json.html_safe %>;
 
-var category_income = <%= j @category_income.to_json.html_safe %> ;
+var cat_expenses = new Array();
+var cat_income = new Array();
+category_totals.map(function(elem, idx, ctx ){
+    if( elem.category_type == "Expense" || elem.category_type == null )
+    {
+      elem.category_type = "Expense";
+      cat_expenses.push( elem );
+    }
+    else if( elem.category_type == "Income" )
+    {
+      cat_income.push( elem );
+    }
+  });
+
+var totalExpense =<%= j @totalExpense %>;
+buildPie( cat_expenses, totalExpense, 1, "#divLeft", "Expense" );
+
 var totalIncome =<%= j @totalIncome %>;
-buildPie( category_income, totalIncome, 1, "#divRight", "Income" );
+buildPie( cat_income, totalIncome, 1, "#divRight", "Income" );
 
 buildMid( totalIncome - totalExpense, "#divMid" );
 
@@ -28,43 +42,29 @@ buildMid( totalIncome - totalExpense, "#divMid" );
 
     var bud_cats = <%= raw render(:file => 'budget_categories/index.json.rabl') %>
 
-  	var data = <%= raw render(:file => 'transactions/index.json.rabl') %>
-  	renderData( data );
+    var cat_types = ["Expense","Income","Asset"];
+    for( idx in cat_types )
+    { 
+        var cat_type = cat_types[idx];
+        var cat_type_actuals = dimple.filterData(category_totals, "category_type", cat_type);
 
-    function renderData(data) {
+        var svg = dimple.newSvg("#chartContainer", 890, 400);
+        var cat_type_budgeted = dimple.filterData(bud_cats,"type", cat_type);
 
-       // Expenses
-      var svgExpenses = dimple.newSvg("#chartContainer", 890, 400);
-      var expenseData = dimple.filterData(data, "type", "Expense");
-      expenseData = expenseData.map(function(elem, idx, ctx ){
-          elem.amount = elem.amount * -1;
-          elem.elemType = 'tx';
-          return elem;
-        });
+        var cat_type_actuals = cat_type_actuals.concat( cat_type_budgeted );
 
-      var budgetedExpenses = dimple.filterData(bud_cats,"type","Expense")
-
-      build( svgExpenses, expenseData.concat( budgetedExpenses ) );
-
-      // Income
-      var svgIncome = dimple.newSvg("#chartContainer", 890, 400);
-      var incomeData = dimple.filterData(data, "type", "Income");
-      build( svgIncome, incomeData );
-
-      // Assets
-      var svgAsset = dimple.newSvg("#chartContainer", 890, 400);
-      var assetData = dimple.filterData(data, "type", "Asset");
-      build( svgAsset, assetData );
-
+        build( svg, cat_type_actuals ); 
     }
+
+ 
 
     function build( svg, data )
     {
       var myChart = new dimple.chart(svg, data);
       myChart.setBounds(60, 30, 810, 305)
       myChart.addMeasureAxis("y", "amount").tickFormat = ".0f";
-      myChart.addCategoryAxis("x", ["category", "elemType"]);
-      myChart.addSeries("elemType", dimple.plot.bar);
+      myChart.addCategoryAxis("x", ["category_name", "category_type"]);
+      myChart.addSeries("category_type", dimple.plot.bar);
 
       myChart.draw();
     }
