@@ -1,10 +1,11 @@
-<div class="container">
-	<h3>Report for <%= @month.nil? ? "" : (Date::MONTHNAMES[@month] + ',') %> <%= @year %></h3>
+<h3>Report for <%= @month.nil? ? "" : (Date::MONTHNAMES[@month] + ',') %> <%= @year %></h3>
 
-	<div id="content" style="width:1200px;">
-	    <div id="divLeft" style="width:500px; height: 500px; display:inline-block; float:left;"></div>
-	    <div id="divMid" style="width:200px; height: 500px; display:inline-block; float:left;"></div>
-	    <div id="divRight" style="width:500px; height: 500px; display:inline-block; float:right;"></div>
+<div class="container">
+
+	<div class="row">
+	    <div class="col-md-5" id="divLeft"></div>
+	    <div class="col-md-2" id="divMid"></div>
+	    <div class="col-md-5" id="divRight"></div>
 	</div>
 
 </div>
@@ -15,25 +16,28 @@ var category_totals = <%= j @transactions_grouped.to_json.html_safe %>;
 
 var cat_expenses = new Array();
 var cat_income = new Array();
+var totalIncome = 0;
+var totalExpense = 0;
 category_totals.map(function(elem, idx, ctx ){
+
     if( elem.category_type == "Expense" || elem.category_type == null )
     {
       elem.category_type = "Expense";
       cat_expenses.push( elem );
+      totalExpense += parseFloat( elem.amount );
     }
     else if( elem.category_type == "Income" )
     {
       cat_income.push( elem );
+      totalIncome += parseFloat( elem.amount );
     }
   });
 
-var totalExpense =<%= j @totalExpense %>;
-buildPie( cat_expenses, totalExpense, 1, "#divLeft", "Expense" );
+buildPie( cat_expenses, totalExpense, "#divLeft", "Expense", undefined, 500 );
 
-var totalIncome =<%= j @totalIncome %>;
-buildPie( cat_income, totalIncome, 1, "#divRight", "Income" );
+buildPie( cat_income, totalIncome, "#divRight", "Income", undefined, 500 );
 
-buildMid( totalIncome - totalExpense, "#divMid" );
+buildMid( totalIncome - totalExpense, "#divMid", undefined, 500 );
 
 </script>
 

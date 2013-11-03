@@ -1,10 +1,11 @@
 var heightTitle = 80;
 
-function buildPie( category_amounts, totalAmount, pieLocation, selector, chartName)
+function buildPie( category_amounts, totalAmount, selector, chartName, width, height)
 {
 	var container = d3.select(selector);
-	var width = parseInt(container.style("width"));
-	var height = parseInt(container.style("height"));
+
+	if( typeof width == 'undefined' ) width = parseInt(container.style("width"));
+	if( typeof height == 'undefined' )  height = parseInt(container.style("height"));
 
 	var radius = Math.min(width, height - heightTitle) / 2;
 
@@ -16,7 +17,6 @@ function buildPie( category_amounts, totalAmount, pieLocation, selector, chartNa
 
 	var pie = d3.layout.pie()
 	    .value(function(d) { return d.amount; });
-	
 
 	var canvas = container.append("svg")
 	    .attr("width", width)
@@ -76,13 +76,14 @@ function buildPie( category_amounts, totalAmount, pieLocation, selector, chartNa
 	   .text("$" + Math.round(totalAmount));
 }
 
-function buildMid( amount, selector )
+function buildMid( amount, selector, width, height )
 {
-	var body = d3.select(selector);
-	var width = parseInt(body.style("width"));
-	var height = parseInt(body.style("height"));
+	var container = d3.select(selector);
 
-	var canvas = body.append("svg")
+	if( typeof width == 'undefined' ) width = parseInt(container.style("width"));
+	if( typeof height == 'undefined' )  height = parseInt(container.style("height"));
+
+	var canvas = container.append("svg")
 	    .attr("width", width)
 	    .attr("height", height);
 
@@ -107,6 +108,12 @@ function buildMid( amount, selector )
 	   .text("$" + Math.round(amount));
 }
 
+function getDimensions( container )
+{
+	var width = parseInt(container.style("width"));
+	var height = parseInt(container.style("height"));
+}
+
 function catDetail( d, show, width, myEvent, totalAmount )
 {
 	var elem = myEvent.toElement
@@ -119,8 +126,7 @@ function catDetail( d, show, width, myEvent, totalAmount )
     {
 
   	  var offsetLeft = elem.viewportElement.offsetLeft;
-
-      var text = "<strong>" + d.data.category + "</strong>";
+      var text = "<strong>" + d.data.category_name + "</strong>";
       var boxWidth = text.length * 3;
       
       text += "<br/>$" + Math.round(d.data.amount)  + "<br/>(" + (Math.round((d.data.amount/totalAmount)*100)) + "%)" ;
