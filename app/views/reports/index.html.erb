@@ -22,6 +22,7 @@ category_totals.map(function(elem, idx, ctx ){
 
     if( elem.category_type == "Expense" || elem.category_type == null )
     {
+      elem.amount = elem.amount * -1;
       elem.category_type = "Expense";
       cat_expenses.push( elem );
       totalExpense += parseFloat( elem.amount );

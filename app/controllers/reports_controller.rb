@@ -22,13 +22,13 @@ class ReportsController < ApplicationController
 		# Get transactions by category
 		if @month.nil?
 			@transactions_grouped = @user.transactions
-				.select("SUM(transactions.debit) + SUM(transactions.credit) as amount, categories.name AS category, categories.cat_type as category_type")
+				.select("SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category, categories.cat_type as category_type")
 				.joins(:category)
 				.group("categories.id")
 				.in_year( @year)
 		elsif
 			@transactions_grouped = @user.transactions
-				.select("SUM(transactions.debit) + SUM(transactions.credit) as amount, categories.name AS category_name, categories.cat_type as category_type")
+				.select("SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type")
 				.joins(:category)
 				.group("categories.id")
 				.in_month_year( @month, @year)
