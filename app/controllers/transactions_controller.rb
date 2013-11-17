@@ -93,10 +93,11 @@ end
 
 def new
 	@user = current_user
-	@transaction = Transaction.new
-	@transaction.tx_date = DateTime.now
+	@dateTx = DateTime.now
+	@transaction = Transaction.ne
+	@transaction.tx_date = @dateTx 
+	@transaction.posting_date = @dateTx
 	@categories = @user.category_selector
-
 
 	@user.transactions << @transaction
 

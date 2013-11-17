@@ -79,6 +79,7 @@ class TransactionImport
 
       @transaction = Transaction.create(
           :tx_date => date,
+          :posting_date => date,
           :user_id => 1,
           :debit => debit,
           :credit => credit,
