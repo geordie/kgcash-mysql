@@ -57,6 +57,8 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 	    .style("text-anchor", "middle")
 	    .text(function(d) { return Math.round((d.data.amount/totalAmount)*100) + " %"; });
 
+	console.log( pieChart );
+
 	pieChart.append("svg:text")
 	   .attr("x", 0)
 	   .attr("y", -30)
@@ -76,7 +78,7 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 	   .text("$" + Math.round(totalAmount));
 }
 
-function buildMid( amount, selector, width, height )
+function buildMid( amount, selector, title, width, height )
 {
 	var container = d3.select(selector);
 
@@ -87,6 +89,8 @@ function buildMid( amount, selector, width, height )
 	    .attr("width", width)
 	    .attr("height", height);
 
+	console.log( canvas );
+
 	canvas.append("svg:text")
 	   .attr("x", 0)
 	   .attr("y", -30)
@@ -96,7 +100,7 @@ function buildMid( amount, selector, width, height )
 	   .attr("stroke", "#999999")
 	   .attr("fill", "#999999")
 	   .attr("transform", "translate(" + (width/2) + "," + ( (heightTitle+height)/2)  + ")")
-	   .text("Total");
+	   .text( title );
 
 	canvas.append("svg:text")
 	   .attr("x", 0)
@@ -124,7 +128,6 @@ function catDetail( d, show, width, myEvent, totalAmount )
 	
     if( show )
     {
-
   	  var offsetLeft = elem.viewportElement.offsetLeft;
       var text = "<strong>" + d.data.category_name + "</strong>";
       var boxWidth = text.length * 3;
