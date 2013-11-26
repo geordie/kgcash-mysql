@@ -25,4 +25,8 @@ class User < ActiveRecord::Base
    	return results.sort
   end
 
+  def sortedCategories
+    return categories .sort!{|a,b| a.name.downcase <=> b.name.downcase }
+  end
+
 end

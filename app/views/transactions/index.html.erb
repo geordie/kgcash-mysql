@@ -40,7 +40,7 @@
 <% @txAmount = transaction.credit - transaction.debit %>
 <% @txAmountClass = @txAmount > 0 ? "credit" : "debit" %>
   <tr>
-    <td><%= transaction.tx_date.strftime("%d-%b-%Y") unless transaction.tx_date.nil? %></td>
+    <td><%= best_in_place transaction, :tx_date, :type => :date, :display_as => :format_date %></td>
     <td><%= best_in_place transaction, :details, :type => :textarea %></td>
     <td><%= best_in_place transaction, :notes%></td>
     <td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>

@@ -15,3 +15,9 @@ $(function (){
   		$(this).parents('form:first').submit();
 	});
 });
+
+jQuery(function() {
+  return $.datepicker.setDefaults({
+    dateFormat: "yy-mm-dd"
+  });
+});

@@ -37,4 +37,9 @@ class Transaction < ActiveRecord::Base
 
   end
 
+  def format_date
+    @date = self.tx_date
+    @date.strftime( '%d-%b-%Y')
+  end
+
 end

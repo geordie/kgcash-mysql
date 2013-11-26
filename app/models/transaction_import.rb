@@ -120,24 +120,6 @@ class TransactionImport
     parts[0,2]
   end
 
-  def save_stubbed
-    if imported_transactions.map(&:valid?).all?
-      imported_transactions.each(&:save!)
-      true
-    else
-      imported_transactions.each_with_index do |transaction, index|
-        transaction.errors.full_messages.each do |message|
-          errors.add :base, "Row #{index+2}: #{message}"
-        end
-      end
-      false
-    end
-  end
-
-  def imported_transactions2
-    @imported_transactions ||= import_csv
-  end
-
   def imported_transactions
     @imported_transactions ||= load_imported_transactions
   end
@@ -151,9 +133,6 @@ class TransactionImport
       transaction.attributes = row.to_hash.slice(*Product.accessible_attributes)
       transaction
     end
-  end
-
-  def import_csv
   end
 
   def open_spreadsheet

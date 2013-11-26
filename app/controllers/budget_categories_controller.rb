@@ -88,7 +88,7 @@ class BudgetCategoriesController < ApplicationController
     @budget_category = @budget.budget_categories.new
 
     @budget.budget_categories << @budget_category
-    @categories = Category.where(:user_id => @user)
+    @categories = @budget.sortedCategories
 
     respond_to do |format|
       format.html

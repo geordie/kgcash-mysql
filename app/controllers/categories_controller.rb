@@ -2,7 +2,8 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @categories = Category.all
+    @user = current_user
+    @categories = @user.sortedCategories
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,7 +41,9 @@ class CategoriesController < ApplicationController
   # POST /categories
   # POST /categories.json
   def create
-    @category = Category.new(params[:category])
+    @user = current_user
+
+    @category = @user.categories.new(params[:category])
 
     respond_to do |format|
       if @category.save
