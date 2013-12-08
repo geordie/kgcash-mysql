@@ -18,10 +18,15 @@ def index
 		@category = nil
 	end
 
+	@account = params.has_key?(:account) ? params[:account].to_i : nil
+	if @account && @account < 1
+		@account = nil
+	end
+
 	if @month.nil?
-		@transactions = @user.transactions.in_category(@category).in_year(@year).order("tx_date DESC")
+		@transactions = @user.transactions.in_account(@account).in_category(@category).in_year(@year).order("tx_date DESC")
 	elsif
-		@transactions = @user.transactions.in_category(@category).in_month_year(@month,@year).order("tx_date DESC")
+		@transactions = @user.transactions.in_account(@account).in_category(@category).in_month_year(@month,@year).order("tx_date DESC")
 	end
 
 	@budgets = @user.budgets

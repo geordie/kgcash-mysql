@@ -22,6 +22,8 @@ class Transaction < ActiveRecord::Base
 
   scope :in_category, lambda { |category_id| where("category_id = ?", category_id) unless category_id.nil? }
 
+  scope :in_account, lambda { |account_id| where("account_id = ?", account_id) unless account_id.nil? }
+
   scope :by_months_in_year, lambda{ |year| in_year(year).select("MONTH(tx_date) as month, SUM(debit) as debit, SUM(credit) as credit").group( "MONTH(tx_date)") }
 
   scope :by_days_in_month, lambda{ |month, year| in_month_year(month,year).select("DAY(tx_date) as day, SUM(debit) as debit, SUM(credit) as credit").group("DAY(tx_date)")}
