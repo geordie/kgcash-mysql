@@ -26,7 +26,31 @@ class User < ActiveRecord::Base
   end
 
   def sortedCategories
-    return categories .sort!{|a,b| a.name.downcase <=> b.name.downcase }
+    return categories.sort!{|a,b| a.name.downcase <=> b.name.downcase }
+  end
+
+  def sortedAccounts
+    @accounts = accounts.sort!{|a,b| a.name.downcase <=> b.name.downcase }
+    @undefined = Account.new
+    @undefined.id = 0
+    @undefined.name = 'none'
+    @accounts.unshift @undefined
+
+    return @accounts
+  end
+
+  def account_selector
+
+    #Build an array of pairs as expected by a form dropdown
+    results = Array.new
+
+    accounts.each do |acct|
+      rec = Array.new
+      rec.push acct.name
+      rec.push acct.id
+      results.push rec 
+    end
+    return results.sort
   end
 
 end

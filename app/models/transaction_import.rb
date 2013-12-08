@@ -8,6 +8,7 @@ class TransactionImport
   include ActiveModel::Validations
 
   attr_accessor :file
+  attr_accessor :account_id
 
   $txTypeDict = {"DIRECT TRANSFER FROM" => "Transfer From",
     "DIRECT TRANSFER TO" => "Transfer To",
@@ -44,6 +45,11 @@ class TransactionImport
   end
 
   def save
+
+    if account_id.nil?
+      errors.add :base, "Please select an account for the transactions being imported"
+      return false
+    end
 
     if file.nil?
       errors.add :base, "Please select a file to to import"
@@ -85,7 +91,8 @@ class TransactionImport
           :credit => credit,
           :tx_type => type,
           :details => desc,
-          :category_id => cat
+          :category_id => cat,
+          :account_id => account_id
         )
 
       if @transaction.valid?

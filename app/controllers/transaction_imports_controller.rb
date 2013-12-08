@@ -1,5 +1,7 @@
 class TransactionImportsController < ApplicationController
   def new
+    @user = current_user
+    @accounts = @user.account_selector
     @transaction_import = TransactionImport.new
   end
 
