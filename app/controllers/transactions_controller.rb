@@ -18,7 +18,6 @@ def index
 		@category = nil
 	end
 
-
 	if @month.nil?
 		@transactions = @user.transactions.in_category(@category).in_year(@year).order("tx_date DESC")
 	elsif
@@ -94,10 +93,11 @@ end
 def new
 	@user = current_user
 	@dateTx = DateTime.now
-	@transaction = Transaction.ne
+	@transaction = Transaction.new
 	@transaction.tx_date = @dateTx 
 	@transaction.posting_date = @dateTx
 	@categories = @user.category_selector
+	@accounts = @user.account_selector
 
 	@user.transactions << @transaction
 

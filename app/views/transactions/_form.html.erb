@@ -22,6 +22,11 @@
   </div>
 
   <div class="field">
+    <%= f.label :account_id %><br />
+    <%= f.select :account_id, @accounts %>
+  </div>
+
+  <div class="field">
     <%= f.label :debit %><br />
     <%= f.text_field :debit %>
   </div>
