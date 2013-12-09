@@ -30,13 +30,7 @@ class User < ActiveRecord::Base
   end
 
   def sortedAccounts
-    @accounts = accounts.sort!{|a,b| a.name.downcase <=> b.name.downcase }
-    @undefined = Account.new
-    @undefined.id = 0
-    @undefined.name = 'none'
-    @accounts.unshift @undefined
-
-    return @accounts
+    return accounts.sort!{|a,b| a.name.downcase <=> b.name.downcase }
   end
 
   def account_selector
