@@ -68,19 +68,26 @@ class TransactionImport
       sDate = date.strftime( '%y-%m-%d' )
       
       descParts = parseDescription(fields[2])
-      type = descParts[0]
-      desc = descParts[1]
+      if descParts.length > 1
+        type = descParts[0]
+      elsif descParts.length > 0
+        desc = descParts[descParts.length-1]
+      end
 
+      puts "BOG"
+      puts fields.to_s
       debit = fields[4].length > 0 ? fields[4] : "0"
-      credit = fields[5].length > 0 ? fields[5] : "0"
+      credit = (fields.length >= 6 && fields[5].length > 0) ? fields[5] : "0"
 
       cat = 27
 
-      $txCatDict.each_key do |item|
-          if !desc.index(item.to_s).nil?
-              cat = $txCatDict[item].to_s
-              break
-          end
+      if !desc.nil?
+        $txCatDict.each_key do |item|
+            if !desc.index(item.to_s).nil?
+                cat = $txCatDict[item].to_s
+                break
+            end
+        end
       end
 
       @transaction = Transaction.create(
@@ -108,6 +115,7 @@ class TransactionImport
   end
 
   def parseDescription( desc )
+
     parts = desc.split(" " * 7)
     type = parts[0].strip
 
@@ -117,13 +125,14 @@ class TransactionImport
         parts[0] = type.downcase
     end
 
-    if parts.length > 2
-        parts[1] = parts[1].strip + " " + parts[2].strip
-    end
-    
     parts[0] = parts[0].gsub( "\"", "")
     parts.delete("")
-    parts[1] = parts[1].gsub( "\"", "").strip
+
+    if parts.length > 2
+        parts[1] = parts[1].strip + " " + parts[2].strip
+        parts[1] = parts[1].gsub( "\"", "").strip
+    end
+
     parts[0,2]
   end
 
