@@ -19,6 +19,11 @@ class ReportsController < ApplicationController
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
 		@year = params.has_key?(:year) ? params[:year].to_i : time.year
 
+		@account = params.has_key?(:account) ? params[:account].to_i : nil
+		if @account && @account < 1
+			@account = nil
+		end
+
 		if @month.nil?
 			@months = time.month
 			@days = time.mday - 1
@@ -32,12 +37,14 @@ class ReportsController < ApplicationController
 		# Get transactions by category
 		if @month.nil?
 			@transactions_grouped = @user.transactions
+				.in_account(@account)
 				.select("SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type")
 				.joins(:category)
 				.group("categories.id")
 				.in_year( @year)
 		elsif
 			@transactions_grouped = @user.transactions
+				.in_account(@account)
 				.select("SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type")
 				.joins(:category)
 				.group("categories.id")
