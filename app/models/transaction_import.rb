@@ -68,14 +68,13 @@ class TransactionImport
       sDate = date.strftime( '%y-%m-%d' )
       
       descParts = parseDescription(fields[2])
-      if descParts.length > 1
+
+      if descParts.length == 1
         type = descParts[0]
       elsif descParts.length > 0
         desc = descParts[descParts.length-1]
       end
-
-      puts "BOG"
-      puts fields.to_s
+      
       debit = fields[4].length > 0 ? fields[4] : "0"
       credit = (fields.length >= 6 && fields[5].length > 0) ? fields[5] : "0"
 
