@@ -26,9 +26,18 @@ class TransactionsController < ApplicationController
 		end
 
 		if @month.nil?
-			@transactions = @user.transactions.order(sort_column + ' ' + sort_direction).in_account(@account).in_category(@category).in_year(@year).order("tx_date DESC")
+			@transactions = @user.transactions
+				.select("*, (debit + credit) as amount")
+				.in_account(@account).in_category(@category)
+				.in_year(@year)
+				.order(sort_column + ' ' + sort_direction)
 		elsif
-			@transactions = @user.transactions.order(sort_column + ' '  + sort_direction).in_account(@account).in_category(@category).in_month_year(@month,@year).order("tx_date DESC")
+			@transactions = @user.transactions
+				.select("*, (debit + credit) as amount")
+				.order(sort_column + ' '  + sort_direction)
+				.in_account(@account).in_category(@category)
+				.in_month_year(@month,@year)
+				.order(sort_column + ' ' + sort_direction)
 		end
 
 		@budgets = @user.budgets
@@ -130,7 +139,7 @@ class TransactionsController < ApplicationController
 	private
 
 	def sort_column
-		Transaction.column_names.include?(params[:sort]) ? params[:sort] : "tx_date"
+		['tx_date','account','details','notes','amount'].include?(params[:sort]) ? params[:sort] : "tx_date"
 	end
 
 	def sort_direction
