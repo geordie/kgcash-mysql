@@ -1,28 +1,35 @@
 <h3>Transaction Import</h3>
 
-
 <p>Please select a file to import. </p>
 
 <%= form_for @transaction_import do |f| %>
-  <% if @transaction_import.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@transaction_import.errors.count, "error") %> prohibited this import from completing:</h2>
-      <ul>
-      <% @transaction_import.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+	<% if @transaction_import.errors.any? %>
+		<div id="error_explanation">
+			<h2><%= pluralize(@transaction_import.errors.count, "error") %> prohibited this import from completing:</h2>
+			<ul>
+			<% @transaction_import.errors.full_messages.each do |msg| %>
+				<li><%= msg %></li>
+			<% end %>
+			</ul>
+		</div>
+	<% end %>
 
-  <div class="field">
-    <%= f.label :account_id %><br />
-    <%= f.select :account_id, @accounts %>
-  </div>
-
-  <div class="field">
-    <%= f.file_field :file %>
-  </div>
-
-  <div class="buttons"><%= f.submit "Import" %></div>
+	<div class="container">
+		<div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col-md-2">
+				<%= f.file_field :file %>
+			</div>
+		</div>
+		<div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col-md-2">
+				<%= f.label :account_id %>
+				<%= f.select :account_id, @accounts %>
+			</div>
+		</div>
+		<div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col-md-2">
+				<%= f.submit "Import" %>
+			</div>
+		</div>
+	</div>
 <% end %>
