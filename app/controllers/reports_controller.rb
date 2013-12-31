@@ -29,9 +29,9 @@ class ReportsController < ApplicationController
 			@days = time.mday - 1
 			@budget_categories.each do |bud_cat|
 				@bud_cat_amount = bud_cat.amount.nil? ? 0 : bud_cat.amount
-				@new_amount = (@bud_cat_amount * @months) + (@bud_cat_amount * (@days/30))
+				@new_amount = (@bud_cat_amount * @months)
 				bud_cat.amount = @new_amount
-		 	end
+			end
 		end
 
 		# Get transactions by category
