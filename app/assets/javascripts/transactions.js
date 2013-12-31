@@ -11,7 +11,6 @@ $(function (){
 
 	$('.transaction_filter').change( function() {
 		var selectedValue = $(this)[0].value;
-		console.log( selectedValue );
   		$(this).parents('form:first').submit();
 	});
 });

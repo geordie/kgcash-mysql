@@ -57,8 +57,6 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 	    .style("text-anchor", "middle")
 	    .text(function(d) { return Math.round((d.data.amount/totalAmount)*100) + " %"; });
 
-	console.log( pieChart );
-
 	pieChart.append("svg:text")
 	   .attr("x", 0)
 	   .attr("y", -30)
@@ -88,8 +86,6 @@ function buildMid( amount, selector, title, width, height )
 	var canvas = container.append("svg")
 	    .attr("width", width)
 	    .attr("height", height);
-
-	console.log( canvas );
 
 	canvas.append("svg:text")
 	   .attr("x", 0)
