@@ -28,6 +28,12 @@
 		</div>
 		<div class="row" style="margin-top: 20px; margin-bottom: 20px;">
 			<div class="col-md-2">
+				<%= f.label "Format" %>
+				<%= f.select :import_format, [["Vancity",1],["RBC Visa",2]] %>
+			</div>
+		</div>
+		<div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+			<div class="col-md-2">
 				<%= f.submit "Import" %>
 			</div>
 		</div>

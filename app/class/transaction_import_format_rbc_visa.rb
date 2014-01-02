@@ -1,0 +1,57 @@
+class TransactionImportFormatRbcVisa
+
+	# Sample Transactions in CSV Format
+	# Account Type,Account Number,Transaction Date,Cheque Number,Description 1,Description 2,CAD$,USD$
+	# Visa,4.51224E+15,11/26/2013,,CAR2GO 855-454-1002 BC,,-$14.47,
+
+	$txTypeDict = {}
+	$txCatDict = {}
+
+	def buildTransaction( csvline, account_id )
+		fields = csvline.split(',')
+
+		# Get date
+		sDate = fields[2]
+		date = DateTime.strptime(sDate,'%m/%d/%Y')
+		sDate = date.strftime( '%y-%m-%d' )
+
+		# Get credit and debit amounts
+		@amount = BigDecimal.new( fields[6].delete("$") )
+
+		debit = @amount >= 0 ? 0 : @amount * -1
+		credit = @amount <= 0 ? 0 : @amount
+
+		# Get the description
+		details = fields[4]
+		if fields[5].length > 0
+			details += " " + fields[5]
+ 		end
+
+		# Build transaction category
+		cat = 27
+
+		if !@details.nil?
+			$txCatDict.each_key do |item|
+				if !@details.index(item.to_s).nil?
+					cat = $txCatDict[item].to_s
+					break
+				end
+			end
+		end
+
+		# Build a transaction
+		@transaction = Transaction.create(
+			:tx_date => date,
+			:posting_date => date,
+			:user_id => 1,
+			:debit => debit,
+			:credit => credit,
+			:details => details,
+			:category_id => cat,
+			:account_id => account_id
+		)
+		
+		return @transaction
+		
+	end
+end

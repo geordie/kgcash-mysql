@@ -13,7 +13,6 @@ class TransactionImportFormatVancityTester < ActiveSupport::TestCase
 		@csvLine = '000000659243-004-Z    -00001,04-Nov-2013,"CHEQUE # 127                                                                          ",127,85.00,,5981.41'
 		@transactionFormatter = TransactionImportFormatVancity.new
 		@transaction = @transactionFormatter.buildTransaction( @csvLine, 1 )
-		puts @transaction.details
 		assert @transaction.details == 'CHEQUE # 127'
 	end
 end
