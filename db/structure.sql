@@ -5,14 +5,14 @@ CREATE TABLE `accounts` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `accounts_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `budget_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,7 +25,7 @@ CREATE TABLE `budget_categories` (
   PRIMARY KEY (`id`),
   KEY `index_budget_categories_on_budget_id` (`budget_id`),
   KEY `index_budget_categories_on_category_id` (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=379 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `budgets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -36,7 +36,7 @@ CREATE TABLE `budgets` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_budgets_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -47,7 +47,7 @@ CREATE TABLE `categories` (
   `user_id` int(11) DEFAULT NULL,
   `cat_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=285 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `client_applications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -163,7 +163,7 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_category_id` (`category_id`),
   KEY `index_transactions_on_user_id` (`user_id`),
   KEY `index_transactions_on_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9901 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -174,7 +174,7 @@ CREATE TABLE `users` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO schema_migrations (version) VALUES ('20121112001008');
 

@@ -1,4 +1,8 @@
-class TransactionImportFormatVancity < TransactionImportFormat
+class TransactionImportFormatVancity
+
+	# Sample Transactions in CSV Format
+	# 000000659243-004-Z    -00001,10-Dec-2013,"DIRECT TRANSFER FROM         JUMPSTART HIGH INTEREST # 1                              ",,,2000.00,4439.38
+	# 000000659243-004-Z    -00001,10-Dec-2013,"DIRECT BILL PAYMENT          ROYAL BANK VISA # 4290                                    Confirmation #0000000524234",,517.00,,3922.38
 
 	$txTypeDict = {"DIRECT TRANSFER FROM" => "Transfer From",
 		"DIRECT TRANSFER TO" => "Transfer To",
@@ -30,64 +34,71 @@ class TransactionImportFormatVancity < TransactionImportFormat
 		# field[3]: cheque #
 		# field[6]: balance
 
+		# Get date
 		sDate = fields[1]
 		date = DateTime.strptime(sDate,'%d-%b-%Y')
 		sDate = date.strftime( '%y-%m-%d' )
 
-		descParts = parseDescription(fields[2])
-
-		if descParts.length == 1
-			type = descParts[0]
-		elsif descParts.length > 0
-			desc = descParts[descParts.length-1]
-		end
-
+		# Get credit and debit amounts
 		debit = fields[4].length > 0 ? fields[4] : "0"
 		credit = (fields.length >= 6 && fields[5].length > 0) ? fields[5] : "0"
 
-		cat = 27
-
-		if !desc.nil?
-			$txCatDict.each_key do |item|
-				if !desc.index(item.to_s).nil?
-					cat = $txCatDict[item].to_s
-					break
-				end
-			end
-		end
-
+		# Build a transaction
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
 			:user_id => 1,
 			:debit => debit,
 			:credit => credit,
-			:tx_type => type,
-			:details => desc,
-			:category_id => cat,
 			:account_id => account_id
 			)
-	end
 
-	def parseDescription( desc )
 
-		parts = desc.split(" " * 7)
-		type = parts[0].strip
+		# Parse the description into component parts
+		@description = fields[2]
 
-		if $txTypeDict.has_key?( type )
-			parts[0] = txTypeDict[ type ]
+		# Strip quotes
+		@description.delete!("\"")
+
+		# Split on multiple spaces
+		parts = @description.split(%r{[ ]{2,}})
+
+		# Build a transaction type
+		@type = parts[0]
+
+		if $txTypeDict.has_key?( @type )
+			@type = $txTypeDict[ @type ]
 		else
-			parts[0] = type.downcase
+			@type = @type.downcase
 		end
 
-		parts[0] = parts[0].gsub( "\"", "")
-		parts.delete("")
+		@transaction.tx_type = @type
 
+		# Build transaction details
 		if parts.length > 2
-			parts[1] = parts[1].strip + " " + parts[2].strip
-			parts[1] = parts[1].gsub( "\"", "").strip
+			parts[1] = parts[1] + " " + parts[2]
+			@details = parts[1]
+		else
+			@details = parts[parts.length-1]
 		end
 
-		parts[0,2]
+		@transaction.details = @details
+
+		# Build transaction category
+		cat = 27
+
+		if !@details.nil?
+			$txCatDict.each_key do |item|
+				if !@details.index(item.to_s).nil?
+					cat = $txCatDict[item].to_s
+					break
+				end
+			end
+		end
+
+		@transaction.category_id = cat
+		
+		return @transaction
+		
 	end
 end
