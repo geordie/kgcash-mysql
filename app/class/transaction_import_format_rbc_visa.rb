@@ -54,6 +54,9 @@ class TransactionImportFormatRbcVisa
 		)
 		
 		return @transaction
-		
+	end
+
+	def skip_first_line
+		return true
 	end
 end

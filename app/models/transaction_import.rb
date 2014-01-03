@@ -44,7 +44,7 @@ class TransactionImport
 		# Process each line
 		contents.split("\n").each_with_index do |csvline, idx|
 
-			next if idx == 0 && transaction_import_format.is_a?(TransactionImportFormatRbcVisa)
+			next if idx == 0 && transaction_import_format.skip_first_line
 
 			@transaction = transaction_import_format.buildTransaction( csvline, account_id )
 			

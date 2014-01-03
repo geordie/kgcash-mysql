@@ -51,7 +51,7 @@ class TransactionImportFormatVancity
 		@description.delete!("\"")
 
 		# Split on multiple spaces
-		parts = @description.split(%r{[ ]{2,}})
+		parts = @description.split(%r{[ ]{1,}})
 
 		# Build a transaction type
 		@type = parts[0]
@@ -98,5 +98,9 @@ class TransactionImportFormatVancity
 
 		return @transaction
 		
+	end
+
+	def skip_first_line
+		return false
 	end
 end
