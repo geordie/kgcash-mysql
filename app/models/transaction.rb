@@ -31,12 +31,16 @@ class Transaction < ActiveRecord::Base
   def ensure_hash
 
     if self.tx_hash.to_s == ''
-    	self.tx_hash = Digest::MD5.hexdigest( self.tx_date.to_s + 
-    		(self.details or '')  + 
-    		(self.debit.to_s or '') + 
-    		(self.credit.to_s or '') )
+    	self.tx_hash = build_hash
     end
 
+  end
+
+  def build_hash
+    return Digest::MD5.hexdigest( self.tx_date.to_s + 
+        (self.details or '')  + 
+        (self.debit.to_s or '') + 
+        (self.credit.to_s or '') )
   end
 
   def format_date

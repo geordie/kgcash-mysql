@@ -15,4 +15,13 @@ class TransactionImportFormatVancityTester < ActiveSupport::TestCase
 		@transaction = @transactionFormatter.buildTransaction( @csvLine, 1 )
 		assert @transaction.details == 'CHEQUE # 127'
 	end
+
+	test "Hashing two transactions that are really close together" do
+		@csvLine1 = '000000659243-004-Z    -00001,31-Dec-2013,"TRANSFER FROM                NON-REDEEMABLE # 5                                       ",,,6.75,3070.01'
+		@csvLine2 = '000000659243-004-Z    -00001,31-Dec-2013,"TRANSFER2 FROM                NON-REDEEMABLE # 4                                       ",,,6.75,3063.26'
+		@transactionFormatter = TransactionImportFormatVancity.new
+		@transaction1 = @transactionFormatter.buildTransaction( @csvLine1, 1 )
+		@transaction2 = @transactionFormatter.buildTransaction( @csvLine2, 1 )
+		assert_not_equal @transaction1.tx_hash, @transaction2.tx_hash, "Hashes should be different: #{@transaction1.tx_hash}, #{@transaction2.tx_hash}"
+	end
 end

@@ -43,16 +43,6 @@ class TransactionImportFormatVancity
 		debit = fields[4].length > 0 ? fields[4] : "0"
 		credit = (fields.length >= 6 && fields[5].length > 0) ? fields[5] : "0"
 
-		# Build a transaction
-		@transaction = Transaction.create(
-			:tx_date => date,
-			:posting_date => date,
-			:user_id => 1,
-			:debit => debit,
-			:credit => credit,
-			:account_id => account_id
-			)
-
 
 		# Parse the description into component parts
 		@description = fields[2]
@@ -72,8 +62,6 @@ class TransactionImportFormatVancity
 			@type = @type.downcase
 		end
 
-		@transaction.tx_type = @type
-
 		# Build transaction details
 		if parts.length > 2
 			parts[1] = parts[1] + " " + parts[2]
@@ -81,8 +69,6 @@ class TransactionImportFormatVancity
 		else
 			@details = parts[parts.length-1]
 		end
-
-		@transaction.details = @details
 
 		# Build transaction category
 		cat = 27
@@ -96,8 +82,20 @@ class TransactionImportFormatVancity
 			end
 		end
 
+		# Build a transaction
+		@transaction = Transaction.create(
+			:tx_date => date,
+			:posting_date => date,
+			:user_id => 1,
+			:debit => debit,
+			:credit => credit,
+			:account_id => account_id,
+			:type => @type,
+			:details => @details
+			)
+
 		@transaction.category_id = cat
-		
+
 		return @transaction
 		
 	end
