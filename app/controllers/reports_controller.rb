@@ -27,9 +27,10 @@ class ReportsController < ApplicationController
 		if @month.nil?
 			@months = time.month
 			@days = time.mday - 1
+			@budgeted_amount_multiplier = time.year == @year ? @months : 12
 			@budget_categories.each do |bud_cat|
 				@bud_cat_amount = bud_cat.amount.nil? ? 0 : bud_cat.amount
-				@new_amount = (@bud_cat_amount * @months)
+				@new_amount = (@bud_cat_amount * @budgeted_amount_multiplier)
 				bud_cat.amount = @new_amount
 			end
 		end
