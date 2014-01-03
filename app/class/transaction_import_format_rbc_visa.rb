@@ -18,7 +18,7 @@ class TransactionImportFormatRbcVisa
 		sDate = date.strftime( '%y-%m-%d' )
 
 		# Get credit and debit amounts
-		@amount = BigDecimal.new( fields[6].delete("$").delete("\"").delete(",") )
+		@amount = BigDecimal.new( fields[6].delete("$\",") )
 
 		debit = @amount >= 0 ? 0 : @amount * -1
 		credit = @amount <= 0 ? 0 : @amount
