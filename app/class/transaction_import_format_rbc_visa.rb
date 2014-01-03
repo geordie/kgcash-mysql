@@ -1,3 +1,5 @@
+require 'csv'
+
 class TransactionImportFormatRbcVisa
 
 	# Sample Transactions in CSV Format
@@ -8,7 +10,7 @@ class TransactionImportFormatRbcVisa
 	$txCatDict = {}
 
 	def buildTransaction( csvline, account_id )
-		fields = csvline.split(',')
+		fields = CSV.parse(csvline)[0]
 
 		# Get date
 		sDate = fields[2]
@@ -16,14 +18,14 @@ class TransactionImportFormatRbcVisa
 		sDate = date.strftime( '%y-%m-%d' )
 
 		# Get credit and debit amounts
-		@amount = BigDecimal.new( fields[6].delete("$") )
+		@amount = BigDecimal.new( fields[6].delete("$").delete("\"").delete(",") )
 
 		debit = @amount >= 0 ? 0 : @amount * -1
 		credit = @amount <= 0 ? 0 : @amount
 
 		# Get the description
 		details = fields[4]
-		if fields[5].length > 0
+		if !fields[5].nil? && fields[5].length > 0
 			details += " " + fields[5]
  		end
 
