@@ -14,6 +14,10 @@ class TransactionImportFormatRbcVisa
 
 		# Get date
 		sDate = fields[2]
+		if sDate.nil? || sDate.empty? 
+			return nil
+		end
+
 		date = DateTime.strptime(sDate,'%m/%d/%Y')
 		sDate = date.strftime( '%y-%m-%d' )
 

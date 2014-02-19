@@ -50,7 +50,9 @@ class TransactionImport
 			
 			puts @transaction.to_s
 
-			if @transaction.valid?
+			if @transaction.nil?
+				# do nothing
+			elsif @transaction.valid?
 					@transaction.save!
 			else
 				@transaction.errors.full_messages.each do |message|

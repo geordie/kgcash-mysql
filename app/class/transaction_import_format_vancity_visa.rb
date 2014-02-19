@@ -23,7 +23,7 @@ class TransactionImportFormatVancityVisa
 		@flag = fields[8]
 		@amount = BigDecimal.new( fields[2].delete("$\",()") )
 
-		debit = @flag != "D" ? 0 : @amount * -1
+		debit = @flag != "D" ? 0 : @amount
 		credit = @flag != "C" ? 0 : @amount
 
 		# Get the description
