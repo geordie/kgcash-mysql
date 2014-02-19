@@ -24,8 +24,16 @@ category_totals.map(function(elem, idx, ctx ){
     {
       elem.amount = elem.amount * -1;
       elem.category_type = "Expense";
-      cat_expenses.push( elem );
-      totalExpense += parseFloat( elem.amount );
+      if( elem.amount > 0 )
+      {
+        cat_expenses.push( elem );
+        totalExpense += parseFloat( elem.amount );
+      }
+      else
+      {
+        cat_income.push( elem );
+        totalIncome += parseFloat( elem.amount );
+      }
     }
     else if( elem.category_type == "Income" )
     {
@@ -35,6 +43,7 @@ category_totals.map(function(elem, idx, ctx ){
   });
 
 buildPie( cat_expenses, totalExpense, "#divLeft", "Expense", undefined, 500 );
+console.log( cat_expenses );
 
 buildPie( cat_income, totalIncome, "#divRight", "Income", undefined, 500 );
 
