@@ -6,7 +6,7 @@ class TransactionImportFormatVancityTester < ActiveSupport::TestCase
 		@csvLine = '000000659243-004-Z    -00001,10-Dec-2013,"DIRECT BILL PAYMENT          ROYAL BANK VISA # 4290                                    Confirmation #0000000524234",,517.00,,3922.38'
 		@transactionFormatter = TransactionImportFormatVancity.new
 		@transaction = @transactionFormatter.buildTransaction( @csvLine, 1 )
-		assert @transaction.details == 'ROYAL BANK VISA # 4290 Confirmation #0000000524234'
+		assert_equal 'ROYAL BANK VISA # 4290 Confirmation #0000000524234', @transaction.details
 	end
 
 	test "Parse the cheque # out of a Vancity transaction" do 

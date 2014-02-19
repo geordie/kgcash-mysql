@@ -43,7 +43,6 @@ class TransactionImportFormatVancity
 		debit = fields[4].length > 0 ? fields[4] : "0"
 		credit = (fields.length >= 6 && fields[5].length > 0) ? fields[5] : "0"
 
-
 		# Parse the description into component parts
 		@description = fields[2]
 
@@ -51,7 +50,9 @@ class TransactionImportFormatVancity
 		@description.delete!("\"")
 
 		# Split on multiple spaces
-		parts = @description.split(%r{[ ]{1,}})
+		parts = @description.split(%r{[ ]{2,}})
+
+		puts parts.to_s
 
 		# Build a transaction type
 		@type = parts[0]
