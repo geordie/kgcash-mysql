@@ -33,7 +33,8 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 	var g = pieChart.selectAll(".arc")
 	    .data(pie(category_amounts))
 	    .enter().append("g")
-	    .attr("class", function(d,i){ return "arc-" + i });
+	    .attr("class", function(d,i){ return "arc-" + i })
+	    .append("a").attr("xlink:href",function(d,i){var cat_id = category_amounts[i].category_id; return "./transactions?category=" + cat_id});
 
 	g.append("path")
 	    .attr("d", arc)
