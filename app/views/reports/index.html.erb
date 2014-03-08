@@ -12,25 +12,32 @@
 
 <script>
 
+var cat_totals = <%= raw render(:file => 'budget_categories/index.json.rabl') %>
 var category_totals = <%= j @transactions_grouped.to_json.html_safe %>;
 
 var cat_expenses = new Array();
 var cat_income = new Array();
 var totalIncome = 0;
 var totalExpense = 0;
+
+console.log( category_totals );
 category_totals.map(function(elem, idx, ctx ){
 
     if( elem.category_type == "Expense" || elem.category_type == null )
     {
       elem.amount = elem.amount * -1;
-      elem.category_type = "Expense";
-      if( elem.amount > 0 )
+      if( elem.category_name == "Not defined")
       {
+      }
+      else if( elem.amount > 0 )
+      {
+        elem.category_type = "Expense";
         cat_expenses.push( elem );
         totalExpense += parseFloat( elem.amount );
       }
       else
       {
+        elem.category_type = "Income";
         cat_income.push( elem );
         totalIncome += parseFloat( elem.amount );
       }

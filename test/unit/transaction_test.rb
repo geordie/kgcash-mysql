@@ -36,7 +36,6 @@ class TransactionTest < ActiveSupport::TestCase
 		assert txs.count == 0, "Actual: " + txs.count.to_s
 
 		txs = user1.transactions.by_months_in_year(2012)
-		puts txs.to_json
 		assert txs.length == 2, "ACTUAL: " + txs.count.to_s
 
 		txs = user1.transactions.by_days_in_month(11, 2012)
