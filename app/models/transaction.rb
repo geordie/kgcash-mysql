@@ -4,6 +4,7 @@ require 'doorkeeper'
 class Transaction < ActiveRecord::Base
   
   validates_uniqueness_of :tx_hash
+  validates_presence_of :tx_date
   
   belongs_to :category
   belongs_to :user
@@ -12,6 +13,8 @@ class Transaction < ActiveRecord::Base
   before_save :ensure_hash
 
   before_validation :ensure_hash
+
+  default_scope order('tx_date DESC')
 
   scope :in_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
   
