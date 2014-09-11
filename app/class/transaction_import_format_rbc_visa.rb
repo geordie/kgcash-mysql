@@ -6,6 +6,22 @@ class TransactionImportFormatRbcVisa
 	# Account Type,Account Number,Transaction Date,Cheque Number,Description 1,Description 2,CAD$,USD$
 	# Visa,4.51224E+15,11/26/2013,,CAR2GO 855-454-1002 BC,,-$14.47,
 
+	# To regex a PDF statement
+	# replace \n[0-9]{23}\n
+	# with , 
+	# replace \n\$
+	# with ,$
+	# replace ^[A-Z]{3} [0-9]{2}
+	# with Visa,
+	# replace , MAY ([0-9]{2})
+	# with ,, 05/\1/2014
+	# replace , JUN ([0-9]{2})
+	# with ,, 06/\1/2014
+	# replace , JUL ([0-9]{2})
+	# ,, 07/\1/2014
+	# replace /2014
+	# with /2014,,
+
 	$txTypeDict = {}
 	$txCatDict = {}
 

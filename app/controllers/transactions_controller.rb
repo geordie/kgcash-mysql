@@ -71,6 +71,7 @@ class TransactionsController < ApplicationController
 		@user = current_user
 		@transaction = @user.transactions.find(params[:id])
 		@categories = @user.category_selector
+		@accounts = @user.account_selector
 	end
 
 	def create
