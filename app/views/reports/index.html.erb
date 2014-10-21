@@ -12,7 +12,6 @@
 
 <script>
 
-var cat_totals = <%= raw render(:file => 'budget_categories/index.json.rabl') %>
 var category_totals = <%= j @transactions_grouped.to_json.html_safe %>;
 
 var cat_expenses = new Array();
@@ -61,6 +60,8 @@ buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
   <script type="text/javascript">
 
     var bud_cats = <%= raw render(:file => 'budget_categories/index.json.rabl') %>
+
+    console.log(bud_cats);
 
     var cat_types = ["Expense","Income","Asset"];
     for( idx in cat_types )

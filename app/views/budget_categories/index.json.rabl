@@ -1,5 +1,5 @@
 collection @budget_categories, :object_root => false
-attributes :id => :id, :amount => :amount, :period => :period, :catogory_id => :category_id
+attributes :id => :id, :amount => :amount, :period => :period, :category_id => :category_id
 
 glue :category do
 	attributes :name => :category_name

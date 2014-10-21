@@ -26,15 +26,14 @@ class TransactionsController < ApplicationController
 		end
 
 		if @month.nil?
-			@transactions = @user.transactions
-				.select("*, (debit + credit) as amount")
+			transactions = @user.transactions
+				.select('*, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_year(@year)
 				.order(sort_column + ' ' + sort_direction)
-		elsif
-			@transactions = @user.transactions
-				.select("*, (debit + credit) as amount")
-				.order(sort_column + ' '  + sort_direction)
+		else
+			transactions = @user.transactions
+				.select('*, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_month_year(@month,@year)
 				.order(sort_column + ' ' + sort_direction)
@@ -48,7 +47,7 @@ class TransactionsController < ApplicationController
 
 		respond_to do |format|
 			format.html #index.html.erb
-			format.json { @transactions }
+			format.json { transactions }
 			format.csv {}
 		end
 	end

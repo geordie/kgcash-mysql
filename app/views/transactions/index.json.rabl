@@ -1,4 +1,4 @@
-collection @transactions, :object_root => false
+collection transactions, :object_root => false
 attributes :tx_date => :date
 
 node :amount do |t|
