@@ -6,3 +6,5 @@ tmp/
 .DS_Store
 txdump_prod.sql
 vagrant/
+.idea
+kgcash.iml
