@@ -26,13 +26,13 @@ class TransactionsController < ApplicationController
 		end
 
 		if @month.nil?
-			transactions = @user.transactions
+			@transactions = @user.transactions
 				.select('*, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_year(@year)
 				.order(sort_column + ' ' + sort_direction)
 		else
-			transactions = @user.transactions
+			@transactions = @user.transactions
 				.select('*, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_month_year(@month,@year)

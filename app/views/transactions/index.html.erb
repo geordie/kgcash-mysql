@@ -44,7 +44,7 @@
 	<th></th>
   </tr>
 
-<% transactions.each do |transaction| %>
+<% @transactions.each do |transaction| %>
 <% @txAmount = (transaction.credit.nil? ? 0 : transaction.credit) - (transaction.debit.nil? ? 0 : transaction.debit) %>
 <% @txAmountClass = @txAmount > 0 ? "credit" : "debit" %>
   <tr>
