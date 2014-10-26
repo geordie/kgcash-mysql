@@ -14,6 +14,7 @@ gem 'json', '~>1.7.7'
 gem 'execjs'
 gem 'rabl'
 gem 'oj'
+gem 'will_paginate', '~> 3.0'
 
 # Gems used only for assets and not required
 # in production environments by default.

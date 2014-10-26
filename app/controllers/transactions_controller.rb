@@ -30,12 +30,14 @@ class TransactionsController < ApplicationController
 				.select('*, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_year(@year)
+				.paginate(:page => params[:page])
 				.order(sort_column + ' ' + sort_direction)
 		else
 			@transactions = @user.transactions
 				.select('*, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_month_year(@month,@year)
+				.paginate(:page => params[:page])
 				.order(sort_column + ' ' + sort_direction)
 		end
 
