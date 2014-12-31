@@ -65,6 +65,7 @@
 			<%= f.select :category_id, options_from_collection_for_select(@budgets[0].sortedCategories,'id','name', transaction.category_id), {}, :class => 'transaction_update' %>
 		<% end %>
 	</td>
+	<td><%= link_to 'Locate', transactions_path(:min=>@txAmount.abs,:max=>@txAmount.abs) %></td>
 	<td><%= link_to 'Show', transaction_path(transaction) %></td>
 	<td><%= link_to 'Delete', transaction_path(transaction), confirm: 'Are you sure?', method: :delete, remote: true, class: 'delete_post' %></td> 
   </tr>
