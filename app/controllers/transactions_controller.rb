@@ -14,6 +14,8 @@ class TransactionsController < ApplicationController
 		time = Time.new
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
 		@year = params.has_key?(:year) ? params[:year].to_i : time.year
+		@min = params.has_key?(:min) ? params[:min].to_f : 0
+		@max = params.has_key?(:max) ? params[:max].to_f : 0
 
 		@category = params.has_key?(:category) ? params[:category].to_i : nil
 		if @category && @category < 1 
@@ -30,6 +32,7 @@ class TransactionsController < ApplicationController
 				.select('*, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_year(@year)
+				.in_range(@min,@max)
 				.paginate(:page => params[:page])
 				.order(sort_column + ' ' + sort_direction)
 		else

@@ -29,6 +29,12 @@ class Transaction < ActiveRecord::Base
 
   scope :in_account, lambda { |account_id| where("account_id = ?", account_id) unless account_id.nil? }
 
+  scope :in_range, lambda { |min, max| where("(debit >= ? AND debit <= ?) OR (credit >= ? AND credit <= ?)",
+          min == 0 ? -10000000 : min,
+          max == 0 ? 10000000 : max,
+          min == 0 ? -10000000 : min,
+          max == 0 ? 10000000 : max)}
+
   scope :by_months_in_year, lambda{ |year| in_year(year).select("MONTH(tx_date) as month, SUM(debit) as debit, SUM(credit) as credit").group( "MONTH(tx_date)") }
 
   scope :by_days_in_month, lambda{ |month, year| in_month_year(month,year).select("DAY(tx_date) as day, SUM(debit) as debit, SUM(credit) as credit").group("DAY(tx_date)")}
