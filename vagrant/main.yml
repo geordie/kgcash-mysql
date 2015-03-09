@@ -1,0 +1,125 @@
+---                                                                                                                  
+- hosts: all
+  user: vagrant                                                                                                       
+  sudo: true                                                                                                         
+  sudo_user: root
+
+  vars:
+    mysql_root_password: root
+
+  tasks:
+  - name: ensure python-software package required for apt_repository
+    apt: pkg=python-software-properties state=latest update_cache=yes
+
+  - name: add ruby apt repository
+    apt_repository: repo='ppa:brightbox/ruby-ng' update_cache=yes
+
+  - name: install ruby
+    apt: pkg={{ item }} state=present update_cache=yes
+    with_items:
+    - ruby1.9.3
+    - rubygems
+    - ruby-switch
+
+  - name: apt-get update
+    action: apt update-cache=yes
+
+  - name: add node.js ppa apt repository
+    apt_repository: repo='ppa:chris-lea/node.js' state=present update-cache=yes
+
+  - name: install node.js and ruby gem dependencies
+    apt: pkg={{ item }} state=installed
+    with_items:
+    - nodejs
+    - libmysqlclient-dev  # the rest of these packages are needed for ruby gems
+    - libxml2
+    - libxml2-dev
+    - libxslt1-dev
+
+  - name: install Ruby gems bundler
+    command: gem install bundler
+
+  - name: ensure apt cache is up to date
+    action: apt update_cache=yes
+
+  - name: ensure packages are installed
+    action: apt name={{item}}
+    with_items:
+        - vim
+
+  - name: Install MySQL
+    apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+    sudo: yes
+    with_items:
+    - python-mysqldb
+    - mysql-server
+  #- name: copy cnf
+  #  copy: src=.my.cnf dest=~/.my.cnf owner=ubuntu mode=0644
+  #  sudo: yes
+  - name: Start the MySQL service
+    sudo: yes
+    service: 
+      name: mysql 
+      state: started
+      enabled: true
+  - name: update mysql root password for all root accounts
+    sudo: yes
+    mysql_user: 
+      name: root 
+      host: "{{ item }}" 
+      password: "{{ mysql_root_password }}"
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+      check_implicit_admin: yes
+      priv: "*.*:ALL,GRANT"
+    with_items:
+      - "{{ ansible_hostname }}"
+      - 127.0.0.1
+      - ::1
+      - localhost
+  - name: add kgcash database
+    sudo: yes
+    mysql_db: name=kgcash_dev state=present collation=utf8_general_ci encoding=utf8 login_user=root login_password={{ mysql_root_password }}
+  - name: add kgcash_test database
+    sudo: yes
+    mysql_db: name=kgcash_test state=present collation=utf8_general_ci encoding=utf8 login_user=root login_password={{ mysql_root_password }}
+  - name: add kgcash db user
+    sudo: yes
+    mysql_user: name=kgcash password=kgcash priv=*.*:ALL state=present login_user=root login_password={{ mysql_root_password }}
+  - name: add kgcash test db user
+    sudo: yes
+    mysql_user: name=kgcash_test password=kgcash_test priv=*.*:ALL state=present login_user=root login_password={{ mysql_root_password }}
+
+  - name: Add Heroku release key for package verification
+    sudo: yes
+    action: apt_key url=https://toolbelt.heroku.com/apt/release.key state=present
+    tags: heroku
+
+  - name: Add Heroku APT repository
+    tags: heroku
+    sudo: yes
+    action: apt_repository repo="deb http://toolbelt.heroku.com/ubuntu ./" state=present
+
+  - name: Install Heroku toolbelt
+    tags: heroku
+    sudo: yes
+    action: apt name=heroku-toolbelt state=latest update_cache=yes cache_valid_time=86400
+
+#Need to run this to make tests runnable out of box: https://gist.github.com/turboladen/6790847
+
+- hosts: all
+  user: vagrant                                                                                                       
+  sudo: true                                                                                                         
+  sudo_user: root
+
+  vars:
+    kgcashdir: /home/vagrant/kgcash
+
+  tasks:
+  - name: bundle install kgcash app
+    command: chdir={{ kgcashdir }} bundle install
+
+  - name: rake db:migrate
+    command: chdir={{ kgcashdir }} rake db:migrate
+
+

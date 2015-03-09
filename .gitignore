@@ -5,6 +5,8 @@ tmp/
 .sass-cache/
 .DS_Store
 txdump_prod.sql
-vagrant/
+vagrant/package.box
+vagrant/Vagrantfile_old
+vagrant/.vagrant*
 .idea
 kgcash.iml
