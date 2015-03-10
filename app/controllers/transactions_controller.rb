@@ -45,6 +45,7 @@ class TransactionsController < ApplicationController
 		end
 
 		@budgets = @user.budgets
+		@budgetDefault = @user.budgets[0]
 
 		#TODO - Enable filtering by date range
 		# dateStart = params Date.strptime([:start], "{ %Y, %m, %d }")

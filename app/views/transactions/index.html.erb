@@ -27,7 +27,7 @@
 		</div>
 		<div class="col-md-1">
 			<%= form_tag({},{:method => :get}) do %>
-			<%= select_tag( :category, options_from_collection_for_select(@budgets[0].sortedCategories,'id','name', @category),:class => 'transaction_filter', :prompt => "All" ) %>
+			<%= select_tag( :category, options_for_budget_categories(@budgetDefault, @category),:class => 'transaction_filter', :prompt => "All" ) %>
 			<% end %>
 		</div>
 		<div class="col-md-2 pull-right">
@@ -62,7 +62,7 @@
 	<td><%= best_in_place transaction, :notes%></td>
 	<td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
 	<td><%= form_for transaction, :remote => true do |f| %> 
-			<%= f.select :category_id, options_from_collection_for_select(@budgets[0].sortedCategories,'id','name', transaction.category_id), {}, :class => 'transaction_update' %>
+			<%= f.select :category_id, options_for_budget_categories(@budgetDefault, transaction.category_id), {}, :class => 'transaction_update' %>
 		<% end %>
 	</td>
 	<td><%= link_to 'Locate', transactions_path(:min=>@txAmount.abs,:max=>@txAmount.abs) %></td>
