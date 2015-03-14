@@ -122,14 +122,14 @@ function catDetail( d, show, width, myEvent, totalAmount )
 	
 	if( show )
 	{
-		var text = "<strong>" + d.data.category_name + "</strong>";
-		var boxWidth = text.length * 3;
+		var text = "<strong>" + d.data.category_name + "</strong>" + " (" + (Math.round((d.data.amount/totalAmount)*100)) + "%)";
+		var boxWidth = text.length * 4;
 		
-		text += "<br/>$" + Math.round(d.data.amount)  + "<br/>(" + (Math.round((d.data.amount/totalAmount)*100)) + "%)" ;
+		text += "<br/>$" + Math.round(d.data.amount);
 
 		// position infobox at mouse
-		infobox.style("left", myEvent.clientX + "px" );
-		infobox.style("top", myEvent.clientY + "px");
+		infobox.style("left", myEvent.pageX + 10 + "px" );
+		infobox.style("top", myEvent.pageY + 10 + "px");
 		infobox.style("display", "inline");
 		
 		infobox.style("width", boxWidth + "px");
