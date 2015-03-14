@@ -117,7 +117,6 @@ function getDimensions( container )
 
 function catDetail( d, show, width, myEvent, totalAmount )
 {
-
 	// save selection of infobox so that we can later change it's position
 	var infobox = d3.select(".infobox");
 	
