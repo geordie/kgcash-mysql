@@ -3,9 +3,9 @@
 <div class="container">
 
 	<div class="row">
-	    <div class="col-md-5" id="divLeft"></div>
-	    <div class="col-md-2" id="divMid"></div>
-	    <div class="col-md-5" id="divRight"></div>
+		<div class="col-md-5" id="divLeft"></div>
+		<div class="col-md-2" id="divMid"></div>
+		<div class="col-md-5" id="divRight"></div>
 	</div>
 
 </div>
@@ -22,31 +22,32 @@ var totalExpense = 0;
 console.log( category_totals );
 category_totals.map(function(elem, idx, ctx ){
 
-    if( elem.category_type == "Expense" || elem.category_type == null )
-    {
-      elem.amount = elem.amount * -1;
-      if( elem.category_name == "Not defined")
-      {
-      }
-      else if( elem.amount > 0 )
-      {
-        elem.category_type = "Expense";
-        cat_expenses.push( elem );
-        totalExpense += parseFloat( elem.amount );
-      }
-      else
-      {
-        elem.category_type = "Income";
-        cat_income.push( elem );
-        totalIncome += parseFloat( elem.amount );
-      }
-    }
-    else if( elem.category_type == "Income" )
-    {
-      cat_income.push( elem );
-      totalIncome += parseFloat( elem.amount );
-    }
-  });
+	if( elem.category_type == "Expense" || elem.category_type == null )
+	{
+		elem.amount = elem.amount * -1;
+		
+		if( elem.category_name == "Not defined")
+		{
+		}
+		else if( elem.amount > 0 )
+		{
+			elem.category_type = "Expense";
+			cat_expenses.push( elem );
+			totalExpense += parseFloat( elem.amount );
+		}
+		else
+		{
+			elem.category_type = "Income";
+			cat_income.push( elem );
+			totalIncome += parseFloat( elem.amount );
+		}
+	}
+	else if( elem.category_type == "Income" )
+	{
+		cat_income.push( elem );
+		totalIncome += parseFloat( elem.amount );
+	}
+});
 
 buildPie( cat_expenses, totalExpense, "#divLeft", "Expense", undefined, 500 );
 
@@ -57,35 +58,35 @@ buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
 </script>
 
 <div id="chartContainer">
-  <script type="text/javascript">
+	<script type="text/javascript">
 
-    var bud_cats = <%= raw render(:file => 'budget_categories/index.json.rabl') %>
+	var bud_cats = <%= raw render(:file => 'budget_categories/index.json.rabl') %>
 
-    console.log(bud_cats);
+	console.log(bud_cats);
 
-    var cat_types = ["Expense","Income","Asset"];
-    for( idx in cat_types )
-    { 
-        var cat_type = cat_types[idx];
-        var cat_type_actuals = dimple.filterData(category_totals, "category_type", cat_type);
+	var cat_types = ["Expense","Income","Asset"];
+	for( idx in cat_types )
+	{ 
+		var cat_type = cat_types[idx];
+		var cat_type_actuals = dimple.filterData(category_totals, "category_type", cat_type);
 
-        var svg = dimple.newSvg("#chartContainer", 890, 400);
-        var cat_type_budgeted = dimple.filterData(bud_cats,"type", cat_type);
+		var svg = dimple.newSvg("#chartContainer", 890, 400);
+		var cat_type_budgeted = dimple.filterData(bud_cats,"type", cat_type);
 
-        var cat_type_actuals = cat_type_actuals.concat( cat_type_budgeted );
+		var cat_type_actuals = cat_type_actuals.concat( cat_type_budgeted );
 
-        build( svg, cat_type_actuals );
-    }
+		build( svg, cat_type_actuals );
+	}
 
-    function build( svg, data )
-    {
-      var myChart = new dimple.chart(svg, data);
-      myChart.setBounds(60, 30, 810, 305)
-      myChart.addMeasureAxis("y", "amount").tickFormat = ".0f";
-      myChart.addCategoryAxis("x", ["category_name", "category_type"]);
-      myChart.addSeries("category_type", dimple.plot.bar);
+	function build( svg, data )
+	{
+		var myChart = new dimple.chart(svg, data);
+		myChart.setBounds(60, 30, 810, 305)
+		myChart.addMeasureAxis("y", "amount").tickFormat = ".0f";
+		myChart.addCategoryAxis("x", ["category_name", "category_type"]);
+		myChart.addSeries("category_type", dimple.plot.bar);
 
-      myChart.draw();
-    }
-  </script>
+		myChart.draw();
+	}
+	</script>
 </div>
