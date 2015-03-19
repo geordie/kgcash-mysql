@@ -12,42 +12,12 @@
 
 <script>
 
-var category_totals = <%= j @transactions_grouped.to_json.html_safe %>;
+var category_totals = <%= j @category_groups.to_json.html_safe %>;
 
-var cat_expenses = new Array();
-var cat_income = new Array();
-var totalIncome = 0;
-var totalExpense = 0;
-
-console.log( category_totals );
-category_totals.map(function(elem, idx, ctx ){
-
-	if( elem.category_type == "Expense" || elem.category_type == null )
-	{
-		elem.amount = elem.amount * -1;
-		
-		if( elem.category_name == "Not defined")
-		{
-		}
-		else if( elem.amount > 0 )
-		{
-			elem.category_type = "Expense";
-			cat_expenses.push( elem );
-			totalExpense += parseFloat( elem.amount );
-		}
-		else
-		{
-			elem.category_type = "Income";
-			cat_income.push( elem );
-			totalIncome += parseFloat( elem.amount );
-		}
-	}
-	else if( elem.category_type == "Income" )
-	{
-		cat_income.push( elem );
-		totalIncome += parseFloat( elem.amount );
-	}
-});
+var cat_expenses = category_totals['Expense'];
+var cat_income = category_totals['Income'];
+var totalIncome = category_totals['total_income'];
+var totalExpense = category_totals['total_expenses'];
 
 buildPie( cat_expenses, totalExpense, "#divLeft", "Expense", undefined, 500 );
 
@@ -60,33 +30,50 @@ buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
 <div id="chartContainer">
 	<script type="text/javascript">
 
-	var bud_cats = <%= raw render(:file => 'budget_categories/index.json.rabl') %>
-
-	console.log(bud_cats);
-
-	var cat_types = ["Expense","Income","Asset"];
+	var cat_types = ["Expense","Income","Asset", "Undefined"];
 	for( idx in cat_types )
 	{ 
 		var cat_type = cat_types[idx];
-		var cat_type_actuals = dimple.filterData(category_totals, "category_type", cat_type);
+		var cat_type_actuals = explodeData( category_totals[cat_type] );
 
-		var svg = dimple.newSvg("#chartContainer", 890, 400);
-		var cat_type_budgeted = dimple.filterData(bud_cats,"type", cat_type);
-
-		var cat_type_actuals = cat_type_actuals.concat( cat_type_budgeted );
-
-		build( svg, cat_type_actuals );
+		build( cat_type_actuals );
 	}
 
-	function build( svg, data )
+	function build( data )
 	{
+		var svg = dimple.newSvg("#chartContainer", 890, 400);
 		var myChart = new dimple.chart(svg, data);
-		myChart.setBounds(60, 30, 810, 305)
-		myChart.addMeasureAxis("y", "amount").tickFormat = ".0f";
-		myChart.addCategoryAxis("x", ["category_name", "category_type"]);
-		myChart.addSeries("category_type", dimple.plot.bar);
+		myChart.setBounds(60, 30, 810, 305);
+		myChart.addCategoryAxis("x", ["category_name", "data_type"]);
+		myChart.addMeasureAxis("y", "value").tickFormat = ".0f";
+		myChart.addSeries("data_type", dimple.plot.bar);
+
+		myChart.assignColor("budget", "#4ECDC4");
+		myChart.assignColor("actual", "#C44D58");
 
 		myChart.draw();
+	}
+
+	function explodeData( data )
+	{
+		var newData = [];
+		for( row of data )
+		{
+			newData.push({category_id: row["category_id"],
+				category_name: row["category_name"],
+				category_type: row["category_type"],
+				data_type: "actual",
+				value: row["amount"]
+			});
+
+			newData.push({category_id: row["category_id"],
+				category_name: row["category_name"],
+				category_type: row["category_type"],
+				data_type: "budget",
+				value: row["budget"]
+			});
+		}
+		return newData;
 	}
 	</script>
 </div>
