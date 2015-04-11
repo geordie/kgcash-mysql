@@ -16,7 +16,11 @@ resources :transactions
 
 resources :transaction_imports
 
-resources :reports
+resources :reports do
+  collection do
+    get 'category', to: 'reports#category'
+  end
+end
 
 resources :accounts
 

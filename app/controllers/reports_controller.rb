@@ -107,4 +107,17 @@ class ReportsController < ApplicationController
 		end
 	end
 
+	def category
+		# Get user
+		@user = current_user
+		if @user == nil 
+			@user = User.last
+		end
+
+		respond_to do |format|
+			format.html #category.html.erb
+
+		end
+	end
+
 end
