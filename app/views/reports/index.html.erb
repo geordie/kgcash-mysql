@@ -36,11 +36,13 @@ buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
 		var cat_type = cat_types[idx];
 		var cat_type_actuals = explodeData( category_totals[cat_type] );
 
+		$("#chartContainer").append("<h3>"+ titleFromType(cat_type) +"</h3>");
 		build( cat_type_actuals );
 	}
 
 	function build( data )
 	{
+
 		var svg = dimple.newSvg("#chartContainer", 890, 400);
 		var myChart = new dimple.chart(svg, data);
 		myChart.setBounds(60, 30, 810, 305);
@@ -74,6 +76,15 @@ buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
 			});
 		}
 		return newData;
+	}
+
+	function titleFromType( data )
+	{
+		console.log(data);
+		if( data === "Expense" ) return "Expenses";
+		if( data === "Asset" ) return "Assets"
+		if( data === "Undefined" ) return "Uncategorized Transactions"
+		return data;
 	}
 	</script>
 </div>
