@@ -114,6 +114,69 @@ class ReportsController < ApplicationController
 			@user = User.last
 		end
 
+		# Get budget
+		@budget_categories = @user.budgets[0].budget_categories
+
+		# Set date range
+		#TODO - Enable filtering by date range
+		time = Time.new
+		@month = params.has_key?(:month) ? params[:month].to_i : nil
+		@year = params.has_key?(:year) ? params[:year].to_i : time.year
+
+		@account = params.has_key?(:account) ? params[:account].to_i : nil
+		if @account && @account < 1
+			@account = nil
+		end
+
+		if @month.nil?
+			@months = time.month
+			budgeted_amount_multiplier = time.year == @year ? @months : 12
+			@budget_categories.each do |bud_cat|
+				bud_cat_amount = bud_cat.amount.nil? ? 0 : bud_cat.amount
+				new_amount = (bud_cat_amount * budgeted_amount_multiplier)
+				bud_cat.amount = new_amount
+			end
+		end
+
+		@transaction_groups = nil
+		# Get transactions by category
+		if @month.nil?
+			@transaction_groups = @user.transactions
+				.in_account(@account)
+				.select('category_id, month(transactions.tx_date) as month, SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type')
+				.joins(:category)
+				.group('categories.id, month(transactions.tx_date)')
+				.in_year( @year)
+		else
+			@transaction_groups = @user.transactions
+				.in_account(@account)
+				.select('category_id, SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type')
+				.joins(:category)
+				.group('categories.id')
+				.in_month_year( @month, @year)
+		end
+
+		category_groups = Hash.new
+
+		@transaction_groups.each do |transaction_group|
+			category_id = transaction_group.category_id
+			if !category_groups.has_key?( category_id )
+				category_groups[ category_id ] = Hash[
+					"cat_id" => category_id,
+					"cat_name" => transaction_group.category_name,
+					"cat_type" => transaction_group.category_type,
+					"values" => Array.new
+				]
+			end
+			category_groups[ category_id ]["values"] << Hash[
+				"month" => transaction_group.month,
+				"amount" => transaction_group.amount
+			]
+		end
+
+		@cats = category_groups.values
+
+
 		respond_to do |format|
 			format.html #category.html.erb
 

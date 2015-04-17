@@ -1,1 +1,49 @@
 <h3>Category Report</h3>
+
+<div id="chartContainer">
+	<script>
+
+	var cat_totals = <%= j @cats.to_json.html_safe %>;
+
+	for( row of cat_totals )
+	{
+		var explodedData = explodeData( row );
+
+		build( explodedData );
+	}
+
+	function build( data )
+	{
+		$("#chartContainer").append("<h3>"+ explodedData[0]["category_name"] +"</h3>");
+
+		var svg = dimple.newSvg("#chartContainer", 890, 400);
+		var myChart = new dimple.chart(svg, data);
+		myChart.setBounds(60, 30, 810, 305);
+		myChart.addCategoryAxis("x", ["month", "category_name"]);
+		myChart.addMeasureAxis("y", "amount").tickFormat = ".0f";
+		myChart.addSeries("data_type", dimple.plot.bar);
+
+		myChart.assignColor("budget", "#4ECDC4");
+		myChart.assignColor("actual", "#C44D58");
+
+		myChart.draw();
+	}
+
+	function explodeData( data )
+	{
+		var newData = [];
+		for( item in data.values )
+		{
+			var newObject = new Object();
+			newObject.category_id = data["cat_id"];
+			newObject.category_type = data["cat_type"];
+			newObject.category_name = data["cat_name"];
+			for( var attrname in data.values[item] )
+				{ newObject[attrname] = data.values[item][attrname]}
+			newData.push(newObject);
+		}
+		return newData;
+	}
+
+	</script>
+</div>
