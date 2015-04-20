@@ -5,18 +5,28 @@
 
 	var cat_totals = <%= j @cats.to_json.html_safe %>;
 
-	for( row of cat_totals )
+	for( row in cat_totals )
 	{
-		var explodedData = explodeData( row );
-
-		build( explodedData );
+		var explodedData = explodeData( cat_totals[row] );
+		var total = cat_totals[row].total;
+		var count = cat_totals[row].count;
+		build( explodedData, total, count, row );
 	}
 
-	function build( data )
+	function build( data, total, count, i )
 	{
-		$("#chartContainer").append("<h3>"+ explodedData[0]["category_name"] +"</h3>");
+		var chartId = "chart" + i;
+		var chartIdRow = chartId + "-row";
+		var chartIdStats1 = chartId + "-stats1";
+		var chartIdStats2 = chartId + "-stats2";
 
-		var svg = dimple.newSvg("#chartContainer", 890, 400);
+		$("#chartContainer").append("<h3>"+ explodedData[0]["category_name"] +"</h3>");
+		$("#chartContainer").append("<div class='row' id='" + chartIdRow + "'></div>");
+		$("#"+chartIdRow).append("<div class='col-md-8' id='" + chartId + "'></div>");
+		$("#"+chartIdRow).append("<div class='col-md-2' id='" + chartIdStats1 + "'></div>");
+		$("#"+chartIdRow).append("<div class='col-md-2' id='" + chartIdStats2 + "'></div>");
+
+		var svg = dimple.newSvg("#" + chartId , 890, 400);
 		var myChart = new dimple.chart(svg, data);
 		myChart.setBounds(60, 30, 810, 305);
 		myChart.addCategoryAxis("x", ["month", "category_name"]);
@@ -27,6 +37,11 @@
 		myChart.assignColor("actual", "#C44D58");
 
 		myChart.draw();
+
+		buildMid( total, "#"+chartIdStats1, "Total", undefined, 150 );
+		buildMid( count, "#"+chartIdStats1, "Tx Count", undefined, 150, " ");
+		buildMid( total/data.length, "#"+chartIdStats2, "Monthly", undefined, 150);
+		buildMid( total/count, "#"+chartIdStats2, "Tx Average", undefined, 150);
 	}
 
 	function explodeData( data )

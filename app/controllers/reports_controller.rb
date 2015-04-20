@@ -143,14 +143,19 @@ class ReportsController < ApplicationController
 		if @month.nil?
 			@transaction_groups = @user.transactions
 				.in_account(@account)
-				.select('category_id, month(transactions.tx_date) as month, SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type')
+				.select('category_id, count(transactions.debit) as count, 
+					month(transactions.tx_date) as month, 
+					SUM(transactions.credit) - SUM(transactions.debit) as amount,
+					categories.name AS category_name, categories.cat_type as category_type')
 				.joins(:category)
 				.group('categories.id, month(transactions.tx_date)')
 				.in_year( @year)
 		else
 			@transaction_groups = @user.transactions
 				.in_account(@account)
-				.select('category_id, SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type')
+				.select('category_id, count(transactions.debit) as count,
+					SUM(transactions.credit) - SUM(transactions.debit) as amount,
+					categories.name AS category_name, categories.cat_type as category_type')
 				.joins(:category)
 				.group('categories.id')
 				.in_month_year( @month, @year)
@@ -165,13 +170,18 @@ class ReportsController < ApplicationController
 					"cat_id" => category_id,
 					"cat_name" => transaction_group.category_name,
 					"cat_type" => transaction_group.category_type,
-					"values" => Array.new
+					"values" => Array.new,
+					"total" => 0,
+					"count" => 0
 				]
 			end
 			category_groups[ category_id ]["values"] << Hash[
 				"month" => transaction_group.month,
 				"amount" => transaction_group.amount
 			]
+			category_groups[ category_id ]["count"] += transaction_group.count
+			category_groups[ category_id ]["total"] += transaction_group.amount
+
 		end
 
 		@cats = category_groups.values

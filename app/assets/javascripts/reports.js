@@ -77,8 +77,9 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 		.text("$" + Math.round(totalAmount));
 }
 
-function buildMid( amount, selector, title, width, height )
+function buildMid( amount, selector, title, width, height, formatter )
 {
+	formatter = formatter || "$";
 	var container = d3.select(selector);
 
 	if( typeof width == 'undefined' ) width = parseInt(container.style("width"));
@@ -106,7 +107,7 @@ function buildMid( amount, selector, title, width, height )
 		.attr("dominant-baseline","central")
 		.attr("font-size", "28pt")
 		.attr("transform", "translate(" + (width/2) + "," + ( (heightTitle+height)/2)  + ")")
-		.text("$" + Math.round(amount));
+		.text(formatter + Math.round(amount));
 }
 
 function getDimensions( container )
