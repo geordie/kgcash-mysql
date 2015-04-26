@@ -128,15 +128,8 @@ class ReportsController < ApplicationController
 			@account = nil
 		end
 
-		if @month.nil?
-			@months = time.month
-			budgeted_amount_multiplier = time.year == @year ? @months : 12
-			@budget_categories.each do |bud_cat|
-				bud_cat_amount = bud_cat.amount.nil? ? 0 : bud_cat.amount
-				new_amount = (bud_cat_amount * budgeted_amount_multiplier)
-				bud_cat.amount = new_amount
-			end
-		end
+		@months = time.month
+		@total_months = time.year == @year ? @months : 12
 
 		@transaction_groups = nil
 		# Get transactions by category
@@ -164,6 +157,16 @@ class ReportsController < ApplicationController
 		category_groups = Hash.new
 
 		@transaction_groups.each do |transaction_group|
+
+			if transaction_group.category_type == nil
+				transaction_group.category_type = "Expense"
+			end
+
+			amount = transaction_group.amount
+			if transaction_group.category_type == "Expense" || transaction_group.category_type == "Asset"
+				amount = transaction_group.amount * -1
+			end
+
 			category_id = transaction_group.category_id
 			if !category_groups.has_key?( category_id )
 				category_groups[ category_id ] = Hash[
@@ -177,15 +180,36 @@ class ReportsController < ApplicationController
 			end
 			category_groups[ category_id ]["values"] << Hash[
 				"month" => transaction_group.month,
-				"amount" => transaction_group.amount
+				"amount" => amount
 			]
 			category_groups[ category_id ]["count"] += transaction_group.count
-			category_groups[ category_id ]["total"] += transaction_group.amount
+			category_groups[ category_id ]["total"] += amount
 
 		end
 
-		@cats = category_groups.values
+		# fill out the each category group with months
+		# for which there were not transactions
+		active_months = (1..@total_months)
+		category_groups.each do |cg_key, cg_value|
 
+			# get an array of all active months
+			months = active_months.to_a
+
+			# subtract in-use months from the active months array
+			cg_value["values"].each do |cat_month_value|
+				months.delete(cat_month_value["month"])
+			end
+
+			# add any months that have no transactions
+			months.each do |m|
+				cg_value["values"] << Hash[
+						"month" => m,
+						"amount" => 0
+				]
+			end
+		end
+		
+		@cats = category_groups.values
 
 		respond_to do |format|
 			format.html #category.html.erb
