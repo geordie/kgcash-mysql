@@ -14,7 +14,11 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
+    # Get user
+    @user = current_user
+    if @user == nil 
+      @user = User.last
+    end 
 
     respond_to do |format|
       format.html # show.html.erb
@@ -45,7 +49,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to(:users, :notice => 'User was successfully created.') }
+        format.html { redirect_to :action => "show", :id => @user, :notice => 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
