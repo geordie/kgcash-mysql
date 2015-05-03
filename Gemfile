@@ -8,7 +8,6 @@ gem 'rails', '3.2.13'
 
 gem 'mysql2'
 gem 'sorcery'
-# gem 'd3-rails'
 gem 'doorkeeper', '~> 0.6.2'
 gem 'json', '~>1.7.7'
 gem 'execjs'
