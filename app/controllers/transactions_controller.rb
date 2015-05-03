@@ -98,7 +98,9 @@ class TransactionsController < ApplicationController
 	end
 
 	def update
-		@transaction = Transaction.find(params[:id])
+
+		user = current_user
+		@transaction = user.transactions.find(params[:id])
 
 		respond_to do |format|
 			if @transaction.update_attributes(params[:transaction])
