@@ -14,8 +14,8 @@
 
 var category_totals = <%= j @category_groups.to_json.html_safe %>;
 
-var cat_expenses = category_totals['Expense'];
-var cat_income = category_totals['Income'];
+var cat_expenses = amountify( category_totals['Expense'] );
+var cat_income = amountify( category_totals['Income'] );
 var totalIncome = category_totals['total_income'];
 var totalExpense = category_totals['total_expenses'];
 
@@ -24,6 +24,22 @@ buildPie( cat_expenses, totalExpense, "#divLeft", "Expense", undefined, 500 );
 buildPie( cat_income, totalIncome, "#divRight", "Income", undefined, 500 );
 
 buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
+
+function amountify( data )
+{
+	for( row in data )
+	{
+		if( data[row].category_type == 'Expense')
+		{
+			data[row].amount = data[row].debit - data[row].credit;
+		}
+		else
+		{
+			data[row].amount = data[row].credit - data[row].debit;
+		}
+	}
+	return data;
+}
 
 </script>
 
@@ -61,11 +77,17 @@ buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
 		var newData = [];
 		for( row of data )
 		{
+			newValue = row["credit"] - row["debit"];
+			if( row["category_type"] == "Expense" || row["category_type"] == "Asset")
+			{
+				newValue = row["debit"] - row["credit"];
+			}
+
 			newData.push({category_id: row["category_id"],
 				category_name: row["category_name"],
 				category_type: row["category_type"],
 				data_type: "actual",
-				value: row["amount"]
+				value: newValue
 			});
 
 			newData.push({category_id: row["category_id"],

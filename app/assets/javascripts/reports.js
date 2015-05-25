@@ -27,7 +27,7 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 		.attr("transform", "translate(" + (width/2) + "," + ( (heightTitle+height)/2)  + ")");
 
 	category_amounts.forEach(function(d) {
-		d.amount = +d.amount;
+		d.amount =+ d.amount;
 	});
 
 	var g = pieChart.selectAll(".arc")

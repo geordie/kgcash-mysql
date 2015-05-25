@@ -39,14 +39,14 @@ class ReportsController < ApplicationController
 		if @month.nil?
 			transaction_groups = @user.transactions
 				.in_account(@account)
-				.select('category_id, SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type')
+				.select('category_id, SUM(transactions.credit) as credit, SUM(transactions.debit) as debit, categories.name AS category_name, categories.cat_type as category_type')
 				.joins(:category)
 				.group('categories.id')
 				.in_year( @year)
 		else
 			transaction_groups = @user.transactions
 				.in_account(@account)
-				.select('category_id, SUM(transactions.credit) - SUM(transactions.debit) as amount, categories.name AS category_name, categories.cat_type as category_type')
+				.select('category_id, SUM(transactions.credit) as credit, SUM(transactions.debit) as debit, categories.name AS category_name, categories.cat_type as category_type')
 				.joins(:category)
 				.group('categories.id')
 				.in_month_year( @month, @year)
@@ -57,24 +57,37 @@ class ReportsController < ApplicationController
 		category_undefined = Array.new
 		category_savings = Array.new
 
-		total_income = 0
-		total_expenses = 0
-		total_savings = 0
-		total_undefined = 0
+		income_credit = 0
+		income_debit = 0
+		expenses_credit = 0
+		expenses_debit = 0
+		savings_credit = 0
+		savings_debit = 0
+		undefined_credit = 0
+		undefined_debit = 0
 
 		transaction_groups.each do |transaction_group|
+
 			if transaction_group.category_name == "Not defined"
 				category_undefined << transaction_group
-				total_undefined += transaction_group.amount
-			elsif transaction_group.amount > 0
+				undefined_credit += transaction_group.credit
+				undefined_debit += transaction_group.debit
+
+			elsif (transaction_group.credit - transaction_group.debit) > 0
 				category_income << transaction_group
-				total_income += transaction_group.amount
+				income_credit += transaction_group.credit
+				income_debit += transaction_group.debit
+
 			elsif transaction_group.category_type == "Asset"
 				category_savings << transaction_group
-				total_savings += transaction_group.amount * -1
+				savings_credit += transaction_group.credit
+				savings_debit += transaction_group.debit
+
 			else
 				category_expenses << transaction_group
-				total_expenses += transaction_group.amount * -1
+				expenses_credit += transaction_group.credit
+				expenses_debit += transaction_group.debit
+
 			end
 
 			# Splice in the budgeted amount
@@ -88,14 +101,11 @@ class ReportsController < ApplicationController
 				transaction_group.category_type = "Expense"
 			end
 
-			if transaction_group.category_type == "Expense" || transaction_group.category_type == "Asset"
-				transaction_group.amount = transaction_group.amount * -1
-			end
 		end
 
 		@category_groups = Hash[
-			"total_income" => total_income,
-			"total_expenses" => total_expenses,
+			"total_income" => income_credit - income_debit,
+			"total_expenses" => expenses_debit - expenses_credit,
 			"Income" => category_income,
 			"Expense" => category_expenses,
 			"Asset" => category_savings,
