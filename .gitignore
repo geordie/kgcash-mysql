@@ -10,3 +10,4 @@ vagrant/Vagrantfile_old
 vagrant/.vagrant*
 .idea
 kgcash.iml
+config/database.yml
