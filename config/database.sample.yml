@@ -1,0 +1,27 @@
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+development:
+adapter: mysql2
+database: kgcash_dev
+username: [DB_USERNAME_DEV]
+password: [DB_PASSWORD_DEV]
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+adapter: mysql2
+database: kgcash_test
+username: [DB_USERNAME_TEST]
+password: [DB_PASSWORD_TEST]
+
+production:
+adapter: mysql2
+encoding: utf8
+database: [DB_NAME]
+username: [DB_USERNAME_PROD]
+password: [DB_PASSWORD_PROD]
+host: [DNS_HOSTNAME_FOR_PRODUCTION_DB_HOST]
