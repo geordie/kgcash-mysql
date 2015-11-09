@@ -1,11 +1,11 @@
 class CreateTransactions < ActiveRecord::Migration
   def change
     create_table :transactions do |t|
-      t.string :hash
+      t.string :tx_hash
       t.datetime :tx_date
       t.decimal  :debit,       :precision => 12, :scale => 2
       t.decimal  :credit,      :precision => 12, :scale => 2
-      t.string :type
+      t.string :tx_type
       t.string :details
       t.string :notes
       t.references :category
