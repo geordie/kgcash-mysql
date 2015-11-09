@@ -2,14 +2,14 @@ require 'digest/md5'
 require 'doorkeeper'
 
 class Transaction < ActiveRecord::Base
-  
+
   validates_uniqueness_of :tx_hash
   validates_presence_of :tx_date
-  
+
   belongs_to :category
   belongs_to :user
   belongs_to :account
-  
+
   before_save :ensure_hash
 
   before_validation :ensure_hash
@@ -19,9 +19,9 @@ class Transaction < ActiveRecord::Base
   default_scope order('tx_date DESC')
 
   scope :in_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
-  
-  scope :in_month_year, lambda { |month, year| where( 'tx_date >= ? AND tx_date < ?', 
-          Date.new(year,month,1), 
+
+  scope :in_month_year, lambda { |month, year| where( 'tx_date >= ? AND tx_date < ?',
+          Date.new(year,month,1),
           month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1) )
     }
 
@@ -38,7 +38,7 @@ class Transaction < ActiveRecord::Base
   scope :by_months_in_year, lambda{ |year| in_year(year).select("MONTH(tx_date) as month, SUM(debit) as debit, SUM(credit) as credit").group( "MONTH(tx_date)") }
 
   scope :by_days_in_month, lambda{ |month, year| in_month_year(month,year).select("DAY(tx_date) as day, SUM(debit) as debit, SUM(credit) as credit").group("DAY(tx_date)")}
-  
+
   def ensure_hash
 
     if self.tx_hash.to_s == ''
@@ -48,9 +48,9 @@ class Transaction < ActiveRecord::Base
   end
 
   def build_hash
-    return Digest::MD5.hexdigest( self.tx_date.to_s + 
-        (self.details or '')  + 
-        (self.debit.to_s or '') + 
+    return Digest::MD5.hexdigest( self.tx_date.to_s +
+        (self.details or '')  +
+        (self.debit.to_s or '') +
         (self.credit.to_s or '') )
   end
 
