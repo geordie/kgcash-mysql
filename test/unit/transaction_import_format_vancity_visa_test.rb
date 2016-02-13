@@ -8,7 +8,7 @@ class TransactionImportFormatVancityTester < ActiveSupport::TestCase
 		@transaction = @transactionFormatter.buildTransaction( @csvLine, 1 )
 		assert_equal 'RESORT RESERVATIONS WHIST BURNABY BC', @transaction.details, "Incorrect transaction details: #{@transaction.details}"
 		assert_equal 0, @transaction.credit, "Incorrect transaction credit amount: #{@transaction.credit}"
-		assert_equal -178.08, @transaction.debit, "Incorrect transaction debit amount: #{@transaction.debit}"
+		assert_equal 178.08, @transaction.debit, "Incorrect transaction debit amount: #{@transaction.debit}"
 	end
 
 	test "Correct parsing of a standard Vancity Visa CSV credit item" do
