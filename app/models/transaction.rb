@@ -29,7 +29,7 @@ class Transaction < ActiveRecord::Base
 
   scope :in_account, lambda { |account_id| where("account_id = ?", account_id) unless account_id.nil? }
 
-  scope :in_range, lambda { |min, max| where("(debit >= ? AND debit <= ?) OR (credit >= ? AND credit <= ?)",
+  scope :in_range, lambda { |min, max| where("((debit >= ? AND debit <= ?) OR debit IS NULL) OR (credit >= ? AND credit <= ?)",
           min == 0 ? -10000000 : min,
           max == 0 ? 10000000 : max,
           min == 0 ? -10000000 : min,
