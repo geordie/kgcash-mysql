@@ -3,22 +3,21 @@ class TransactionsController < ApplicationController
 	doorkeeper_for :all, :if => lambda { current_user.nil? && request.format.json? }
 
 	helper_method :sort_column, :sort_direction
-	
+
 	def index
 
 		@user = current_user
-		if @user == nil 
+		if @user == nil
 			@user = User.last
-		end 
+		end
 
-		time = Time.new
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
-		@year = params.has_key?(:year) ? params[:year].to_i : time.year
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 		@min = params.has_key?(:min) ? params[:min].to_f : 0
 		@max = params.has_key?(:max) ? params[:max].to_f : 0
 
 		@category = params.has_key?(:category) ? params[:category].to_i : nil
-		if @category && @category < 1 
+		if @category && @category < 1
 			@category = nil
 		end
 
@@ -53,7 +52,7 @@ class TransactionsController < ApplicationController
 
 		respond_to do |format|
 			format.html #index.html.erb
-			format.json { transactions }
+			format.json { @transactions }
 			format.csv {}
 		end
 	end
@@ -61,9 +60,9 @@ class TransactionsController < ApplicationController
 	def show
 
 		@user = current_user
-		if @user == nil 
+		if @user == nil
 			@user = User.last
-		end 
+		end
 		@transaction = @user.transactions.find(params[:id])
 
 		respond_to do |format|
@@ -81,9 +80,9 @@ class TransactionsController < ApplicationController
 
 	def create
 		@user = current_user
-		if @user == nil 
+		if @user == nil
 			@user = User.last
-		end 
+		end
 		@transaction = @user.transactions.create(params[:transaction])
 
 		respond_to do |format|
@@ -119,7 +118,7 @@ class TransactionsController < ApplicationController
 		@user = current_user
 		@dateTx = DateTime.now
 		@transaction = Transaction.new
-		@transaction.tx_date = @dateTx 
+		@transaction.tx_date = @dateTx
 		@transaction.posting_date = @dateTx
 		@categories = @user.category_selector
 		@accounts = @user.account_selector
