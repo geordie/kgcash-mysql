@@ -12,12 +12,12 @@ describe "Transactions" do
 
     it "should add a transaction via REST" do
       #TODO - Post a transaction via JSON
-      
+
       #page.driver.post(user_sessions_url, { username: user, password: password})
 
       #site = RestClient::Resource.new('http://localhost:3000')
       #response = site['user_sessions/new'].post :params => {:username => 'admin', :password => 'admin'}
-      
+
       #response = site['transactions'].get
       #puts response
 
@@ -32,7 +32,7 @@ describe "Transactions" do
       #response.code eql 200
     end
   end
-  
+
 end
 
 feature 'OAuth - manage transactions' do
@@ -44,7 +44,7 @@ feature 'OAuth - manage transactions' do
       b.request :url_encoded
       b.adapter :rack, Rails.application
     end
-    
+
     token = client.password.get_token(user.username, "admin")
     token.should_not be_expired
   end
@@ -54,11 +54,11 @@ feature 'OAuth - manage transactions' do
       b.request :url_encoded
       b.adapter :rack, Rails.application
     end
-    
+
     token = client.password.get_token(user.username, "admin")
     response = token.get("/transactions");
     #puts response.body
-    response.status.should == 200 
+    response.status.should == 200
   end
 
 
@@ -67,12 +67,12 @@ feature 'OAuth - manage transactions' do
       b.request :url_encoded
       b.adapter :rack, Rails.application
     end
-    
+
     token = client.password.get_token(user.username, "admin")
     data = {:transaction => {:tx_date => "2012-12-11T06:16:14Z", :debit => 123.23, :credit => 340.22}}
 
     response = token.post("/transactions.json", :body=>data);
-    response.status.should == 201 
+    response.status.should == 201
   end
 
   scenario 'Can''t post two transactions with same hash' do
@@ -80,14 +80,14 @@ feature 'OAuth - manage transactions' do
       b.request :url_encoded
       b.adapter :rack, Rails.application
     end
-    
+
     token = client.password.get_token(user.username, "admin")
     data = {:transaction => {:tx_date => "2012-12-11T06:15:14Z", :debit => 123.23, :credit => 340.22}}
 
     response = token.post("/transactions.json", :body=>data);
-    response.status.should == 201 
+    response.status.should == 201
 
-    expect { token.post("/transactions.json", :body=>data) }.to raise_error( ActiveRecord::RecordNotUnique )
+    expect { token.post("/transactions.json", :body=>data) }.to raise_error( OAuth2::Error )
 
   end
 
