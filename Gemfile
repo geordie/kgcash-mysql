@@ -26,6 +26,8 @@ end
 gem 'jquery-rails'
 gem 'best_in_place'
 
+gem 'gon'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

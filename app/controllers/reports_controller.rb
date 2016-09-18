@@ -1,14 +1,14 @@
 class ReportsController < ApplicationController
-	 
-	doorkeeper_for :all, :if => lambda { current_user.nil? && request.format.json? } 
-	
+
+	doorkeeper_for :all, :if => lambda { current_user.nil? && request.format.json? }
+
 	def index
 
 		# Get user
 		@user = current_user
-		if @user == nil 
+		if @user == nil
 			@user = User.last
-		end 
+		end
 
 		# Get budget
 		@budget_categories = @user.budgets[0].budget_categories
@@ -16,7 +16,7 @@ class ReportsController < ApplicationController
 		# Set date range
 		#TODO - Enable filtering by date range
 		time = Time.new
-		@month = params.has_key?(:month) ? params[:month].to_i : nil
+		month = params.has_key?(:month) ? params[:month].to_i : nil
 		@year = params.has_key?(:year) ? params[:year].to_i : time.year
 
 		@account = params.has_key?(:account) ? params[:account].to_i : nil
@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
 			@account = nil
 		end
 
-		if @month.nil?
+		if month.nil?
 			@months = time.month
 			budgeted_amount_multiplier = time.year == @year ? @months : 12
 			@budget_categories.each do |bud_cat|
@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
 
 		transaction_groups = nil
 		# Get transactions by category
-		if @month.nil?
+		if month.nil?
 			transaction_groups = @user.transactions
 				.in_account(@account)
 				.select('category_id, SUM(transactions.credit) as credit, SUM(transactions.debit) as debit, categories.name AS category_name, categories.cat_type as category_type')
@@ -49,7 +49,7 @@ class ReportsController < ApplicationController
 				.select('category_id, SUM(transactions.credit) as credit, SUM(transactions.debit) as debit, categories.name AS category_name, categories.cat_type as category_type')
 				.joins(:category)
 				.group('categories.id')
-				.in_month_year( @month, @year)
+				.in_month_year( month, @year)
 		end
 
 		category_income = Array.new
@@ -118,9 +118,16 @@ class ReportsController < ApplicationController
 	end
 
 	def category
+
+		# Get week specified
+		today = Date.today
+		year = params.has_key?(:year) ? params[:year].to_i : today.year
+		week = params.has_key?(:week) ? params[:week].to_i :
+			(year < today.year ? Date.new( year, 12, 31).cweek : [1, today.cweek - 1].max)
+
 		# Get user
 		@user = current_user
-		if @user == nil 
+		if @user == nil
 			@user = User.last
 		end
 
@@ -130,8 +137,6 @@ class ReportsController < ApplicationController
 		# Set date range
 		#TODO - Enable filtering by date range
 		time = Time.new
-		@month = params.has_key?(:month) ? params[:month].to_i : nil
-		@year = params.has_key?(:year) ? params[:year].to_i : time.year
 
 		@account = params.has_key?(:account) ? params[:account].to_i : nil
 		if @account && @account < 1
@@ -139,30 +144,19 @@ class ReportsController < ApplicationController
 		end
 
 		@months = time.month
-		@total_months = time.year == @year ? @months : 12
+		@total_months = time.year == year ? @months : 12
 
 		@transaction_groups = nil
 		# Get transactions by category
-		if @month.nil?
-			@transaction_groups = @user.transactions
-				.in_account(@account)
-				.select('category_id, count(transactions.debit) as count, 
-					month(transactions.tx_date) as month, 
-					SUM(transactions.credit) - SUM(transactions.debit) as amount,
-					categories.name AS category_name, categories.cat_type as category_type')
-				.joins(:category)
-				.group('categories.id, month(transactions.tx_date)')
-				.in_year( @year)
-		else
-			@transaction_groups = @user.transactions
-				.in_account(@account)
-				.select('category_id, count(transactions.debit) as count,
-					SUM(transactions.credit) - SUM(transactions.debit) as amount,
-					categories.name AS category_name, categories.cat_type as category_type')
-				.joins(:category)
-				.group('categories.id')
-				.in_month_year( @month, @year)
-		end
+		@transaction_groups = @user.transactions
+			.in_account(@account)
+			.select('category_id, count(transactions.debit) as count,
+				month(transactions.tx_date) as month,
+				SUM(transactions.credit) - SUM(transactions.debit) as amount,
+				categories.name AS category_name, categories.cat_type as category_type')
+			.joins(:category)
+			.group('categories.id, month(transactions.tx_date)')
+			.in_year( year)
 
 		category_groups = Hash.new
 
@@ -218,7 +212,7 @@ class ReportsController < ApplicationController
 				]
 			end
 		end
-		
+
 		@cats = category_groups.values
 
 		respond_to do |format|
