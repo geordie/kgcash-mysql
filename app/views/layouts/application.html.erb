@@ -3,6 +3,7 @@
   <head>
     <title>kgcash</title>
       <% #TODO Datepicker stylesheet needs to be local and better. Also better jquery identifier in application.js %>
+      <%= include_gon(:init => true) %>
       <%= stylesheet_link_tag "application" %>
       <%= javascript_include_tag "application" %>
       <%= csrf_meta_tags %>
@@ -27,7 +28,7 @@
       <ul class="nav navbar-nav">
         <li class="divider-vertical"></li>
         <% if current_user %>
-          
+
           <li><%= link_to 'Accounts', accounts_path %> </li>
 
           <li class="dropdown">
@@ -82,7 +83,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="infobox"></div>
   </body>
 </html>
