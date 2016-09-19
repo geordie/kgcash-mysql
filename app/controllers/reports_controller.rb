@@ -122,8 +122,6 @@ class ReportsController < ApplicationController
 		# Get week specified
 		today = Date.today
 		year = params.has_key?(:year) ? params[:year].to_i : today.year
-		week = params.has_key?(:week) ? params[:week].to_i :
-			(year < today.year ? Date.new( year, 12, 31).cweek : [1, today.cweek - 1].max)
 
 		# Get user
 		@user = current_user
