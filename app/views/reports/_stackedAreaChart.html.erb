@@ -10,53 +10,14 @@
 </div>
 
 <script>
-var data = [
-	{
-	  "key" : "North America" ,
-	  "values" : [ [ 10 , 23.041422681023] , [ 20 , 19.854291255832] , [ 30 , 21.02286281168] , [ 40 , 22.093608385173] , [ 50 , 25.108079299458] ]
-	},
-
-	{
-	  "key" : "Africa" ,
-	  "values" : [ [ 10 , 7.9356392949025] , [ 20 , 7.4514668527298] , [ 30 , 7.9085410566608] , [ 40 , 5.8996782364764] , [ 50 , 6.0591869346923] ]
-	},
-
-	{
-	  "key" : "South America" ,
-	  "values" : [ [ 10 , 7.9149900245423] , [ 20 , 7.0899888751059] , [ 30 , 7.5996132380614] , [ 40 , 8.2741174301034] , [ 50 , 9.3564460833513] ]
-	},
-
-	{
-	  "key" : "Asia" ,
-	  "values" : [ [ 10 , 13.153938631352] , [ 20 , 12.456410521864] , [ 30 , 12.537048663919] , [ 40 , 13.947386398309] , [ 50 , 14.421680682568] ]
-	} ,
-
-	{
-	  "key" : "Europe" ,
-	  "values" : [ [ 10 , 9.3433263069351] , [ 20 , 8.4583069475546] , [ 30 , 8.0342398154196] , [ 40 , 8.1538966876572] , [ 50 , 10.743604786849] ]
-	} ,
-
-	{
-	  "key" : "Australia" ,
-	  "values" : [ [ 10 , 5.1162447683392] , [ 20 , 4.2022848306513] , [ 30 , 4.3543715758736] , [ 40 , 5.4641223667245] , [ 50 , 6.0041275884577] ]
-	} ,
-
-	{
-	  "key" : "Antarctica" ,
-	  "values" : [ [ 10 , 1.3503144674343] , [ 20 , 1.2232741112434] , [ 30 , 1.3930470790784] , [ 40 , 1.2631275030593] , [ 50 , 1.5842699103708] ]
-	}
-
-];
-
 
 	function buildStackedAreaChart()
 	{
 		var domId = "<%= local_assigns[:domId] ? "#" + domId : "#chartStacked" %>";
-		//var chartDataIndex = <%= local_assigns[:chartDataIndex] ? chartDataIndex : 0 %>;
+		var chartDataIndex = <%= local_assigns[:chartDataIndex] ? chartDataIndex : 0 %>;
 
-		// var teams = gon.stacked1[chartDataIndex];
+		var teams = gon.stacked1[chartDataIndex];
 
-		teams = data;
 		var height = 550;
 
 		nv.addGraph(function() {
