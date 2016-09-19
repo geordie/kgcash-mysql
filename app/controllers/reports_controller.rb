@@ -159,8 +159,11 @@ class ReportsController < ApplicationController
 		######################
 		# This section build for NVD3 stacked bar chart
 
-		category_array_expenses = build_nvd3_array( @transaction_groups, [nil,"Expense"])
-		category_array_income = build_nvd3_array( @transaction_groups, ["Income"])
+		category_array_expenses, @average_expense =
+			build_nvd3_array( @transaction_groups, [nil,"Expense"], @total_months, method(:negative) )
+
+		category_array_income, @average_income =
+			build_nvd3_array( @transaction_groups, ["Income"], @total_months, method(:identity))
 
 		gon.stacked1 = Array.new(1,category_array_expenses)
 		gon.stacked1.push(category_array_income)
@@ -236,24 +239,35 @@ class ReportsController < ApplicationController
 	end
 
 	private
-	def build_nvd3_array( transaction_group, account_types)
+	def build_nvd3_array( transaction_group, account_types, months, method_amount)
 		category_hash = Hash.new()
 
 		transaction_group.each do |tg|
+
+			# Ensure transaction group is for a category whose type we're interested in
 			next if !account_types.include? tg.category_type
 
+			# Add a hash entry of a zeroed array if it doesn't already exist
 			if !category_hash.key?(tg.category_name)
-				category_hash[tg.category_name] = Array.new(12,0)
+				category_hash[tg.category_name] = Array.new(months,0)
 			end
+
+			# Fill in the category amount for the month in the transaction group
 			category_hash[tg.category_name][tg.month-1]=tg.amount
 		end
 
+		monthly_spend_array = Array.new(months,0)
 		category_array = Array.new()
+
 		category_hash.each do |k, v|
-			array_category_monthly_values = Array.new(12)
+
+			array_category_monthly_values = Array.new(months)
 			v.each_with_index do |item, item_index|
-				array_category_monthly_values[item_index] = [item_index+1,item.to_i.abs]
+				array_category_monthly_values[item_index] = [item_index+1, method_amount.call(item.to_i)]
+				monthly_spend_array[item_index] += method_amount.call(item.to_i)
 			end
+
+			# Build the NVD3 expected data structure
 			category_hash_nvd3 = Hash.new()
 			category_hash_nvd3["key"] = k
 			category_hash_nvd3["values"] = array_category_monthly_values
@@ -261,7 +275,21 @@ class ReportsController < ApplicationController
 			category_array.push(category_hash_nvd3)
 		end
 
-		return category_array
+		total_spend = 0
+		monthly_spend_array.each do |monthly_spend|
+			total_spend += monthly_spend
+		end
+		average_spend = (total_spend/monthly_spend_array.size)
 
+		return category_array, average_spend
+
+	end
+
+	def negative( amount )
+		amount * -1
+	end
+
+	def identity( amount )
+		amount
 	end
 end
