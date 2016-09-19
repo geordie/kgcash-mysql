@@ -184,6 +184,9 @@ class ReportsController < ApplicationController
 
 		gon.stacked1 = Array.new(1,category_array)
 
+		# End NVD3 section
+		######################
+
 		######################
 		# This section builds for Dimple per category bar charts
 
