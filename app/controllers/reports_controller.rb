@@ -159,31 +159,15 @@ class ReportsController < ApplicationController
 		######################
 		# This section build for NVD3 stacked bar chart
 
-		category_hash = Hash.new()
-		@transaction_groups.each do |tg|
-			if !category_hash.key?(tg.category_name)
-				category_hash[tg.category_name] = Array.new(12,0)
-			end
-			category_hash[tg.category_name][tg.month-1]=tg.amount
-		end
+		category_array_expenses = build_nvd3_array( @transaction_groups, [nil,"Expense"])
+		category_array_income = build_nvd3_array( @transaction_groups, ["Income"])
 
-		category_array = Array.new()
-		category_hash.each do |k, v|
-			array_category_monthly_values = Array.new(12)
-			v.each_with_index do |item, item_index|
-				array_category_monthly_values[item_index] = [item_index+1,item.to_i.abs]
-			end
-			category_hash_nvd3 = Hash.new()
-			category_hash_nvd3["key"] = k
-			category_hash_nvd3["values"] = array_category_monthly_values
-
-			category_array.push(category_hash_nvd3)
-		end
-
-		gon.stacked1 = Array.new(1,category_array)
+		gon.stacked1 = Array.new(1,category_array_expenses)
+		gon.stacked1.push(category_array_income)
 
 		# End NVD3 section
 		######################
+
 
 		######################
 		# This section builds for Dimple per category bar charts
@@ -251,4 +235,33 @@ class ReportsController < ApplicationController
 		end
 	end
 
+	private
+	def build_nvd3_array( transaction_group, account_types)
+		category_hash = Hash.new()
+
+		transaction_group.each do |tg|
+			next if !account_types.include? tg.category_type
+
+			if !category_hash.key?(tg.category_name)
+				category_hash[tg.category_name] = Array.new(12,0)
+			end
+			category_hash[tg.category_name][tg.month-1]=tg.amount
+		end
+
+		category_array = Array.new()
+		category_hash.each do |k, v|
+			array_category_monthly_values = Array.new(12)
+			v.each_with_index do |item, item_index|
+				array_category_monthly_values[item_index] = [item_index+1,item.to_i.abs]
+			end
+			category_hash_nvd3 = Hash.new()
+			category_hash_nvd3["key"] = k
+			category_hash_nvd3["values"] = array_category_monthly_values
+
+			category_array.push(category_hash_nvd3)
+		end
+
+		return category_array
+
+	end
 end

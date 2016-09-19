@@ -4,8 +4,16 @@
 	:locals =>
 		{
 			:title => "Monthly Expenses",
-			:domId => "stackedAreaChart_EffortByObjectiveOverTime",
+			:domId => "stackedAreaChart_Expenses",
 			:chartDataIndex => 0
+		}) %>
+
+<%= render(:partial => "stackedAreaChart",
+	:locals =>
+		{
+			:title => "Monthly Income",
+			:domId => "stackedAreaChart_Income",
+			:chartDataIndex => 1
 		}) %>
 
 <div id="chartContainer">
