@@ -5,7 +5,8 @@
 		{
 			:title => "Monthly Expenses",
 			:domId => "stackedAreaChart_Expenses",
-			:chartDataIndex => 0
+			:chartDataIndex => 0,
+			:average => @average_expense
 		}) %>
 
 <%= render(:partial => "stackedAreaChart",
@@ -13,7 +14,8 @@
 		{
 			:title => "Monthly Income",
 			:domId => "stackedAreaChart_Income",
-			:chartDataIndex => 1
+			:chartDataIndex => 1,
+			:average => @average_income
 		}) %>
 
 <div id="chartContainer">
