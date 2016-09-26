@@ -18,6 +18,15 @@
 			:average => @average_income
 		}) %>
 
+<%= render(:partial => "stackedAreaChart",
+	:locals =>
+		{
+			:title => "Monthly Savings",
+			:domId => "stackedAreaChart_Savings",
+			:chartDataIndex => 2,
+			:average => @average_savings
+		}) %>
+
 <div id="chartContainer">
 	<script>
 

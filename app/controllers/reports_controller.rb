@@ -165,8 +165,12 @@ class ReportsController < ApplicationController
 		category_array_income, @average_income =
 			build_nvd3_array( @transaction_groups, ["Income"], @total_months, method(:identity))
 
+		category_array_savings, @average_savings =
+			build_nvd3_array( @transaction_groups, ["Asset"], @total_months, method(:identity))
+
 		gon.stacked1 = Array.new(1,category_array_expenses)
 		gon.stacked1.push(category_array_income)
+		gon.stacked1.push(category_array_savings)
 
 		# End NVD3 section
 		######################
