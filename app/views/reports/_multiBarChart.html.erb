@@ -24,7 +24,9 @@
 		var height = 550;
 
 		nv.addGraph(function() {
-			var chart = nv.models.stackedAreaChart()
+			var chart = nv.models.multiBarChart()
+				.stacked(true)
+				.showControls(false)
 				.x(function(d) { return d[0] })
 				.y(function(d) { return d[1] })
 				//.margin({"left":0,"right":0,"top":0,"bottom":0})
@@ -48,8 +50,7 @@
 
 			nv.utils.windowResize(chart.update);
 
-			chart.stacked.dispatch.on("areaClick", function(e) {console.log(e); console.log(d3.select(domId).data());});
-			chart.dispatch.on("stateChange",function(e){console.log("state change");console.log(e);});
+			chart.multibar.dispatch.on("elementClick", function(e) {console.log(e);})
 
 			return chart;
 		}, doSomething( domId, avg ));

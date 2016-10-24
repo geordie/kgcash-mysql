@@ -9,11 +9,11 @@
 			:average => @average_expense
 		}) %>
 
-<%= render(:partial => "stackedAreaChart",
+<%= render(:partial => "multiBarChart",
 	:locals =>
 		{
 			:title => "Monthly Income",
-			:domId => "stackedAreaChart_Income",
+			:domId => "multiBarChart_Income",
 			:chartDataIndex => 1,
 			:average => @average_income
 		}) %>
