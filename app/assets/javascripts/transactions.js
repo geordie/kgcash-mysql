@@ -1,5 +1,4 @@
 $(function (){
-	$('#transaction_tx_date').datepicker();
 
 	$('.delete_post').bind('ajax:success', function() {  
     	$(this).closest('tr').fadeOut();
@@ -13,10 +12,4 @@ $(function (){
 		var selectedValue = $(this)[0].value;
   		$(this).parents('form:first').submit();
 	});
-});
-
-jQuery(function() {
-  return $.datepicker.setDefaults({
-    dateFormat: "yy-mm-dd"
-  });
 });

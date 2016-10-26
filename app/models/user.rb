@@ -1,11 +1,11 @@
 class User < ActiveRecord::Base
 	authenticates_with_sorcery!
-	attr_accessible :username, :email, :password, :password_confirmation
-	attr_readonly :role
+	#attr_accessible :username, :email, :password, :password_confirmation
+	#:role
 
 	validates_length_of :password, :minimum => 5, :message => "password must be at least 5 characters long", :if => :password
 	validates_confirmation_of :password, :message => "should match confirmation", :if => :password
-	
+
 	has_many :budgets
 	has_many :transactions
 	has_many :categories
@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
 			rec = Array.new
 			rec.push cat.name
 			rec.push cat.id
-			results.push rec 
+			results.push rec
 		end
 		return results.sort
 	end
@@ -43,14 +43,14 @@ class User < ActiveRecord::Base
 			rec = Array.new
 			rec.push acct.name
 			rec.push acct.id
-			results.push rec 
+			results.push rec
 		end
 		return results.sort
 	end
 
 	def roles
 		result = :user
-		if !self.role.nil? 
+		if !self.role.nil?
 			result = self.role.to_sym
 		end
 		return result

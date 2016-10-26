@@ -1,7 +1,5 @@
 class ReportsController < ApplicationController
 
-	doorkeeper_for :all, :if => lambda { current_user.nil? && request.format.json? }
-
 	def index
 
 		# Get user
@@ -94,7 +92,7 @@ class ReportsController < ApplicationController
 			budget_category = @budget_categories.find{|item| item["category_id"] ==
 					transaction_group.category_id}
 
-			transaction_group["budget"] = budget_category.amount
+			transaction_group.budget = budget_category.amount
 
 			# Set a default category type
 			if transaction_group.category_type == nil
