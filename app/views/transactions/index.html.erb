@@ -53,21 +53,21 @@
 <% @txAmount = (transaction.credit.nil? ? 0 : transaction.credit) - (transaction.debit.nil? ? 0 : transaction.debit) %>
 <% @txAmountClass = @txAmount > 0 ? "credit" : "debit" %>
   <tr>
-	<td><%= best_in_place transaction, :tx_date, :type => :date, :display_as => :format_date %></td>
-	<td><%= form_for transaction, :remote => true do |f| %> 
+	<td><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
+	<td><%= form_for transaction, :remote => true do |f| %>
 			<%= f.select :account_id, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.account_id), {}, :class => 'transaction_update' %>
 		<% end %>
 	</td>
-	<td><%= best_in_place transaction, :details, :type => :textarea %></td>
+	<td><%= best_in_place transaction, :details, :as => :textarea %></td>
 	<td><%= best_in_place transaction, :notes%></td>
 	<td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
-	<td><%= form_for transaction, :remote => true do |f| %> 
+	<td><%= form_for transaction, :remote => true do |f| %>
 			<%= f.select :category_id, options_for_budget_categories(@budgetDefault, transaction.category_id), {}, :class => 'transaction_update' %>
 		<% end %>
 	</td>
 	<td><%= link_to 'Locate', transactions_path(:min=>@txAmount.abs,:max=>@txAmount.abs) %></td>
 	<td><%= link_to 'Show', transaction_path(transaction) %></td>
-	<td><%= link_to 'Delete', transaction_path(transaction), confirm: 'Are you sure?', method: :delete, remote: true, class: 'delete_post' %></td> 
+	<td><%= link_to 'Delete', transaction_path(transaction), data: {confirm: 'Are you sure?'}, method: :delete, remote: true, class: 'delete_post' %></td>
   </tr>
 <% end %>
 </table>

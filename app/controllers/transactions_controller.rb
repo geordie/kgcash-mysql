@@ -1,7 +1,5 @@
 class TransactionsController < ApplicationController
 
-	doorkeeper_for :all, :if => lambda { current_user.nil? && request.format.json? }
-
 	helper_method :sort_column, :sort_direction
 
 	def index
@@ -101,14 +99,18 @@ class TransactionsController < ApplicationController
 		user = current_user
 		@transaction = user.transactions.find(params[:id])
 
+		puts "(((((((((((((((((((((((())))))))))))))))))))))))"
+		puts params.to_json
+		puts "(((((((((((((((((((((((())))))))))))))))))))))))"
+
 		respond_to do |format|
-			if @transaction.update_attributes(params[:transaction])
-			format.html { redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
-			format.json { respond_with_bip(@transaction) }
-			format.js {render :nothing => true }
+			if @transaction.update_attributes(transaction_params)
+				format.html { redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
+				format.json { respond_with_bip(@transaction) }
+				format.js {render :nothing => true }
 			else
-			format.html { render action: "edit" }
-			format.json { render json: @transaction.errors, status: :unprocessable_entity }
+				format.html { render action: "edit" }
+				format.json { render json: @transaction.errors, status: :unprocessable_entity }
 			end
 		end
 	end
@@ -151,6 +153,11 @@ class TransactionsController < ApplicationController
 
 	def sort_direction
 		%w[asc desc].include?(params[:direction]) ?  params[:direction] : "desc"
+	end
+
+	def transaction_params
+		params.require(:transaction).permit(:account_id, :category_id, :credit, :debit, :details,
+			:notes, :posting_date, :tx_date, :tx_type)
 	end
 
 end
