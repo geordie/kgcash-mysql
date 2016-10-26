@@ -1,7 +1,5 @@
 Kgcash::Application.routes.draw do
 
-  use_doorkeeper
-
   get "static_pages/home"
 
 root :to => 'users#index'
@@ -28,8 +26,8 @@ resources :budgets do
   resources :budget_categories, :as => 'categories'
 end
 
-match 'login' => 'user_sessions#new', :as => :login
-match 'logout' => 'user_sessions#destroy', :as => :logout
+match 'login' => 'user_sessions#new', :as => :login, via: [:get, :post]
+match 'logout' => 'user_sessions#destroy', :as => :logout, via: [:get, :post]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
