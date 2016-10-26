@@ -5,8 +5,8 @@
 // the compiled file.
 //
 //= require jquery
-//= require jquery-ui
 //= require best_in_place
+//= require best_in_place.jquery-ui
 //= require jquery_ujs
 //= require_tree .
 //= require d3.min
