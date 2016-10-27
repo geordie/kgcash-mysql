@@ -4,8 +4,6 @@ ruby '1.9.3'
 gem 'thin'
 gem 'rails', '4.0.0'
 
-gem 'rails_12factor'
-
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
