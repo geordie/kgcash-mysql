@@ -1,7 +1,7 @@
----                                                                                                                  
+---
 - hosts: all
-  user: vagrant                                                                                                       
-  sudo: true                                                                                                         
+  user: vagrant
+  sudo: true
   sudo_user: root
 
   vars:
@@ -17,9 +17,16 @@
   - name: install ruby
     apt: pkg={{ item }} state=present update_cache=yes
     with_items:
-    - ruby1.9.3
+    - ruby2.0
+    - ruby2.0-dev
     - rubygems
     - ruby-switch
+
+  - name: Symlink exists for Ruby 2.0
+    file: src=/usr/bin/ruby2.0 dest=/usr/local/bin/ruby state=link
+
+  - name: Symlink exists for Ruby Gems 2.0
+    file: src=/usr/bin/gem2.0 dest=/usr/local/bin/gem state=link
 
   - name: apt-get update
     action: apt update-cache=yes
@@ -58,15 +65,15 @@
   #  sudo: yes
   - name: Start the MySQL service
     sudo: yes
-    service: 
-      name: mysql 
+    service:
+      name: mysql
       state: started
       enabled: true
   - name: update mysql root password for all root accounts
     sudo: yes
-    mysql_user: 
-      name: root 
-      host: "{{ item }}" 
+    mysql_user:
+      name: root
+      host: "{{ item }}"
       password: "{{ mysql_root_password }}"
       login_user: root
       login_password: "{{ mysql_root_password }}"
@@ -108,8 +115,8 @@
 #Need to run this to make tests runnable out of box: https://gist.github.com/turboladen/6790847
 
 - hosts: all
-  user: vagrant                                                                                                       
-  sudo: true                                                                                                         
+  user: vagrant
+  sudo: true
   sudo_user: root
 
   vars:
@@ -121,5 +128,3 @@
 
   - name: rake db:migrate
     command: chdir={{ kgcashdir }} rake db:migrate
-
-
