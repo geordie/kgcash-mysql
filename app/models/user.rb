@@ -27,11 +27,11 @@ class User < ActiveRecord::Base
 	end
 
 	def sortedCategories
-		return categories.sort!{|a,b| a.name.downcase <=> b.name.downcase }
+		return categories.to_a.sort!{|a,b| a.name.downcase <=> b.name.downcase }
 	end
 
 	def sortedAccounts
-		return accounts.sort!{|a,b| a.name.downcase <=> b.name.downcase }
+		return accounts.to_a.sort!{|a,b| a.name.downcase <=> b.name.downcase }
 	end
 
 	def account_selector
