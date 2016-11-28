@@ -17,7 +17,7 @@ class Transaction < ActiveRecord::Base
 
 	self.per_page = 50
 
-	default_scope order('tx_date DESC')
+	default_scope { order('tx_date DESC') }
 
 	scope :in_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
 
