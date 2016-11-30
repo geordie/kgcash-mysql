@@ -4,9 +4,9 @@ class UsersController < ApplicationController
 	# GET /users.json
 	def index
 		@users = Array(current_user)
-		if current_user.roles == :admin
-			@users = User.all
-		end
+		# if current_user.roles == :admin
+			# @users = User.all
+		# end
 
 		respond_to do |format|
 			format.html # index.html.erb
@@ -19,9 +19,9 @@ class UsersController < ApplicationController
 	def show
 		# Get user
 		@user = current_user
-		if current_user.roles == :admin
-			@user = User.find(params[:id])
-		end
+		# if current_user.roles == :admin
+			# @user = User.find(params[:id])
+		# end
 
 		respond_to do |format|
 			format.html # show.html.erb
@@ -43,9 +43,9 @@ class UsersController < ApplicationController
 	# GET /users/1/edit
 	def edit
 		@user = current_user
-		if current_user.roles == :admin
-			@user = User.find(params[:id])
-		end
+		# if current_user.roles == :admin
+			# @user = User.find(params[:id])
+		# end
 	end
 
 	# POST /users
