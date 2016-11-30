@@ -69,6 +69,8 @@ GEM
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.14)
+    figaro (1.1.1)
+      thor (~> 0.14)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     gon (6.1.0)
@@ -209,6 +211,7 @@ DEPENDENCIES
   coffee-rails
   execjs
   fabrication
+  figaro
   gon
   jquery-rails
   json (~> 1.8.2)

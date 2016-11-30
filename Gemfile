@@ -9,6 +9,7 @@ gem 'rails_12factor'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
+
 gem 'mysql2', '~> 0.3.18'
 gem 'sorcery'
 #gem 'doorkeeper'
@@ -17,6 +18,7 @@ gem 'execjs'
 gem 'rabl'
 gem 'oj'
 gem 'will_paginate', '~> 3.0'
+gem "figaro"
 
 # Gems used only for assets and not required
 # in production environments by default.
