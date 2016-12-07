@@ -16,6 +16,7 @@ gem 'sorcery'
 gem 'json', '~> 1.8.2'
 gem 'execjs'
 gem 'rabl'
+gem 'mechanize'
 gem 'oj'
 gem 'will_paginate', '~> 3.0'
 gem "figaro"
