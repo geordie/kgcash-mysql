@@ -4,6 +4,6 @@ class Budget < ActiveRecord::Base
   has_many :categories, :through => :budget_categories
 
   def sortedCategories
-  	return self.categories.sort!{|a,b| a.name.downcase <=> b.name.downcase }
+  	return self.categories.sort{|a,b| a.name.downcase <=> b.name.downcase }
   end
 end
