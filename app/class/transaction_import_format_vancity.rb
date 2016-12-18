@@ -71,6 +71,8 @@ class TransactionImportFormatVancity
 			@details = parts[parts.length-1]
 		end
 
+		@details.slice! "TOWN025"
+
 		# Build transaction category
 		cat = 27
 
