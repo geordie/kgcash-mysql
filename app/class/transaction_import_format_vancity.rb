@@ -14,7 +14,7 @@ class TransactionImportFormatVancity
 		"DIRECT DEPOSIT" =>  "Deposit"
 	}
 
-	$txCatDict = { "STONGS" => 2,
+	$txCatDict = { "STONG'S MARKET" => 2,
 		"CHEVRON" => 4,
 		"DIALOG" => 24,
 		"FORTISBC" => 3,
