@@ -91,14 +91,14 @@ class TransactionImportFormatVancity
 			:debit => debit,
 			:credit => credit,
 			:account_id => account_id,
-			:type => @type,
+			:tx_type => @type,
 			:details => @details
 			)
 
 		@transaction.category_id = cat
 
 		return @transaction
-		
+
 	end
 
 	def skip_first_line
