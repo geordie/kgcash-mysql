@@ -8,7 +8,6 @@ class TransactionImport
 
 	attr_accessor :file
 	attr_accessor :account_id
-	attr_accessor :import_format
 
 	def initialize(attributes = {})
 		unless attributes.nil?
@@ -20,7 +19,7 @@ class TransactionImport
 		false
 	end
 
-	def save( transaction_import_format )
+	def save
 
 		if account_id.nil?
 			errors.add :base, "Please select an account for the transactions being imported"
@@ -32,10 +31,9 @@ class TransactionImport
 			return false
 		end
 
-		if( transaction_import_format.nil? )
-			errors.add :base, "Please specify an import file format"
-			return false
-		end
+		account = Account.find(account_id)
+
+		transaction_import_format = TransactionImportFormat.buildImportFormat( account.account_type )
 
 		# Read file
 		contents = file.read
@@ -59,8 +57,6 @@ class TransactionImport
 					 errors.add :base, "Row #{idx+1}: #{message}"
 				end
 			end
-
-			
 		end
 		errors.count == 0
 	end
