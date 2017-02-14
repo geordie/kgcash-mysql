@@ -10,12 +10,15 @@ class TransactionImportFormat
 
 	def self.buildImportFormat( typeId )
 
-		if typeId == "2"
+		if typeId == "Vancity"
+			return TransactionImportFormatVancity.new
+		elsif typeId == "RBC Visa"
 			return TransactionImportFormatRbcVisa.new
-		elsif typeId == "3"
+		elsif typeId == "Vancity Visa"
 			return TransactionImportFormatVancityVisa.new
 		end
 
-		return TransactionImportFormatVancity.new
+		return nil
+		
 	end
 end
