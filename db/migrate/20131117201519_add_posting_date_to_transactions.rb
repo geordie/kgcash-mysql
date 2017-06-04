@@ -2,7 +2,7 @@ class AddPostingDateToTransactions < ActiveRecord::Migration
   def change
     add_column :transactions, :posting_date, :datetime
 
-    Transaction.find(:all).each do |tx|
+    Transaction.all.each do |tx|
     	tx.posting_date = tx.tx_date
     	tx.save();
     end
