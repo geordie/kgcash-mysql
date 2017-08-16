@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.3.3'
 
 gem 'thin'
-gem 'rails', '4.2.0'
+gem 'rails', '5.1.3'
 
 gem 'rails_12factor'
 
@@ -24,7 +24,7 @@ gem "figaro"
 # Gems used only for assets and not required
 # in production environments by default.
 #group :assets do
-gem 'railties', "~> 4.2.0"
+gem 'railties', "~> 5.1.3"
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
