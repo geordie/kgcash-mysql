@@ -1,4 +1,4 @@
-class AddPostingDateToTransactions < ActiveRecord::Migration
+class AddPostingDateToTransactions < ActiveRecord::Migration[4.2]
   def change
     add_column :transactions, :posting_date, :datetime
 

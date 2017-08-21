@@ -1,4 +1,4 @@
-class CreateBudgetCategories < ActiveRecord::Migration
+class CreateBudgetCategories < ActiveRecord::Migration[4.2]
   def change
     create_table :budget_categories do |t|
       t.decimal :amount
