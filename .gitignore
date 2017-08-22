@@ -14,3 +14,4 @@ kgcash-*.json
 
 # Ignore
 script/scrape.rb
+deploy.sh
