@@ -6,3 +6,9 @@ ADD Gemfile /kgcash/Gemfile
 ADD Gemfile.lock /kgcash/Gemfile.lock
 RUN bundle install
 ADD . /kgcash
+# Reset entrypoint to override base image.
+ENTRYPOINT []
+
+# Use foreman to start processes. $FORMATION will be set in the pod
+# manifest. Formations are defined in Procfile.
+CMD bundle exec foreman start --formation "$FORMATION"
