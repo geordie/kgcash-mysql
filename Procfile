@@ -1,1 +1,1 @@
-echo "web: bundle exec rails server thin -p \$PORT -e \$RACK_ENV"
+web: bundle exec rails server thin -p 8080 -e production
