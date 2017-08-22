@@ -1,16 +1,9 @@
 .bundle
-db/*.sqlite3
 log/*.log
 tmp/
 .sass-cache/
 .DS_Store
-txdump_prod.sql
-vagrant/package.box
-vagrant/Vagrantfile_old
-vagrant/.vagrant*
-.idea
-kgcash.iml
-config/database.yml
 
 # Ignore application configuration
 /config/application.yml
+config/database.yml
