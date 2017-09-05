@@ -21,9 +21,10 @@ module Kgcash
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
+    config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/app/class)
 
-	 config.serve_static_files = true
+    config.serve_static_files = true
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -57,5 +58,9 @@ module Kgcash
     #config.assets.compile = true
 
     config.assets.initialize_on_precompile = false
+
+    if Rails.env.development?
+      $stdout.sync = true
+    end
   end
 end
