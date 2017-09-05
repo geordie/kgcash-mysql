@@ -1,6 +1,7 @@
 Kgcash::Application.routes.draw do
-  
-root :to => 'static_pages#home'
+
+root :to => 'welcome#index', :constraints => UserRequiredConstraint.new
+root :to => 'static_pages#home', :constraints => NoUserRequiredConstraint.new, as: nil
 
 resources :categories
 
