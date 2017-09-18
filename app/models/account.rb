@@ -14,4 +14,8 @@ class Account < ActiveRecord::Base
 		(transactions.count / active_months).to_i
 	end
 
+	def self.expenses
+	 	self.where(account_type: "Expense").order(:name)
+ 	end
+
 end

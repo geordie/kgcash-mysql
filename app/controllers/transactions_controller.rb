@@ -26,7 +26,7 @@ class TransactionsController < ApplicationController
 
 		if @month.nil?
 			@transactions = @user.transactions
-				.select('*, (debit + credit) as amount')
+				.select('*, debit, credit, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_year(@year)
 				.in_range(@min,@max)
@@ -34,7 +34,7 @@ class TransactionsController < ApplicationController
 				.order(sort_column + ' ' + sort_direction)
 		else
 			@transactions = @user.transactions
-				.select('*, (debit + credit) as amount')
+				.select('*, debit, credit, (debit + credit) as amount')
 				.in_account(@account).in_category(@category)
 				.in_month_year(@month,@year)
 				.paginate(:page => params[:page])
@@ -105,9 +105,9 @@ class TransactionsController < ApplicationController
 
 		respond_to do |format|
 			if @transaction.update_attributes(transaction_params)
-				format.html { redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
+				format.html {  redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
 				format.json { respond_with_bip(@transaction) }
-				format.js {render :nothing => true }
+				format.js {render :nothing => true, :status => 200, :content_type => 'text/html' }
 			else
 				format.html { render action: "edit" }
 				format.json { render json: @transaction.errors, status: :unprocessable_entity }
@@ -157,7 +157,7 @@ class TransactionsController < ApplicationController
 
 	def transaction_params
 		params.require(:transaction).permit(:account_id, :category_id, :credit, :debit, :details,
-			:notes, :posting_date, :tx_date, :tx_type)
+			:notes, :posting_date, :tx_date, :tx_type, :acct_id_dr, :acct_id_cr)
 	end
 
 end
