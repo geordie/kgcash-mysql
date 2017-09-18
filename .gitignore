@@ -16,3 +16,4 @@ kgcash-*.json
 script/scrape.rb
 deploy.sh
 db/data.yml
+server.*
