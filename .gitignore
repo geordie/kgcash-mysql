@@ -15,5 +15,6 @@ kgcash-*.json
 # Ignore
 script/scrape.rb
 deploy.sh
+devdeploy.sh
 db/data.yml
 server.*
