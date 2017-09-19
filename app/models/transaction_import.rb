@@ -33,7 +33,7 @@ class TransactionImport
 
 		account = Account.find(account_id)
 
-		transaction_import_format = TransactionImportFormat.buildImportFormat( account.account_type )
+		transaction_import_format = TransactionImportFormat.buildImportFormat( account.import_class )
 
 		# Read file
 		contents = file.read
@@ -45,8 +45,6 @@ class TransactionImport
 			next if idx == 0 && transaction_import_format.skip_first_line
 
 			@transaction = transaction_import_format.buildTransaction( csvline, account_id )
-			
-			puts @transaction.to_s
 
 			if @transaction.nil?
 				# do nothing

@@ -40,8 +40,8 @@ class TransactionImportFormatVancity
 		sDate = date.strftime( '%y-%m-%d' )
 
 		# Get credit and debit amounts
-		debit = fields[4].length > 0 ? fields[4] : "0"
-		credit = (fields.length >= 6 && fields[5].length > 0) ? fields[5] : "0"
+		credit = fields[4].length > 0 ? fields[4] : nil
+		debit = (fields.length >= 6 && fields[5].length > 0) ? fields[5] : nil
 
 		# Parse the description into component parts
 		@description = fields[2]
@@ -90,14 +90,21 @@ class TransactionImportFormatVancity
 			:tx_date => date,
 			:posting_date => date,
 			:user_id => 1,
-			:debit => debit,
-			:credit => credit,
-			:account_id => account_id,
 			:tx_type => @type,
 			:details => @details
 			)
 
-		@transaction.category_id = cat
+		if !credit.nil?
+			@transaction.acct_id_cr = account_id
+			@transaction.credit = credit
+		end
+
+		if !debit.nil?
+			@transaction.acct_id_dr = account_id
+			@transaction.debit = debit
+		end
+
+		# @transaction.category_id = cat
 
 		return @transaction
 
