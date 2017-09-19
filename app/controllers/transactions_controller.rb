@@ -99,10 +99,6 @@ class TransactionsController < ApplicationController
 		user = current_user
 		@transaction = user.transactions.find(params[:id])
 
-		puts "(((((((((((((((((((((((())))))))))))))))))))))))"
-		puts params.to_json
-		puts "(((((((((((((((((((((((())))))))))))))))))))))))"
-
 		respond_to do |format|
 			if @transaction.update_attributes(transaction_params)
 				format.html {  redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
