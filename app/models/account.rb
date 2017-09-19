@@ -18,4 +18,8 @@ class Account < ActiveRecord::Base
 	 	self.where(account_type: "Expense").order(:name)
  	end
 
+	def self.income
+	 	self.where(account_type: "Income").order(:name)
+ 	end
+
 end

@@ -15,6 +15,8 @@ resources :transaction_imports
 
 resources :expenses
 
+resources :incomes
+
 resources :reports do
   collection do
     get 'category', to: 'reports#category'
