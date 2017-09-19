@@ -22,7 +22,7 @@ CREATE TABLE `accounts` (
   `cat_id` int(11) DEFAULT NULL,
   `import_class` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `accounts_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -217,6 +217,7 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20150503060156'),
 ('20170213202356'),
 ('20170829212356'),
-('20170829222356');
+('20170829222356'),
+('20170918225056');
 
 
