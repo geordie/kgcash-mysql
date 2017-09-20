@@ -7,9 +7,6 @@ class TransactionImportFormatVancityVisa
 	# 02/01/2013,03/01/2013,$178.08,"RESORT RESERVATIONS WHIST","BURNABY",BC,0000000000, "74064493002820133211288",D,7299
 	# 02/01/2013,04/01/2013,$26.52,"PECKINPAH RESTAURANTS LTD","VANCOUVER",BC,0000000000, "74064493003820104911717",D,5812
 
-	$txTypeDict = {}
-	$txCatDict = {}
-
 	def buildTransaction( csvline, account_id )
 		csvline.gsub!(/,[ ]{1,}\"/, ",\"")
 		fields = CSV.parse(csvline)[0]
@@ -23,9 +20,6 @@ class TransactionImportFormatVancityVisa
 		@flag = fields[8]
 		@amount = BigDecimal.new( fields[2].delete("$\",()") )
 
-		debit = @flag != "D" ? 0 : @amount
-		credit = @flag != "C" ? 0 : @amount
-
 		# Get the description
 		details = fields[3]
 		if !fields[4].nil? && fields[4].length > 0
@@ -36,24 +30,26 @@ class TransactionImportFormatVancityVisa
 			details += " " + fields[5]
  		end
 
-		# TODO - Build transaction category from the SICMCC code
-
-		cat = 27
-
 		# Build a transaction
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
 			:user_id => 1,
-			:debit => debit,
-			:credit => credit,
 			:details => details,
-			:category_id => cat,
-			:account_id => account_id
 		)
-		
+
+		if @flag == "C"
+			@transaction.debit = @amount
+			@transaction.acct_id_dr = account_id
+		end
+
+		if @flag == "D"
+			@transaction.credit = @amount
+			@transaction.acct_id_cr = account_id
+		end
+
 		return @transaction
-		
+
 	end
 
 	def skip_first_line
