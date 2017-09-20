@@ -8,7 +8,7 @@ class TransactionImportFormatRbcVisa
 
 	# To regex a PDF statement
 	# replace \n[0-9]{23}\n
-	# with , 
+	# with ,
 	# replace \n\$
 	# with ,$
 	# replace ^[A-Z]{3} [0-9]{2}
@@ -22,15 +22,12 @@ class TransactionImportFormatRbcVisa
 	# replace /2014
 	# with /2014,,
 
-	$txTypeDict = {}
-	$txCatDict = {}
-
 	def buildTransaction( csvline, account_id )
 		fields = CSV.parse(csvline)[0]
 
 		# Get date
 		sDate = fields[2]
-		if sDate.nil? || sDate.empty? 
+		if sDate.nil? || sDate.empty?
 			return nil
 		end
 
@@ -40,39 +37,33 @@ class TransactionImportFormatRbcVisa
 		# Get credit and debit amounts
 		@amount = BigDecimal.new( fields[6].delete("$\",") )
 
-		debit = @amount >= 0 ? 0 : @amount * -1
-		credit = @amount <= 0 ? 0 : @amount
-
 		# Get the description
 		details = fields[4]
 		if !fields[5].nil? && fields[5].length > 0
 			details += " " + fields[5]
  		end
 
-		# Build transaction category
-		cat = 27
-
-		if !@details.nil?
-			$txCatDict.each_key do |item|
-				if !@details.index(item.to_s).nil?
-					cat = $txCatDict[item].to_s
-					break
-				end
-			end
-		end
-
 		# Build a transaction
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
 			:user_id => 1,
-			:debit => debit,
-			:credit => credit,
 			:details => details,
-			:category_id => cat,
-			:account_id => account_id
 		)
-		
+
+		debit = @amount >= 0 ? 0 : @amount
+		credit = @amount <= 0 ? 0 : @amount * -1
+
+		if @amount > 0
+			@transaction.debit = @amount
+			@transacton.acct_id_dr = account_id
+		end
+
+		if @amount <= 0
+			@transaction.credit = @amount * -1
+			@transacton.acct_id_cr = account_id
+		end
+
 		return @transaction
 	end
 
