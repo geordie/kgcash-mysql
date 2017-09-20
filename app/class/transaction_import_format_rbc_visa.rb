@@ -56,12 +56,12 @@ class TransactionImportFormatRbcVisa
 
 		if @amount > 0
 			@transaction.debit = @amount
-			@transacton.acct_id_dr = account_id
+			@transaction.acct_id_dr = account_id
 		end
 
 		if @amount <= 0
 			@transaction.credit = @amount * -1
-			@transacton.acct_id_cr = account_id
+			@transaction.acct_id_cr = account_id
 		end
 
 		return @transaction
