@@ -31,7 +31,7 @@
 	<td><%= best_in_place transaction, :notes%></td>
 	<td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
 	<td><%= form_for transaction, :remote => true do |f| %>
-			<%= f.select :acct_id_cr, options_from_collection_for_select(Account.expenses,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'expense_update' %>
+			<%= f.select :acct_id_dr, options_from_collection_for_select(Account.expenses,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'expense_update' %>
 		<% end %>
 	</td>
   </tr>
