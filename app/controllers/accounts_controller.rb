@@ -3,16 +3,31 @@ class AccountsController < ApplicationController
 	def index
 
 		@user = current_user
-		if @user == nil
-			@user = User.last
-		end
 
-		@accounts = @user.accounts
+		accounts = @user.accounts.importable
+
+		@accounts_array = Array.new(0)
+
+		accounts.each do |a|
+			transactions = Transaction.all.in_account(a.id).order(:tx_date)
+			tx_count = transactions.count
+			continue if tx_count == 0
+
+			hashAccountInfo = Hash.new
+
+			hashAccountInfo["account"] = a
+			hashAccountInfo["tx_count"] = tx_count
+			hashAccountInfo["tx_first"] = transactions[0].tx_date
+			hashAccountInfo["tx_last"] = transactions[tx_count-1].tx_date
+
+			@accounts_array.push(hashAccountInfo)
+		end
 
 		respond_to do |format|
 			format.html #index.html.erb
 			format.json {render json: @accounts }
 		end
+
 	end
 
 	def edit

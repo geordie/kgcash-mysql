@@ -7,21 +7,23 @@
     <th>First Transaction</th>
     <th>Most Recent</th>
     <th>Transactions</th>
-    <th>Tx / Month</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
 
-  <% @accounts.each do |account| %>
-    <% tx_count = account.transactions.count %> 
+
+
+  <% @accounts_array.each do |account_info| %>
+    <% account = account_info["account"] %>
     <tr>
       <td><%= account.name %></td>
       <td><%= account.account_type %></td>
-      <td><%= account.transactions[tx_count-1].tx_date.strftime('%b %e, %Y') %></td>
-      <td><%= account.transactions[0].tx_date.strftime('%b %e, %Y') %></td>
-      <td><%= tx_count %></td>
-      <td><%= account.transactions_per_month %></td>
+
+      <td><%= account_info["tx_first"].strftime('%b %e, %Y') %></td>
+      <td><%= account_info["tx_last"].strftime('%b %e, %Y') %></td>
+      <td><%= account_info["tx_count"] %></td>
+
       <td><%= link_to 'Show', account %></td>
       <td><%= link_to 'Edit', edit_account_path(account) %></td>
       <td><%= link_to 'Delete', account, confirm: 'Are you sure?', method: :delete %></td>
