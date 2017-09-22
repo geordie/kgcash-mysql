@@ -4,6 +4,8 @@ class Account < ActiveRecord::Base
 
 	SupportedFormats = ["Vancity","RBC Visa","Vancity Visa"]
 
+	scope :importable, lambda {where("import_class IS NOT NULL")}
+
 	def active_months
 		last_tx_date = transactions[0].tx_date
 		first_tx_date = transactions[transactions.count-1].tx_date
