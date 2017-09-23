@@ -13,7 +13,11 @@ resources :transactions
 
 resources :transaction_imports
 
-resources :expenses
+resources :expenses do
+  collection do
+    get 'uncategorized'
+  end
+end
 
 resources :incomes
 
