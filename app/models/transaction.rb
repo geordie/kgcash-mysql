@@ -39,7 +39,7 @@ class Transaction < ActiveRecord::Base
 	scope :by_days_in_month, lambda{ |month, year| in_month_year(month,year).select("DAY(tx_date) as day, SUM(debit) as debit, SUM(credit) as credit").group("DAY(tx_date)")}
 
 	scope :is_expense, lambda{ where("acct_id_cr in (select id from accounts where account_type = 'Liability' or account_type = 'Asset')") }
-	scope :is_liability, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Liability' or account_type = 'Asset')") }
+	scope :is_liability, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Asset')") }
 
 	def ensure_hash
 

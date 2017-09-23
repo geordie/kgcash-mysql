@@ -16,12 +16,12 @@ class Account < ActiveRecord::Base
 		(transactions.count / active_months).to_i
 	end
 
-	def self.expenses
-	 	self.where(account_type: "Expense").order(:name)
+	def self.expense_accounts
+	 	self.where("account_type = ? or account_type = ? or account_type = ?", "Expense", "Liability", "Asset" ).order(:name)
  	end
 
-	def self.income
-	 	self.where(account_type: "Income").order(:name)
+	def self.income_accounts
+	 	self.where("account_type = ? or account_type = ?", "Income", "Asset").order(:name)
  	end
 
 end
