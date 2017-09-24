@@ -21,6 +21,8 @@ end
 
 resources :incomes
 
+resources :payments
+
 resources :reports do
   collection do
     get 'category', to: 'reports#category'
