@@ -2,59 +2,6 @@ class TransactionsController < ApplicationController
 
 	helper_method :sort_column, :sort_direction
 
-	def index
-
-		@user = current_user
-		if @user == nil
-			@user = User.last
-		end
-
-		@month = params.has_key?(:month) ? params[:month].to_i : nil
-		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
-		@min = params.has_key?(:min) ? params[:min].to_f : 0
-		@max = params.has_key?(:max) ? params[:max].to_f : 0
-
-		@category = params.has_key?(:category) ? params[:category].to_i : nil
-		if @category && @category < 1
-			@category = nil
-		end
-
-		@account = params.has_key?(:account) ? params[:account].to_i : nil
-		if @account && @account < 1
-			@account = nil
-		end
-
-		if @month.nil?
-			@transactions = @user.transactions
-				.select('*, debit, credit, (debit + credit) as amount')
-				.in_account(@account).in_category(@category)
-				.in_year(@year)
-				.in_range(@min,@max)
-				.paginate(:page => params[:page])
-				.order(sort_column + ' ' + sort_direction)
-		else
-			@transactions = @user.transactions
-				.select('*, debit, credit, (debit + credit) as amount')
-				.in_account(@account).in_category(@category)
-				.in_month_year(@month,@year)
-				.paginate(:page => params[:page])
-				.order(sort_column + ' ' + sort_direction)
-		end
-
-		@budgets = @user.budgets
-		@budgetDefault = @user.budgets[0]
-
-		#TODO - Enable filtering by date range
-		# dateStart = params Date.strptime([:start], "{ %Y, %m, %d }")
-		# dateEnd = params[:end]
-
-		respond_to do |format|
-			format.html #index.html.erb
-			format.json { @transactions }
-			format.csv {}
-		end
-	end
-
 	def show
 
 		@user = current_user

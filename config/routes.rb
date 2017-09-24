@@ -9,7 +9,7 @@ resources :user_sessions
 
 resources :users
 
-resources :transactions
+resources :transactions, :except => [:index]
 
 resources :transaction_imports
 
