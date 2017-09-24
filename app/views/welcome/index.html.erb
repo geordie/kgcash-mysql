@@ -1,7 +1,7 @@
 <h1>Welcome</h1>
 
 
-You have <strong><%= @transactions_expenses[0][:count] %></strong> uncategorized expense transactions<br/>
+You have <strong><%= link_to @transactions_expenses[0][:count], uncategorized_expenses_path %></strong> uncategorized expense transactions<br/>
 with a total value of <strong>$<%= @transactions_expenses[0][:sum] %></strong>.
 <br/>
 <br/>
