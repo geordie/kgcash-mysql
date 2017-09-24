@@ -19,7 +19,11 @@ resources :expenses do
   end
 end
 
-resources :incomes
+resources :incomes do
+  collection do
+    get 'uncategorized'
+  end
+end
 
 resources :payments
 
