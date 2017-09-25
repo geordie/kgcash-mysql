@@ -43,8 +43,8 @@ class TransactionImportFormatRbcVisa
 			details += " " + fields[5]
  		end
 
-		debit = @amount >= 0 ? nil : @amount
-		credit = @amount <= 0 ? nil : @amount * -1
+		debit = @amount > 0 ? @amount : nil
+		credit = @amount <= 0 ? @amount * -1 : nil
 
 		# Build a transaction
 		@transaction = Transaction.create(
