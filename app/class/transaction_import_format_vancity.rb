@@ -85,24 +85,26 @@ class TransactionImportFormatVancity
 			end
 		end
 
+		if !credit.nil?
+			acct_id_cr = account_id
+		end
+
+		if !debit.nil?
+			acct_id_dr = account_id
+		end
+
 		# Build a transaction
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
 			:user_id => 1,
 			:tx_type => @type,
-			:details => @details
+			:details => @details,
+			:credit => credit,
+			:acct_id_cr => (credit.nil? ? nil : account_id),
+			:debit => debit,
+			:acct_id_dr => (debit.nil? ? nil : account_id)
 			)
-
-		if !credit.nil?
-			@transaction.acct_id_cr = account_id
-			@transaction.credit = credit
-		end
-
-		if !debit.nil?
-			@transaction.acct_id_dr = account_id
-			@transaction.debit = debit
-		end
 
 		# @transaction.category_id = cat
 
