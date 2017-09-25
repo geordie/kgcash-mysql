@@ -11,9 +11,9 @@ class TransactionImportsController < ApplicationController
     @user = current_user
     @accounts = @user.account_selector
     @transaction_import = TransactionImport.new(params[:transaction_import])
-    
+
     if @transaction_import.save
-      redirect_to transactions_path, notice: "Transactions imported successfully."
+      redirect_to welcome_path, notice: "Transactions imported successfully."
     else
       render :new
     end
