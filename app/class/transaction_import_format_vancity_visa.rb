@@ -36,17 +36,11 @@ class TransactionImportFormatVancityVisa
 			:posting_date => date,
 			:user_id => 1,
 			:details => details,
+			:debit => (@flag == "C" ? @amount : nil),
+			:acct_id_dr => (@flag == "C" ? account_id : nil),
+			:credit => (@flag == "D" ? @amount : nil),
+			:acct_id_cr => (@flag == "D" ? account_id : nil),
 		)
-
-		if @flag == "C"
-			@transaction.debit = @amount
-			@transaction.acct_id_dr = account_id
-		end
-
-		if @flag == "D"
-			@transaction.credit = @amount
-			@transaction.acct_id_cr = account_id
-		end
 
 		return @transaction
 
