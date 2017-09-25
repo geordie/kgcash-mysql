@@ -52,7 +52,7 @@ class TransactionImport
 					@transaction.save!
 			else
 				@transaction.errors.full_messages.each do |message|
-					 errors.add :base, "Row #{idx+1}: #{message}"
+					errors.add :base, "Row #{idx+1}: #{message}"
 				end
 			end
 		end
