@@ -13,7 +13,7 @@ class TransactionImportsController < ApplicationController
     @transaction_import = TransactionImport.new(params[:transaction_import])
 
     if @transaction_import.save
-      redirect_to welcome_path, notice: "Transactions imported successfully."
+      redirect_to root_path, notice: "Transactions imported successfully."
     else
       render :new
     end
