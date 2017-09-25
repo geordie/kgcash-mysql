@@ -49,10 +49,10 @@ class TransactionImport
 			if @transaction.nil?
 				# do nothing
 			elsif @transaction.valid?
-					@transaction.save!
+				@transaction.save!
 			else
 				@transaction.errors.full_messages.each do |message|
-					errors.add :base, "Row #{idx+1}: #{message}"
+					errors.add :base, "Row #{idx+1}: #{message} - #{@transaction.details}"
 				end
 			end
 		end
