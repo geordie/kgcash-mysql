@@ -43,26 +43,20 @@ class TransactionImportFormatRbcVisa
 			details += " " + fields[5]
  		end
 
+		debit = @amount >= 0 ? nil : @amount
+		credit = @amount <= 0 ? nil : @amount * -1
+
 		# Build a transaction
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
 			:user_id => 1,
 			:details => details,
+			:debit => debit,
+			:acct_id_dr => (debit.nil? ? nil : account_id),
+			:credit => credit,
+			:acct_id_cr => (credit.nil? ? nil : account_id)
 		)
-
-		debit = @amount >= 0 ? 0 : @amount
-		credit = @amount <= 0 ? 0 : @amount * -1
-
-		if @amount > 0
-			@transaction.debit = @amount
-			@transaction.acct_id_dr = account_id
-		end
-
-		if @amount <= 0
-			@transaction.credit = @amount * -1
-			@transaction.acct_id_cr = account_id
-		end
 
 		return @transaction
 	end
