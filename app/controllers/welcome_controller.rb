@@ -11,14 +11,14 @@ class WelcomeController < ApplicationController
 
 		@transactions_expenses = @user.transactions
 			.select("count(*) as count, sum(credit) as sum")
-			.joins("INNER JOIN accounts A on A.id = acct_id_cr and A.account_type = 'Asset'")
-			.where( "acct_id_dr IS NULL")
+			.is_expense()
+			.where("(acct_id_dr IS NULL)")
 			.in_year(@year)
 
 		@transactions_revenues = @user.transactions
 			.select("count(*) as count, sum(debit) as sum")
-			.joins("INNER JOIN accounts A on A.id = acct_id_dr and A.account_type = 'Asset'")
-			.where( "acct_id_cr IS NULL")
+			.is_liability()
+			.where("(acct_id_cr IS NULL)")
 			.in_year(@year)
 
 		respond_to do |format|
