@@ -47,7 +47,7 @@ class IncomesController < ApplicationController
 	end
 
 	def sort_column
-		['tx_date','account','details','notes','amount'].include?(params[:sort]) ? params[:sort] : "tx_date"
+		['tx_date','account','details','notes','credit', 'debit'].include?(params[:sort]) ? params[:sort] : "tx_date"
 	end
 
 	def sort_direction
