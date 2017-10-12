@@ -1,6 +1,5 @@
 class IncomesController < ApplicationController
-
-	helper_method :sort_column, :sort_direction
+	include TransactionControllerConcern
 
 	def index
 		@user = current_user
@@ -44,14 +43,6 @@ class IncomesController < ApplicationController
 
 	def expense_params
 		params.require(:income).permit(:name, :description, :account_type)
-	end
-
-	def sort_column
-		['tx_date','account','details','notes','credit', 'debit'].include?(params[:sort]) ? params[:sort] : "tx_date"
-	end
-
-	def sort_direction
-		%w[asc desc].include?(params[:direction]) ?  params[:direction] : "desc"
 	end
 
 end
