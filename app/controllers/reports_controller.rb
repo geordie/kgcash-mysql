@@ -236,7 +236,25 @@ class ReportsController < ApplicationController
 
 		respond_to do |format|
 			format.html #category.html.erb
+		end
+	end
 
+	def income
+
+		@user = current_user
+
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+
+		@transactions = @user.transactions
+			.joins( "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr")
+			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr")
+			.is_liability()
+			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income'))")
+			.in_year(@year)
+			.group("acct_id_cr")
+
+		respond_to do |format|
+			format.html #income.html.erb
 		end
 	end
 

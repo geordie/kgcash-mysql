@@ -30,6 +30,7 @@ resources :payments
 resources :reports do
   collection do
     get 'category', to: 'reports#category'
+    get 'income', to: 'reports#income'
   end
 end
 
