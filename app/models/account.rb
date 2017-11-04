@@ -1,5 +1,4 @@
 class Account < ActiveRecord::Base
-	has_many :transactions
 	has_and_belongs_to_many :users
 
 	SupportedFormats = ["Vancity","RBC Visa","Vancity Visa"]
