@@ -5,8 +5,7 @@ class BudgetCategoriesController < ApplicationController
 		@user = current_user
 		@budget = @user.budgets.find(params[:budget_id])
 
-		@budget_categories = BudgetCategory.find(:all, :joins => :category, :conditions =>
-										 ["budget_id = ? ", params[:budget_id]], :include => :category)
+		@budget_categories = BudgetCategory.includes(:category).where(budget_id: params[:budget_id]).where.not(category: nil)
 
 		respond_to do |format|
 			format.html # index.html.erb
@@ -110,12 +109,6 @@ class BudgetCategoriesController < ApplicationController
 			format.html { redirect_to :action => 'index' }
 			format.json { head :ok }
 		end
-	end
-
-	private
-
-	def account_params
-		params.require(:budget_category).permit(:category, :amount, :period)
 	end
 
 end
