@@ -54,6 +54,6 @@ group :test do
   # Pretty printed test output
   gem 'turn', :require => false
   gem "minitest"
-  gem 'capybara', '1.1.2'
+  gem 'capybara', '2.2.0'
   gem 'fabrication'
 end
