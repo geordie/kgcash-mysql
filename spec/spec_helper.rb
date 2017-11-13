@@ -2,7 +2,6 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
 
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -38,17 +37,26 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Sorcery::TestHelpers::Rails
+
+  config.include Capybara::DSL
 end
 
 module Sorcery
   module TestHelpers
     module Rails
+      
       def user_login(user, password)
         page.driver.post(user_sessions_url, { username: user, password: password})
-        #puts page.response_headers.to_s 
-        
+      end
+
+      def login_user(user, password)
+        visit user_sessions_url
+
+        fill_in 'email',    with: user.email
+        fill_in 'password', with: password
+
+        click_button 'Login'
       end
     end
   end
 end
-
