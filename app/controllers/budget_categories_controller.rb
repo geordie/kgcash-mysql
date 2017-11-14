@@ -5,7 +5,7 @@ class BudgetCategoriesController < ApplicationController
 		@user = current_user
 		@budget = @user.budgets.find(params[:budget_id])
 
-		@budget_categories = BudgetCategory.includes(:category).where(budget_id: params[:budget_id]).where.not(category: nil)
+		@budget_categories = BudgetCategory.includes(:account).where(budget_id: params[:budget_id]).where.not(account: nil)
 
 		respond_to do |format|
 			format.html # index.html.erb
@@ -58,15 +58,8 @@ class BudgetCategoriesController < ApplicationController
 	def update
 		@budget_category = BudgetCategory.find(params[:id])
 
-		@updateParams = params[:budget_category]
-
-		#replace the returned category key with a category_id key so we can update properly
-		if @updateParams.has_key?( 'category')
-			@updateParams['category_id'] = @updateParams.delete('category');
-		end
-
 		respond_to do |format|
-			if @budget_category.update_attributes(@updateParams)
+			if @budget_category.update_attributes(budget_category_params)
 				format.html { redirect_to :action => 'index', notice: 'Budget Category was successfully updated.' }
 				format.json { head :ok }
 			else
@@ -87,7 +80,7 @@ class BudgetCategoriesController < ApplicationController
 		@budget_category = @budget.budget_categories.new
 
 		@budget.budget_categories << @budget_category
-		@categories = @budget.sortedCategories
+		@account = @budget.sortedAccounts
 
 		respond_to do |format|
 			format.html
@@ -109,6 +102,12 @@ class BudgetCategoriesController < ApplicationController
 			format.html { redirect_to :action => 'index' }
 			format.json { head :ok }
 		end
+	end
+
+	private
+
+	def budget_category_params
+		params.require(:budget_category).permit(:account, :amount, :period, :account_id, :budget_id)
 	end
 
 end

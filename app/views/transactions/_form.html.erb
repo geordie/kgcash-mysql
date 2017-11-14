@@ -22,8 +22,8 @@
   </div>
 
   <div class="field">
-    <%= f.label :account_id %><br />
-    <%= f.select :account_id, @accounts %>
+    <%= f.label :acct_id_cr %><br />
+    <%= f.select :acct_id_cr, @accounts %>
   </div>
 
   <div class="field">
@@ -47,15 +47,15 @@
   </div>
 
   <div class="field">
-    <%= f.label :category_id %><br />
-    <%= f.select :category_id, @categories %>
+    <%= f.label :acct_id_dr %><br />
+    <%= f.select :acct_id_dr, @accounts %>
   </div>
 
   <div class="field">
     <%= f.label :notes %><br />
     <%= f.text_field :notes %>
-  </div> 
-  
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

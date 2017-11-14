@@ -19,7 +19,6 @@ class TransactionsController < ApplicationController
 	def edit
 		@user = current_user
 		@transaction = @user.transactions.find(params[:id])
-		@categories = @user.category_selector
 		@accounts = @user.account_selector
 	end
 
@@ -65,7 +64,6 @@ class TransactionsController < ApplicationController
 		@transaction = Transaction.new
 		@transaction.tx_date = @dateTx
 		@transaction.posting_date = @dateTx
-		@categories = @user.category_selector
 		@accounts = @user.account_selector
 
 		@user.transactions << @transaction
@@ -82,6 +80,7 @@ class TransactionsController < ApplicationController
 		@transaction.destroy
 
 		respond_to do |format|
+			#TODO Transactions index path no longer exists, so fix this next line
 			format.html { redirect_to :action => 'index' }
 			format.js   { render :nothing => true }
 			format.json { head :ok }

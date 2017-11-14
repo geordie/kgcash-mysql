@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :category %><br />
-    <%= f.select :category, options_from_collection_for_select(@user.sortedCategories, "id", "name", @budget_category.category_id) %>
+    <%= f.label :account %><br />
+    <%= f.select :account_id, options_from_collection_for_select(@user.sortedAccounts, "id", "name", @budget_category.account_id) %>
   </div>
   <div class="field">
     <%= f.label :amount %><br />
@@ -27,5 +27,3 @@
     <%= f.submit %>
   </div>
 <% end %>
-
-

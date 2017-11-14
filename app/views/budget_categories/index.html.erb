@@ -14,9 +14,9 @@
 <% @budget_categories.each do |bc| %>
   <% @bcClass = bc.isDebit ? "debit" : "credit" %>
   <tr>
-    <td><%= bc.category.nil? ? 'invalid(' +  bc.id.to_s + ')' : bc.category.name %></td>
-    <td class="<%= @bcClass %>"><%= best_in_place bc, :amount, :path => budget_category_path(@budget.id,bc), :display_with => :number_to_currency, :helper_options => {:precision => 0} %></td>
-    <td><%= bc.category.cat_type %></td>
+    <td><%= bc.account.nil? ? 'invalid(' +  bc.id.to_s + ')' : bc.account.name %></td>
+    <td class="<%= @bcClass %>"><%= best_in_place bc, :amount, :url => budget_category_path(@budget.id,bc), :display_with => :number_to_currency, :helper_options => {:precision => 0} %></td>
+    <td><%= bc.account.nil? ? 'invalid(' +  bc.id.to_s + ')' : bc.account.account_type %></td>
     <td><%= bc.period %></td>
     <td><%= link_to 'Show', budget_category_path(@budget.id,bc) %> <%= link_to 'Delete', budget_category_url(@budget, bc), confirm: 'Are you sure?', method: :delete %></td>
     <% @budget_total += bc.amount.nil? ? 0 : bc.isDebit ? -bc.amount : bc.amount %>

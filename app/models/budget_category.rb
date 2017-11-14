@@ -1,11 +1,11 @@
 class BudgetCategory < ActiveRecord::Base
   belongs_to :budget
-  belongs_to :category
-  
+  belongs_to :account
+
   def isDebit
-  	if self.category.nil?
+  	if self.account.nil?
   		return true
-  	elsif self.category.cat_type == "Income"
+  	elsif self.account.account_type == "Income"
   		return false
   	end
   	return true

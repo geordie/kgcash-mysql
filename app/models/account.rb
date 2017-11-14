@@ -1,5 +1,7 @@
 class Account < ActiveRecord::Base
 	has_and_belongs_to_many :users
+	has_many :budget_categories
+  has_many :budgets, :through => :budget_categories
 
 	SupportedFormats = ["Vancity","RBC Visa","Vancity Visa"]
 
