@@ -18,12 +18,15 @@ class User < ActiveRecord::Base
 		return accounts.to_a.sort!{|a,b| a.name.downcase <=> b.name.downcase }
 	end
 
-	def account_selector
+	def account_selector(importonly = false)
 
 		#Build an array of pairs as expected by a form dropdown
 		results = Array.new
 
 		accounts.each do |acct|
+			if importonly && acct.import_class.nil?
+				next
+			end
 			rec = Array.new
 			rec.push acct.name
 			rec.push acct.id

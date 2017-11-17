@@ -1,7 +1,7 @@
 class TransactionImportsController < ApplicationController
   def new
     @user = current_user
-    @accounts = @user.account_selector
+    @accounts = @user.account_selector(true)
     @transaction_import = TransactionImport.new
 
     @format = TransactionImportFormatVancity.new
