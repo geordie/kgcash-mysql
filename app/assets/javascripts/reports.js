@@ -16,7 +16,7 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 		.innerRadius(80);
 
 	var pie = d3.layout.pie()
-		.value(function(d) { return d.amount; });
+		.value(function(d) { return d.credit; });
 
 	var canvas = container.append("svg")
 		.attr("width", width)
@@ -26,15 +26,11 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 		.attr("id", chartName)
 		.attr("transform", "translate(" + (width/2) + "," + ( (heightTitle+height)/2)  + ")");
 
-	category_amounts.forEach(function(d) {
-		d.amount =+ d.amount;
-	});
-
 	var g = pieChart.selectAll(".arc")
 		.data(pie(category_amounts))
 		.enter().append("g")
 		.attr("class", function(d,i){ return "arc-" + i })
-		.append("a").attr("xlink:href",function(d,i){var cat_id = category_amounts[i].category_id; return "./transactions?category=" + cat_id});
+		.append("a").attr("xlink:href",function(d,i){var cat_id = category_amounts[i].acct_id_dr; return "./transactions?category=" + cat_id});
 
 	g.append("path")
 		.attr("d", arc)
@@ -44,19 +40,19 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 			})
 		.on("mouseout", function(d,i){ catDetail( d, false, width, d3.event, totalAmount )});
 
-	g.filter(function(d){ return d.endAngle - d.startAngle > (Math.PI/10)})
+	g.filter(function(d){ return d.endAngle - d.startAngle > (Math.PI/5)})
 		.append("text")
 		.attr("transform", function(d) { return "translate(" + arc.centroid(d)[0] + "," + arc.centroid(d)[1] + ")"; })
 		.attr("dy", ".35em")
 		.style("text-anchor", "middle")
-		.text(function(d,i) { return d.data.category; });
+		.text(function(d,i) { return d.data.name; });
 
 	g.filter(function(d){ return d.endAngle - d.startAngle > (Math.PI/10)})
 		.append("text")
 		.attr("transform", function(d) { return "translate(" + arc.centroid(d)[0] + "," + (arc.centroid(d)[1] + 15) + ")"; })
 		.attr("dy", ".35em")
 		.style("text-anchor", "middle")
-		.text(function(d) { return Math.round((d.data.amount/totalAmount)*100) + " %"; });
+		.text(function(d) { return Math.round((d.data.credit/totalAmount)*100) + " %"; });
 
 	pieChart.append("svg:text")
 		.attr("x", 0)
@@ -120,19 +116,19 @@ function catDetail( d, show, width, myEvent, totalAmount )
 {
 	// save selection of infobox so that we can later change it's position
 	var infobox = d3.select(".infobox");
-	
+
 	if( show )
 	{
-		var text = "<strong>" + d.data.category_name + "</strong>" + " (" + (Math.round((d.data.amount/totalAmount)*100)) + "%)";
+		var text = "<strong>" + d.data.name + "</strong>" + " (" + (Math.round((d.data.credit/totalAmount)*100)) + "%)";
 		var boxWidth = text.length * 4;
-		
-		text += "<br/>$" + Math.round(d.data.amount);
+
+		text += "<br/>$" + Math.round(d.data.credit);
 
 		// position infobox at mouse
 		infobox.style("left", myEvent.pageX + 10 + "px" );
 		infobox.style("top", myEvent.pageY + 10 + "px");
 		infobox.style("display", "inline");
-		
+
 		infobox.style("width", boxWidth + "px");
 		infobox.style("padding", "10px");
 		infobox.html( text );

@@ -4,9 +4,6 @@ class ReportsController < ApplicationController
 
 		# Get user
 		@user = current_user
-		if @user == nil
-			@user = User.last
-		end
 
 		# Get budget
 		@budget_categories = @user.budgets[0].budget_categories
@@ -32,23 +29,21 @@ class ReportsController < ApplicationController
 			end
 		end
 
-		transaction_groups = nil
-		# Get transactions by category
-		if month.nil?
-			transaction_groups = @user.transactions
-				.in_account(@account)
-				.select('category_id, SUM(transactions.credit) as credit, SUM(transactions.debit) as debit, categories.name AS category_name, categories.cat_type as category_type')
-				.joins(:category)
-				.group('categories.id')
-				.in_year( @year)
-		else
-			transaction_groups = @user.transactions
-				.in_account(@account)
-				.select('category_id, SUM(transactions.credit) as credit, SUM(transactions.debit) as debit, categories.name AS category_name, categories.cat_type as category_type')
-				.joins(:category)
-				.group('categories.id')
-				.in_month_year( month, @year)
-		end
+		@transactions_income = @user.transactions
+			.joins( "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr")
+			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr")
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Expense'))")
+			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income'))")
+			.in_year(@year)
+			.group("acct_id_cr")
+
+		@transactions_expenses = @user.transactions
+			.joins( "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr")
+			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_dr")
+			.where("(acct_id_cr in (select id from accounts where account_type = 'Liability' or account_type = 'Asset'))")
+			.where("(acct_id_dr IS NULL or acct_id_dr in (select id from accounts where account_type = 'Expense'))")
+			.in_year(@year)
+			.group("acct_id_dr")
 
 		category_income = Array.new
 		category_expenses = Array.new
@@ -56,58 +51,35 @@ class ReportsController < ApplicationController
 		category_savings = Array.new
 
 		income_credit = 0
-		income_debit = 0
 		expenses_credit = 0
-		expenses_debit = 0
-		savings_credit = 0
-		savings_debit = 0
-		undefined_credit = 0
-		undefined_debit = 0
+		income_undefined = 0
+		expenses_undefined = 0
 
-		transaction_groups.each do |transaction_group|
-
-			if transaction_group.category_name == "Not defined"
-				category_undefined << transaction_group
-				undefined_credit += transaction_group.credit
-				undefined_debit += transaction_group.debit
-
-			elsif (transaction_group.credit - transaction_group.debit) > 0
-				category_income << transaction_group
-				income_credit += transaction_group.credit
-				income_debit += transaction_group.debit
-
-			elsif transaction_group.category_type == "Asset"
-				category_savings << transaction_group
-				savings_credit += transaction_group.credit
-				savings_debit += transaction_group.debit
-
+		@transactions_expenses.each do |tg_expense|
+			if !tg_expense.acct_id_dr.nil?
+				category_expenses << tg_expense
+				expenses_credit += tg_expense.credit
 			else
-				category_expenses << transaction_group
-				expenses_credit += transaction_group.credit
-				expenses_debit += transaction_group.debit
-
+				expenses_undefined += tg_expense.credit
 			end
+		end
 
-			# Splice in the budgeted amount
-			budget_category = @budget_categories.find{|item| item["category_id"] ==
-					transaction_group.category_id}
-
-			transaction_group.budget = budget_category.amount
-
-			# Set a default category type
-			if transaction_group.category_type == nil
-				transaction_group.category_type = "Expense"
+		@transactions_income.each do |tg_income|
+			if !tg_income.acct_id_cr.nil?
+				category_income << tg_income
+				income_credit += tg_income.credit
+			else
+				income_undefined += tg_income.debit
 			end
-
 		end
 
 		@category_groups = Hash[
-			"total_income" => income_credit - income_debit,
-			"total_expenses" => expenses_debit - expenses_credit,
+			"total_income" => income_credit,
+			"total_expenses" => expenses_credit,
 			"Income" => category_income,
 			"Expense" => category_expenses,
-			"Asset" => category_savings,
-			"Undefined" => category_undefined]
+			"undefined_income" => income_undefined,
+			"undefined_expenses" => expenses_undefined]
 
 		respond_to do |format|
 			format.html #index.html.erb

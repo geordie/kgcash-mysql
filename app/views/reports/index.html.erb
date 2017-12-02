@@ -8,16 +8,27 @@
 		<div class="col-md-5" id="divRight"></div>
 	</div>
 
+	<div class="row">
+		<div class="col-md-6" id="divUndefExpenses"></div>
+		<div class="col-md-6" id="divUndefIncome"></div>
+	</div>
+
 </div>
 
 <script>
 
 var category_totals = <%= j @category_groups.to_json.html_safe %>;
 
-var cat_expenses = amountify( category_totals['Expense'] );
-var cat_income = amountify( category_totals['Income'] );
+var cat_expenses = category_totals['Expense'];
+var cat_income = category_totals['Income'];
 var totalIncome = category_totals['total_income'];
 var totalExpense = category_totals['total_expenses'];
+var undefinedExpense = category_totals['undefined_expenses'];
+var undefinedIncome = category_totals['undefined_income'];
+
+buildMid( undefinedExpense, "#divUndefExpenses", "Undefined Expenses", undefined, 500 );
+
+buildMid( undefinedIncome, "#divUndefIncome", "Undefined Income", undefined, 500 );
 
 buildPie( cat_expenses, totalExpense, "#divLeft", "Expense", undefined, 500 );
 
@@ -25,88 +36,10 @@ buildPie( cat_income, totalIncome, "#divRight", "Income", undefined, 500 );
 
 buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
 
-function amountify( data )
-{
-	for( row in data )
-	{
-		if( data[row].category_type == 'Expense')
-		{
-			data[row].amount = data[row].debit - data[row].credit;
-		}
-		else
-		{
-			data[row].amount = data[row].credit - data[row].debit;
-		}
-	}
-	return data;
-}
-
 </script>
 
 <div id="chartContainer">
 	<script type="text/javascript">
 
-	var cat_types = ["Expense","Income","Asset", "Undefined"];
-	for( idx in cat_types )
-	{
-		var cat_type = cat_types[idx];
-		var cat_type_actuals = explodeData( category_totals[cat_type] );
-
-		$("#chartContainer").append("<h3>"+ titleFromType(cat_type) +"</h3>");
-		build( cat_type_actuals );
-	}
-
-	function build( data )
-	{
-
-		var svg = dimple.newSvg("#chartContainer", 890, 400);
-		var myChart = new dimple.chart(svg, data);
-		myChart.setBounds(60, 30, 810, 305);
-		myChart.addCategoryAxis("x", ["category_name", "data_type"]);
-		myChart.addMeasureAxis("y", "value").tickFormat = ".0f";
-		myChart.addSeries("data_type", dimple.plot.bar);
-
-		myChart.assignColor("budget", "#4ECDC4");
-		myChart.assignColor("actual", "#C44D58");
-
-		myChart.draw();
-	}
-
-	function explodeData( data )
-	{
-		var newData = [];
-		for( row of data )
-		{
-			console.log( row );
-			newValue = row["credit"] - row["debit"];
-			if( row["category_type"] == "Expense" || row["category_type"] == "Asset")
-			{
-				newValue = row["debit"] - row["credit"];
-			}
-
-			newData.push({category_id: row["category_id"],
-				category_name: row["category_name"],
-				category_type: row["category_type"],
-				data_type: "actual",
-				value: newValue
-			});
-
-			newData.push({category_id: row["category_id"],
-				category_name: row["category_name"],
-				category_type: row["category_type"],
-				data_type: "budget",
-				value: row["budget"]
-			});
-		}
-		return newData;
-	}
-
-	function titleFromType( data )
-	{
-		if( data === "Expense" ) return "Expenses";
-		if( data === "Asset" ) return "Assets"
-		if( data === "Undefined" ) return "Uncategorized Transactions"
-		return data;
-	}
 	</script>
 </div>

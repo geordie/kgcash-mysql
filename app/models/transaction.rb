@@ -9,7 +9,7 @@ class Transaction < ActiveRecord::Base
 
 	belongs_to :category
 	belongs_to :user
-	belongs_to :account
+	belongs_to :account, primary_key: 'id', foreign_key: 'acct_id_dr'
 
 	before_save :ensure_hash
 
