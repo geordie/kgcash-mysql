@@ -26,6 +26,9 @@ class Transaction < ActiveRecord::Base
 
 	scope :in_category, lambda { |category_id| where("category_id = ?", category_id) unless category_id.nil? }
 
+	scope :in_debit_acct, lambda { |acct_id| where("acct_id_dr = ?", acct_id) unless acct_id.nil? }
+	scope :in_credit_acct, lambda { |acct_id| where("acct_id_cr = ?", acct_id) unless acct_id.nil? }
+
 	scope :in_account, lambda { |account_id| where("acct_id_dr = ? or acct_id_cr = ?", account_id, account_id) unless account_id.nil? }
 
 	scope :in_range, lambda { |min, max| where("((debit >= ? AND debit <= ?) OR debit IS NULL) OR (credit >= ? AND credit <= ?)",
