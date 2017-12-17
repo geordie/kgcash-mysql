@@ -1,6 +1,6 @@
 var heightTitle = 80;
 
-function buildPie( category_amounts, totalAmount, selector, chartName, width, height)
+function buildPie( category_amounts, totalAmount, selector, chartName, width, height, pieSliceLink)
 {
 	var container = d3.select(selector);
 
@@ -30,7 +30,7 @@ function buildPie( category_amounts, totalAmount, selector, chartName, width, he
 		.data(pie(category_amounts))
 		.enter().append("g")
 		.attr("class", function(d,i){ return "arc-" + i })
-		.append("a").attr("xlink:href",function(d,i){var cat_id = category_amounts[i].acct_id_dr; return "./expenses?category=" + cat_id});
+		.append("a").attr("xlink:href",function(d,i){var cat_id = category_amounts[i].category_id; return pieSliceLink + cat_id});
 
 	g.append("path")
 		.attr("d", arc)

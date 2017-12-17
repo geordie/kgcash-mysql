@@ -58,6 +58,7 @@ class ReportsController < ApplicationController
 		@transactions_expenses.each do |tg_expense|
 			if !tg_expense.acct_id_dr.nil?
 				category_expenses << tg_expense
+				tg_expense.category_id = tg_expense.acct_id_dr
 				expenses_credit += tg_expense.credit
 			else
 				expenses_undefined += tg_expense.credit
@@ -67,6 +68,7 @@ class ReportsController < ApplicationController
 		@transactions_income.each do |tg_income|
 			if !tg_income.acct_id_cr.nil?
 				category_income << tg_income
+				tg_income.category_id = tg_income.acct_id_cr
 				income_credit += tg_income.credit
 			else
 				income_undefined += tg_income.debit
