@@ -4,10 +4,8 @@ one:
   amount: 9.99
   period: MyString
   budget: 
-  category: 
 
 two:
   amount: 9.99
   period: MyString
-  budget: 
-  category: 
+  budget:

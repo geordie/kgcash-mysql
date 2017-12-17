@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
 
-user_one:
+one:
   username: MyString
   email: MyString
   crypted_password: MyString
