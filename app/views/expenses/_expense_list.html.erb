@@ -8,20 +8,20 @@
 	<th>Category</th>
   </tr>
 
-<% @transactions.each do |transaction| %>
+<% @transactions.each_with_index do |transaction, idx| %>
 <% @txAmount = (transaction.credit.nil? ? 0 : transaction.credit) %>
 <% @txAmountClass = "debit" %>
   <tr>
 	<td><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
 	<td><%= form_for transaction, :remote => true do |f| %>
-			<%= f.select :acct_id_cr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_cr), {}, :class => 'expense_update' %>
+			<%= f.select :acct_id_cr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_cr), {}, :class => 'expense_update', tabindex: "-1" %>
 		<% end %>
 	</td>
 	<td><%= best_in_place transaction, :details, :as => :textarea %></td>
-	<td><%= best_in_place transaction, :notes%></td>
+	<td><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
 	<td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
 	<td><%= form_for transaction, :remote => true do |f| %>
-			<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'expense_update' %>
+			<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'expense_update', tabindex: ((idx+1)*2)+1 %>
 		<% end %>
 	</td>
   </tr>
