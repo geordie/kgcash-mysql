@@ -1,0 +1,19 @@
+<h4><%= title %></h4>
+
+<table class="table table-striped table-condensed">
+  <tr>
+  <th>Category</th>
+  <th>Month</th>
+  <th>Credit</th>
+	<th>Debit</th>
+  </tr>
+
+<% data.each do |tx| %>
+  <tr>
+	<td><%= tx.name %></td>
+  <td><%= tx.month %></td>
+	<td><%= tx.credit %></td>
+	<td><%= tx.debit %></td>
+  </tr>
+<% end %>
+</table>

@@ -219,13 +219,28 @@ class ReportsController < ApplicationController
 
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
-		@transactions = @user.transactions
-			.joins( "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr")
-			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr")
+		sJoins = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr"
+		sSelect = "month(tx_date) as month, sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr"
+		sGroupBy = "month(tx_date), acct_id_cr"
+		sOrderBy = "acct_id_cr, month(tx_date)"
+
+		@income = @user.transactions
+			.joins( sJoins )
+			.select(sSelect)
 			.is_liability()
-			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income'))")
+			.where("(acct_id_cr in (select id from accounts where account_type = 'Income'))")
 			.in_year(@year)
-			.group("acct_id_cr")
+			.group( sGroupBy )
+			.order( sOrderBy )
+
+		@expense = @user.transactions
+			.joins( sJoins )
+			.select(sSelect)
+			.is_liability()
+			.where("(acct_id_cr in (select id from accounts where account_type = 'Expense'))")
+			.in_year(@year)
+			.group( sGroupBy )
+			.order( sOrderBy )
 
 		respond_to do |format|
 			format.html #income.html.erb
