@@ -219,28 +219,35 @@ class ReportsController < ApplicationController
 
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
-		sJoins = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr"
-		sSelect = "month(tx_date) as month, sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr"
-		sGroupBy = "month(tx_date), acct_id_cr"
-		sOrderBy = "acct_id_cr, month(tx_date)"
+		sJoinsIncome = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr"
+		sJoinsExpense = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr"
+
+		sSelectIncome = "month(tx_date) as month, sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr"
+		sSelectExpense = "month(tx_date) as month, sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_dr"
+
+		sGroupByIncome = "month(tx_date), acct_id_cr"
+		sGroupByExpense = "month(tx_date), acct_id_dr"
+
+		sOrderByIncome = "acct_id_cr, month(tx_date)"
+		sOrderByExpense = "acct_id_dr, month(tx_date)"
 
 		@income = @user.transactions
-			.joins( sJoins )
-			.select(sSelect)
+			.joins( sJoinsIncome )
+			.select( sSelectIncome )
 			.is_liability()
 			.where("(acct_id_cr in (select id from accounts where account_type = 'Income'))")
 			.in_year(@year)
-			.group( sGroupBy )
-			.order( sOrderBy )
+			.group( sGroupByIncome )
+			.order( sOrderByIncome )
 
 		@expense = @user.transactions
-			.joins( sJoins )
-			.select(sSelect)
-			.is_liability()
-			.where("(acct_id_cr in (select id from accounts where account_type = 'Expense'))")
+			.joins( sJoinsExpense )
+			.select(sSelectExpense)
+			.is_asset()
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Expense'))")
 			.in_year(@year)
-			.group( sGroupBy )
-			.order( sOrderBy )
+			.group( sGroupByExpense )
+			.order( sOrderByExpense )
 
 		respond_to do |format|
 			format.html #income.html.erb

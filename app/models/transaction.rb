@@ -41,6 +41,7 @@ class Transaction < ActiveRecord::Base
 
 	scope :is_expense, lambda{ where("acct_id_cr in (select id from accounts where account_type = 'Liability' or account_type = 'Asset')") }
 	scope :is_liability, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Asset')") }
+	scope :is_asset, lambda{ where("acct_id_cr in (select id from accounts where account_type = 'Asset')") }
 	scope :is_payment, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Liability')") }
 
 	def ensure_hash
