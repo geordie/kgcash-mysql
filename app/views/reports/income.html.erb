@@ -3,14 +3,16 @@
 <%= render partial: "multiBarChart", locals: {
   title: "Income",
   domId: "income",
-  data: "gon.income"
+  data: "gon.income",
+  valueField: "debit"
   }
 %>
 
 <%= render partial: "multiBarChart", locals: {
   title: "Expenses",
   domId: "expense",
-  data: "gon.expense"
+  data: "gon.expense",
+  valueField: "credit"
   }
 %>
 

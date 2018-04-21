@@ -12,8 +12,8 @@
   <tr>
 	<td><%= tx.name %></td>
   <td><%= tx.month %></td>
-	<td><%= tx.credit %></td>
-	<td><%= tx.debit %></td>
+	<td><%= tx.respond_to?(:credit) ? tx.credit : 0  %></td>
+	<td><%= tx.respond_to?(:debit) ? tx.debit : 0 %></td>
   </tr>
 <% end %>
 </table>

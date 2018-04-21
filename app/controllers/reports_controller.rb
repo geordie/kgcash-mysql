@@ -222,8 +222,8 @@ class ReportsController < ApplicationController
 		sJoinsIncome = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr"
 		sJoinsExpense = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr"
 
-		sSelectIncome = "month(tx_date) as month, sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr"
-		sSelectExpense = "month(tx_date) as month, sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_dr"
+		sSelectIncome = "month(tx_date) as month, sum(debit) as debit, accounts.name, acct_id_cr"
+		sSelectExpense = "month(tx_date) as month, sum(credit) as credit, accounts.name, acct_id_dr"
 
 		sGroupByIncome = "month(tx_date), acct_id_cr"
 		sGroupByExpense = "month(tx_date), acct_id_dr"
