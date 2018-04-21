@@ -1,4 +1,18 @@
-<h3>Income Statement -</h3>
+<h3>Income Statement</h3>
+
+<%= render partial: "multiBarChart", locals: {
+  title: "Income",
+  domId: "income",
+  data: "gon.income"
+  }
+%>
+
+<%= render partial: "multiBarChart", locals: {
+  title: "Expenses",
+  domId: "expense",
+  data: "gon.expense"
+  }
+%>
 
 <%= render partial: "categoryTable", locals: {title: "Income", data: @income} %>
 

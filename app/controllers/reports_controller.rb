@@ -249,6 +249,9 @@ class ReportsController < ApplicationController
 			.group( sGroupByExpense )
 			.order( sOrderByExpense )
 
+		gon.income = @income
+		gon.expense = @expense
+
 		respond_to do |format|
 			format.html #income.html.erb
 		end

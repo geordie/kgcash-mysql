@@ -2,7 +2,7 @@
 	<div class="col-md-1">
 	</div>
 	<div class="col-md-10 center-block text-center">
-		<h4><%= title if local_assigns[:title] %></h4>
+		<h2><%= title if local_assigns[:title] %></h2>
 		<svg id="<%= local_assigns[:domId] ? domId : "chartStacked" %>"></svg>
 	</div>
 	<div class="col-md-1">
@@ -10,6 +10,51 @@
 </div>
 
 <script>
+
+	function transform(data) {
+		// Destination format: [{key:name,values:[{x:month,y:debit}]}]
+
+		console.log("input", data);
+		var data_nvd3 = new Array();
+		var dataObj = new Object();
+		var maxMonth = 0;
+
+		for( var i = 0 ; i < data.length ; i++ ){
+
+			var key = data[i].name;
+			var month = data[i].month;
+			var debit = data[i].debit;
+
+			maxMonth = Math.max(month,maxMonth);
+
+			if (!(key in dataObj)){
+
+				dataObj[key] = new Object();
+				dataObj[key].values = new Array();
+
+			}
+			var obj = new Object();
+			obj.x = month;
+			obj.y = parseFloat(debit);
+			dataObj[key].values[month] = obj;
+		}
+
+		for( key in dataObj ){
+			// Fill in any blanks
+			for( i = 1 ; i <= maxMonth; i++)
+			{
+				if( dataObj[key].values[i] == null)
+				{
+						dataObj[key].values[i] = {"x":month,"y":0};
+				}
+			}
+			dataObj[key].values.shift();
+			var entry = {"key":key,"values":dataObj[key].values};
+			data_nvd3.push(entry);
+		}
+
+		return data_nvd3;
+	}
 
 	function buildStackedAreaChart( )
 	{
@@ -19,17 +64,16 @@
 
 		var chartDataIndex = <%= local_assigns[:chartDataIndex] ? chartDataIndex : 0 %>;
 
-		var teams = gon.stacked1[chartDataIndex];
+		var teams = transform(<%= local_assigns[:data] %>);
+		console.log(teams);
 
 		var height = 550;
 
+		var chart;
 		nv.addGraph(function() {
-			var chart = nv.models.multiBarChart()
+			chart = nv.models.multiBarChart()
 				.stacked(true)
 				.showControls(false)
-				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1] })
-				//.margin({"left":0,"right":0,"top":0,"bottom":0})
 				.clipEdge(true)
 				.useInteractiveGuideline(true)
 				.height(height)
@@ -50,51 +94,10 @@
 
 			nv.utils.windowResize(chart.update);
 
-			chart.multibar.dispatch.on("elementClick", function(e) {console.log(e);})
-
 			return chart;
-		}, doSomething( domId, avg ));
+		});
 	}
 
-	var doSomething = function(domId, avg) {
-			return function(chart) {
-				addAverageLine( chart, domId, avg );
-		};
-	};
-
-	function addAverageLine( chart, domId, avg ){
-
-		// Get cjart margin
-		var margin = chart.margin();
-
-		// Get chart yScale
-		var yScale = chart.yAxis.scale();
-
-		//call generic function...since you'll want this on potentially multiple types of charts
-		drawFixedLineAndText(domId, 960, margin, avg, yScale, "Avg: $" + avg);
-
-		function drawFixedLineAndText(chartName, width, margin, yValue, yValueScale, text) {
-
-		var svg = d3.select( chartName );
-		svg.append("line")
-			.style("stroke", "#FF7F0E")
-			.style("stroke-width", "2.0px")
-			.attr("x1", margin.left)
-			.attr("y1", yValueScale(yValue) + margin.top)
-			.attr("x2", width - margin.right)
-			.attr("y2", yValueScale(yValue) + margin.top);
-
-		//add text to fixed line
-		d3.select( chartName)
-		    .append("text")
-		    .attr("x", width - margin.right - (text.length * 2) )
-		    .attr("y", yValueScale(yValue) + margin.top - 5)
-		    .attr("text-anchor", "middle")
-		    .text(text);
-		//end fixed line
-		}
-	}
-
-	buildStackedAreaChart( );
+	buildStackedAreaChart();
 
 </script>
