@@ -17,6 +17,7 @@
 
 		var data_nvd3 = new Array();
 		var dataObj = new Object();
+		var minQuantum = Number.MAX_SAFE_INTEGER;
 		var maxQuantum = 0;
 
 		for( var i = 0 ; i < data.length ; i++ ){
@@ -25,6 +26,7 @@
 			var quantum = data[i].quantum;
 			var value = data[i][valField];
 
+			minQuantum = Math.min(quantum,minQuantum);
 			maxQuantum = Math.max(quantum,maxQuantum);
 
 			if (!(key in dataObj)){
@@ -36,12 +38,12 @@
 			var obj = new Object();
 			obj.x = quantum;
 			obj.y = parseFloat(value);
-			dataObj[key].values[quantum] = obj;
+			dataObj[key].values[quantum - minQuantum + 1] = obj;
 		}
 
 		for( key in dataObj ){
 			// Fill in any blanks
-			for( i = 1 ; i <= maxQuantum; i++)
+			for( i = 0 ; i <= maxQuantum - minQuantum + 1; i++)
 			{
 				if( dataObj[key].values[i] == null)
 				{
