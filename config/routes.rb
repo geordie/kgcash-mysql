@@ -3,8 +3,6 @@ Kgcash::Application.routes.draw do
 root :to => 'welcome#index', :constraints => UserRequiredConstraint.new
 root :to => 'static_pages#home', :constraints => NoUserRequiredConstraint.new, as: nil
 
-resources :categories
-
 resources :user_sessions
 
 resources :users
@@ -29,7 +27,6 @@ resources :payments
 
 resources :reports do
   collection do
-    get 'category', to: 'reports#category'
     get 'income', to: 'reports#income'
   end
 end
