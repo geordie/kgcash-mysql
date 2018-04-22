@@ -13,9 +13,8 @@
 
 	var valField = "<%= local_assigns[:valueField] ? valueField : "debit" %>"
 	function transform(data) {
-		// Destination format: [{key:name,values:[{x:month,y:debit}]}]
+		// Destination format: [{key:name,values:[{x:quantum,y:debit}]}]
 
-		console.log("input", data);
 		var data_nvd3 = new Array();
 		var dataObj = new Object();
 		var maxQuantum = 0;
@@ -66,7 +65,6 @@
 		var chartDataIndex = <%= local_assigns[:chartDataIndex] ? chartDataIndex : 0 %>;
 
 		var teams = transform(<%= local_assigns[:data] %>);
-		console.log(teams);
 
 		var height = 550;
 
