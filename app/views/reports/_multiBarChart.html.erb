@@ -18,15 +18,15 @@
 		console.log("input", data);
 		var data_nvd3 = new Array();
 		var dataObj = new Object();
-		var maxMonth = 0;
+		var maxQuantum = 0;
 
 		for( var i = 0 ; i < data.length ; i++ ){
 
 			var key = data[i].name;
-			var month = data[i].month;
+			var quantum = data[i].quantum;
 			var value = data[i][valField];
 
-			maxMonth = Math.max(month,maxMonth);
+			maxQuantum = Math.max(quantum,maxQuantum);
 
 			if (!(key in dataObj)){
 
@@ -35,18 +35,18 @@
 
 			}
 			var obj = new Object();
-			obj.x = month;
+			obj.x = quantum;
 			obj.y = parseFloat(value);
-			dataObj[key].values[month] = obj;
+			dataObj[key].values[quantum] = obj;
 		}
 
 		for( key in dataObj ){
 			// Fill in any blanks
-			for( i = 1 ; i <= maxMonth; i++)
+			for( i = 1 ; i <= maxQuantum; i++)
 			{
 				if( dataObj[key].values[i] == null)
 				{
-						dataObj[key].values[i] = {"x":month,"y":0};
+						dataObj[key].values[i] = {"x":quantum,"y":0};
 				}
 			}
 			dataObj[key].values.shift();

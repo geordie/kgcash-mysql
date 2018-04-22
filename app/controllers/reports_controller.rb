@@ -218,18 +218,21 @@ class ReportsController < ApplicationController
 		@user = current_user
 
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+		@quantum = params.has_key?(:quantum) ? params[:quantum] : "month"
+
+		sTimeAggregate = @quantum + "(tx_date)"
 
 		sJoinsIncome = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr"
 		sJoinsExpense = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr"
 
-		sSelectIncome = "month(tx_date) as month, sum(debit) as debit, accounts.name, acct_id_cr"
-		sSelectExpense = "month(tx_date) as month, sum(credit) as credit, accounts.name, acct_id_dr"
+		sSelectIncome = sTimeAggregate + " as quantum, sum(debit) as debit, accounts.name, acct_id_cr"
+		sSelectExpense = sTimeAggregate + " as quantum, sum(credit) as credit, accounts.name, acct_id_dr"
 
-		sGroupByIncome = "month(tx_date), acct_id_cr"
-		sGroupByExpense = "month(tx_date), acct_id_dr"
+		sGroupByIncome = sTimeAggregate + ", acct_id_cr"
+		sGroupByExpense = sTimeAggregate + ", acct_id_dr"
 
-		sOrderByIncome = "acct_id_cr, month(tx_date)"
-		sOrderByExpense = "acct_id_dr, month(tx_date)"
+		sOrderByIncome = "acct_id_cr, " + sTimeAggregate
+		sOrderByExpense = "acct_id_dr, " + sTimeAggregate
 
 		@income = @user.transactions
 			.joins( sJoinsIncome )

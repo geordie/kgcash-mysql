@@ -3,7 +3,7 @@
 <table class="table table-striped table-condensed">
   <tr>
   <th>Category</th>
-  <th>Month</th>
+  <th><%= @quantum %></th>
   <th>Credit</th>
 	<th>Debit</th>
   </tr>
@@ -11,7 +11,7 @@
 <% data.each do |tx| %>
   <tr>
 	<td><%= tx.name %></td>
-  <td><%= tx.month %></td>
+  <td><%= tx.quantum %></td>
 	<td><%= tx.respond_to?(:credit) ? tx.credit : 0  %></td>
 	<td><%= tx.respond_to?(:debit) ? tx.debit : 0 %></td>
   </tr>
