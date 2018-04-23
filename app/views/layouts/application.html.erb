@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>kgcash</title>
-      <% #TODO Datepicker stylesheet needs to be local and better. Also better jquery identifier in application.js %>
       <%= include_gon(:init => true) %>
       <%= stylesheet_link_tag "application" %>
       <%= javascript_include_tag "application" %>
@@ -10,69 +9,72 @@
   </head>
   <body>
 
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <%= link_to 'kgcash', root_path, {:class=>"navbar-brand"} %>
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-    </div>
-    <div class="navbar-header navbar-right">
-      <p class="navbar-text">
-      <a href="#" class="navbar-link"><%= current_user ? current_user.username : ""%></a>
-      </p>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li class="divider-vertical"></li>
+
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+
         <% if current_user %>
-
-          <li><%= link_to 'Accounts', accounts_path %> </li>
-
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              Transactions <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><%= link_to "Income & Savings", incomes_path %></li>
-              <li><%= link_to "Payments & Transfers", payments_path %></li>
-              <li><%= link_to "Expenses", expenses_path %></li>
-              <li><%= link_to "Import", new_transaction_import_path %></li>
-              <li><%= link_to "Create New", new_transaction_path %></li>
-            </ul>
+          <li class="nav-item">
+            <%= link_to 'Accounts', accounts_path, { :class=>"nav-link" } %>
           </li>
 
-           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              Reports <b class="caret"></b>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTransactions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Transactions
             </a>
-            <ul class="dropdown-menu">
-              <li><%= link_to "Income Statement", income_reports_path %></li>
-              <li><%= link_to "Total Spend", reports_path  %></li>
-            </ul>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownTransactions">
+              <%= link_to "Income & Savings", incomes_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Payments & Transfers", payments_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Expenses", expenses_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Import", new_transaction_import_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Create New", new_transaction_path, { :class=>"dropdown-item" } %>
+            </div>
           </li>
 
-          <li><%= link_to 'Budgets', budgets_path %></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              My Profile <b class="caret"></b>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownReports" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Reports
             </a>
-            <ul class="dropdown-menu">
-              <li><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
-              <li><%= link_to "Logout", :logout %></li>
-            </ul>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownReports">
+              <%= link_to "Income Statement", income_reports_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Total Spend", reports_path, { :class=>"dropdown-item" } %>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to 'Budgets', budgets_path, { :class=>"nav-link" } %>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              My Profile
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
+              <%= link_to "Edit Profile", edit_user_path(current_user.id), { :class=>"dropdown-item" } %>
+              <%= link_to "Logout", :logout, { :class=>"dropdown-item" } %>
+            </div>
+          </li>
+        </ul>
+        <ul class="navbar-nav" >
+          <li  class="nav-item">
+            <a href="#" class="nav-link"><%= current_user ? current_user.username : ""%></a>
           </li>
         <% else %>
-          <li><%= link_to "Register", new_user_path %></li>
-          <li><%= link_to "Login", :login %></li>
+          <li><%= link_to "Register", new_user_path, { :class=>"nav-link" } %></li>
+          <li><%= link_to "Login", :login, { :class=>"nav-link" } %></li>
         <% end %>
-      </ul>
-    </div>
-  </nav>
 
-  <div class="containter-fluid">
+        </ul>
+
+      </div>
+    </nav>
+
+  <div class="container-fluid">
     <div class="row-fluid">
       <div class="span1"></div>
       <div class="span10">
