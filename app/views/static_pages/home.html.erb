@@ -7,12 +7,69 @@
       <%= csrf_meta_tags %>
   </head>
   <body>
-  <h1>Sample App</h1>
-  <p>
-    Welcome to, kgcash-!
-  </p>
-  <p>
-    <%= link_to "Login", login_path %>
-  </p>
+    <!-- Navigation -->
+    <nav class="navbar navbar-light bg-light static-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">kgcash</a>
+        <%= link_to "Sign In", login_path, {:class=>"btn btn-primary"} %>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead text-white text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-8">
+            <h1 class="mb-5">See how your cash flows</h1>
+          </div>
+          <div class="col">
+            <form id="new_user" action="/users" method="post" accept-charset="UTF-8">
+              <div class="form-group text-right">
+                <input id="user_email" name="user[email]" class="form-control form-control-lg" type="text" placeholder="Enter your email...">
+                <input id="user_password" name="user[password]" class="form-control form-control-lg" type="password" placeholder="Create password...">
+                <button type="submit" class="btn btn-primary mb-4">Sign-Up!</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Icons Grid -->
+    <section class="features-icons bg-light text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+                <i class="icon-screen-desktop m-auto text-primary"></i>
+              </div>
+              <h3>Fully Responsive</h3>
+              <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+                <i class="icon-layers m-auto text-primary"></i>
+              </div>
+              <h3>Bootstrap 4 Ready</h3>
+              <p class="lead mb-0">Featuring the latest build of the new Bootstrap 4 framework!</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+                <i class="icon-check m-auto text-primary"></i>
+              </div>
+              <h3>Easy to Use</h3>
+              <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
 </body>
 </html>
