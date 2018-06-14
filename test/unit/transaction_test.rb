@@ -17,7 +17,7 @@ class TransactionTest < ActiveSupport::TestCase
 
 		txs = user1.transactions
 
-		assert txs.count == 3
+		assert txs.count == 3, "Actual: " + txs.count.to_s
 	end
 
 	test "Transaction filters" do
@@ -34,12 +34,6 @@ class TransactionTest < ActiveSupport::TestCase
 
 		txs = user1.transactions.in_month_year(1,2012)
 		assert txs.count == 0, "Actual: " + txs.count.to_s
-
-		txs = user1.transactions.by_months_in_year(2012)
-		assert txs.length == 2, "ACTUAL: " + txs.count.to_s
-
-		txs = user1.transactions.by_days_in_month(11, 2012)
-		assert txs.length == 1, "ACTUAL: " + txs.count.to_s
 
 	end
 
