@@ -47,13 +47,13 @@ gem 'gon'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails'
 end
 
 group :test do
   # Pretty printed test output
   gem 'turn', :require => false
   gem "minitest"
-  gem 'capybara', '2.2.0'
+  gem 'capybara', '~> 3.2'
   gem 'fabrication'
 end

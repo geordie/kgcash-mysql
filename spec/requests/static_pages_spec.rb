@@ -5,7 +5,7 @@ describe "Static pages" do
   describe "Home page" do
     it "should have the content 'Welcome'" do
       visit '/'
-      expect(page).to have_content("Welcome")
+      expect(page).to have_content("flows")
     end
   end
 
