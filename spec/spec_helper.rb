@@ -44,18 +44,17 @@ end
 module Sorcery
   module TestHelpers
     module Rails
-      
+
       def user_login(user, password)
         page.driver.post(user_sessions_url, { username: user, password: password})
       end
 
       def login_user(user, password)
-        visit user_sessions_url
+        visit login_path
 
-        fill_in 'email',    with: user.email
-        fill_in 'password', with: password
-
-        click_button 'Login'
+        fill_in 'email', with: user.email
+        fill_in 'password', with: 'admin'
+        click_button 'login'
       end
     end
   end
