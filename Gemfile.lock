@@ -252,7 +252,7 @@ DEPENDENCIES
   json (~> 1.8.2)
   mechanize
   minitest
-  mysql2 (~> 0.3.18)
+  mysql2
   oj
   rabl
   rails (= 5.1.3)

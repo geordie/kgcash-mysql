@@ -10,7 +10,7 @@ gem 'rails_12factor'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 
-gem 'mysql2', '~> 0.3.18'
+gem 'mysql2'
 gem 'sorcery'
 #gem 'doorkeeper'
 gem 'json', '~> 1.8.2'
