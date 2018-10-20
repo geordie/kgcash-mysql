@@ -58,7 +58,7 @@ CREATE TABLE `budget_categories` (
   `account_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_budget_categories_on_budget_id` (`budget_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=443 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=442 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `budgets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -174,7 +174,7 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_category_id` (`category_id`),
   KEY `index_transactions_on_user_id` (`user_id`),
   KEY `index_transactions_on_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=135883 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=135935 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -189,7 +189,7 @@ CREATE TABLE `users` (
   `updated_at` datetime DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
