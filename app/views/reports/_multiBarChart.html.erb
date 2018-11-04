@@ -13,7 +13,7 @@
 
 	var valField = "<%= local_assigns[:valueField] ? valueField : "debit" %>"
 	function transform(data) {
-		// Destination format: [{key:name,values:[{x:quantum,y:debit}]}]
+		// Destination format: [{key:name,values:[{x:quantum,y:debit},...]}]
 
 		var data_nvd3 = new Array();
 		var dataObj = new Object();
@@ -30,15 +30,14 @@
 			maxQuantum = Math.max(quantum,maxQuantum);
 
 			if (!(key in dataObj)){
-
 				dataObj[key] = new Object();
 				dataObj[key].values = new Array();
-
 			}
+
 			var obj = new Object();
 			obj.x = quantum;
 			obj.y = parseFloat(value);
-			dataObj[key].values[quantum - minQuantum + 1] = obj;
+			dataObj[key].values[obj.x] = obj;
 		}
 
 		for( key in dataObj ){
@@ -47,14 +46,13 @@
 			{
 				if( dataObj[key].values[i] == null)
 				{
-						dataObj[key].values[i] = {"x":quantum,"y":0};
+						dataObj[key].values[i] = {"x":i,"y":0};
 				}
 			}
 			dataObj[key].values.shift();
 			var entry = {"key":key,"values":dataObj[key].values};
 			data_nvd3.push(entry);
 		}
-
 		return data_nvd3;
 	}
 
