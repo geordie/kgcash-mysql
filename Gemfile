@@ -12,7 +12,6 @@ gem 'rails_12factor'
 
 gem 'mysql2'
 gem 'sorcery'
-#gem 'doorkeeper'
 gem 'json', '~> 1.8.2'
 gem 'execjs'
 gem 'rabl'
