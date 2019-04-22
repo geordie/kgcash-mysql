@@ -122,7 +122,7 @@ class ReportsController < ApplicationController
 		@expense = @user.transactions
 			.joins( sJoinsExpense )
 			.select(sSelectExpense)
-			.is_asset()
+			.is_expense()
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Expense'))")
 			.in_year(@year)
 			.group( sGroupByExpense )
