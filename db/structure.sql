@@ -32,7 +32,7 @@ CREATE TABLE `accounts_users` (
   `account_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ar_internal_metadata`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -72,7 +72,7 @@ CREATE TABLE `budgets` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_budgets_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -174,7 +174,7 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_category_id` (`category_id`),
   KEY `index_transactions_on_user_id` (`user_id`),
   KEY `index_transactions_on_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=135935 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=139520 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -189,7 +189,7 @@ CREATE TABLE `users` (
   `updated_at` datetime DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -216,10 +216,10 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20150503060156'),
 ('20170213202356'),
 ('20170829212356'),
-('20170829222356'),
 ('20170918225056'),
 ('20171103233556'),
 ('20171112235456'),
+('20180429222356'),
 ('20180429223856');
 
 
