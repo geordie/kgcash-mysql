@@ -28,6 +28,9 @@ class User < ActiveRecord::Base
 			if importonly && acct.import_class.nil?
 				next
 			end
+			if acct.name.nil?
+				next
+			end
 			rec = Array.new
 			rec.push acct.name
 			rec.push acct.id
