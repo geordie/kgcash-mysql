@@ -8,7 +8,9 @@ class TransactionImportFormatVancityVisaNew
 	# GEORDIE A HENDERSON,4789 01•• •••• 6773,2018-04-12,2018-04-13T00:00,HEROKU MAR-16920959 HEROKU.COM CA,CAD,12.86,
 
 	def buildTransaction( csvline, account_id )
-		csvline.gsub!(/,[ ]{1,}\"/, ",\"")
+		
+		# Get rid of ", pair within lines
+		csvline.gsub!(/\",/, "")
 		fields = CSV.parse(csvline)[0]
 
 		# Get date
