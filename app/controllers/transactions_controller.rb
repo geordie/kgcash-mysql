@@ -24,18 +24,16 @@ class TransactionsController < ApplicationController
 
 	def create
 		@user = current_user
-		if @user == nil
-			@user = User.last
-		end
-		@transaction = @user.transactions.create(params[:transaction])
+
+		@transaction = @user.transactions.create(transaction_params)
 
 		respond_to do |format|
 			if @transaction.save
-			format.html { redirect_to(transactions_path, :notice => 'Transaction was successfully created for user.') }
-			format.json { render json: @transaction, status: :created, location: @transaction }
+				format.html { redirect_to(transactions_path, :notice => 'Transaction was successfully created for user.') }
+				format.json { render json: @transaction, status: :created, location: @transaction }
 			else
-			format.html { render action: "new" }
-			format.json { render json: @transaction.errors, status: :unprocessable_entity }
+				format.html { render action: "new" }
+				format.json { render json: @transaction.errors, status: :unprocessable_entity }
 			end
 		end
 	end
@@ -84,6 +82,25 @@ class TransactionsController < ApplicationController
 			format.html { redirect_to :action => 'index' }
 			format.js   { render :nothing => true }
 			format.json { head :ok }
+		end
+	end
+
+	def index
+		@user = current_user
+
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+		category = params.has_key?(:category) ? params[:category].to_i : nil
+		account = params.has_key?(:account) ? params[:account].to_i : nil
+
+		@transactions = @user.transactions
+			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
+			.in_year(@year)
+			.paginate(:page => params[:page])
+			.order(sort_column + ' ' + sort_direction)
+
+		respond_to do |format|
+			format.html #index.html.erb
+			format.csv {}
 		end
 	end
 
