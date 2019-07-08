@@ -43,10 +43,35 @@ class ExpensesController < ApplicationController
 		end
 	end
 
+	def split
+		@id = params.has_key?(:id) ? params[:id].to_i : 0
+
+		@user = current_user
+
+		@transaction = @user.transactions.find(params[:id])
+		@accounts = @user.account_selector
+
+		@transaction_new = @user.transactions.new()
+		@transaction_new.tx_date = @transaction.tx_date
+		@transaction_new.posting_date = @transaction.posting_date
+		@transaction_new.tx_type = @transaction.tx_type
+		@transaction_new.details = @transaction.details
+		@transaction_new.notes = @transaction.notes
+		@transaction_new.debit = @transaction.debit
+		@transaction_new.credit = @transaction.credit
+		@transaction_new.acct_id_cr = @transaction.acct_id_cr
+		@transaction_new.acct_id_dr = @transaction.acct_id_dr
+
+
+		respond_to do |format|
+			format.html
+		end
+	end
+
 	private
 
 	def expense_params
-		params.require(:expense).permit(:name, :description, :account_type, :year)
+		params.require(:expense).permit(:name, :description, :account_type, :year, :id)
 	end
 
 end
