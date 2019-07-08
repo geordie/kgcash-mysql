@@ -41,11 +41,9 @@ class Transaction < ActiveRecord::Base
 	scope :is_payment, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Liability')") }
 
 	def ensure_hash
-
 		if self.tx_hash.to_s == ''
 			self.tx_hash = build_hash
 		end
-
 	end
 
 	def build_hash
