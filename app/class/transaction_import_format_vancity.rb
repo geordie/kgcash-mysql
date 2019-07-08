@@ -37,7 +37,6 @@ class TransactionImportFormatVancity
 		# Get date
 		sDate = fields[1]
 		date = DateTime.strptime(sDate,'%d-%b-%Y')
-		sDate = date.strftime( '%y-%m-%d' )
 
 		# Get credit and debit amounts
 		credit = fields[4].length > 0 ? fields[4] : nil
