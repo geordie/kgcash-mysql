@@ -98,26 +98,38 @@ class ReportsController < ApplicationController
 
 		sTimeAggregate = @quantum + "(tx_date)"
 
-		sJoinsIncome = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr"
+		sJoinsIncomeA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+		sJoinsIncomeB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
+
 		sJoinsExpense = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr"
 
-		sSelectIncome = sTimeAggregate + " as quantum, sum(debit) as debit, accounts.name, acct_id_cr"
+		sSelectIncome = sTimeAggregate + " as quantum, "\
+		"SUM(IF(accts_cr.account_type = 'Income', credit, debit*-1)) as 'Income', "\
+		"IF(accts_cr.account_type = 'Income', accts_cr.id, accts_dr.id) as acct_id, "\
+		"IF(accts_cr.account_type = 'Income', accts_cr.name, accts_dr.name) as name"
+
 		sSelectExpense = sTimeAggregate + " as quantum, sum(credit) as credit, accounts.name, acct_id_dr"
 
-		sGroupByIncome = sTimeAggregate + ", acct_id_cr"
+		sGroupByIncome = sTimeAggregate + ", IF(accts_cr.account_type = 'Income', accts_cr.id, accts_dr.id),"\
+		"IF(accts_cr.account_type = 'Income', accts_cr.name, accts_dr.name)"
 		sGroupByExpense = sTimeAggregate + ", acct_id_dr"
 
-		sOrderByIncome = "acct_id_cr, " + sTimeAggregate
 		sOrderByExpense = "acct_id_dr, " + sTimeAggregate
 
 		@income = @user.transactions
-			.joins( sJoinsIncome )
+			.joins( sJoinsIncomeA )
+			.joins( sJoinsIncomeB )
 			.select( sSelectIncome )
-			.is_liability()
-			.where("(acct_id_cr in (select id from accounts where account_type = 'Income'))")
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
+				"AND acct_id_cr in (select id from accounts where account_type = 'Income')) "\
+					"OR "\
+				"(acct_id_cr in (select id from accounts where account_type = 'Asset') "\
+				"AND acct_id_dr in (select id from accounts where account_type = 'Income'))")
 			.in_year(@year)
 			.group( sGroupByIncome )
-			.order( sOrderByIncome )
+			.order( sTimeAggregate )
+
+		gon.income = @income
 
 		@expense = @user.transactions
 			.joins( sJoinsExpense )
@@ -128,8 +140,8 @@ class ReportsController < ApplicationController
 			.group( sGroupByExpense )
 			.order( sOrderByExpense )
 
-		gon.income = @income
 		gon.expense = @expense
+
 
 		respond_to do |format|
 			format.html #income.html.erb
