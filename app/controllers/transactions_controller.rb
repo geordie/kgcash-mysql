@@ -47,7 +47,10 @@ class TransactionsController < ApplicationController
 			if @transaction.update_attributes(transaction_params)
 				format.html {  redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
 				format.json { respond_with_bip(@transaction) }
-				format.js {render :nothing => true, :status => 200, :content_type => 'text/html' }
+				format.js {
+					redirect_to transactions_path
+					# render :nothing => true, :status => 200, :content_type => 'text/html' 
+				}
 			else
 				format.html { render action: "edit" }
 				format.json { render json: @transaction.errors, status: :unprocessable_entity }
