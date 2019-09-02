@@ -7,13 +7,19 @@ resources :user_sessions
 
 resources :users
 
-resources :transactions, :except => [:index]
+resources :transactions
 
 resources :transaction_imports
 
 resources :expenses do
   collection do
     get 'uncategorized'
+  end
+  collection do
+    post 'split_update'
+  end
+  collection do
+    get 'split'
   end
 end
 

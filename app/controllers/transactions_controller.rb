@@ -118,8 +118,7 @@ class TransactionsController < ApplicationController
 	end
 
 	def transaction_params
-		params.require(:transaction).permit(:account_id, :category_id, :credit, :debit, :details,
-			:notes, :posting_date, :tx_date, :tx_type, :acct_id_dr, :acct_id_cr)
+		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date)
 	end
 
 end

@@ -1,0 +1,33 @@
+<h3>Split Transaction</h3>
+ID: <%= @id %>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Transaction Details</h5>
+					<%= render 'header' %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Current Transaction</h5>
+				<%= render 'form', user: @user, transaction: @transaction, submitText: "Save" %>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">New Transaction</h5>
+				<%= render 'form', user: @user, transaction: @transaction_new, submitText: "Create New" %>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

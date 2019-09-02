@@ -57,8 +57,8 @@ class ExpensesController < ApplicationController
 		@transaction_new.tx_type = @transaction.tx_type
 		@transaction_new.details = @transaction.details
 		@transaction_new.notes = @transaction.notes
-		@transaction_new.debit = @transaction.debit
-		@transaction_new.credit = @transaction.credit
+		@transaction_new.debit = 0
+		@transaction_new.credit = 0
 		@transaction_new.acct_id_cr = @transaction.acct_id_cr
 		@transaction_new.acct_id_dr = @transaction.acct_id_dr
 
@@ -68,10 +68,34 @@ class ExpensesController < ApplicationController
 		end
 	end
 
+	def update
+		split_update
+	end
+
+	def split_update
+		user = current_user
+		tx_id = params[:transaction][:id]
+		
+		success = false
+		if tx_id.present?
+
+			@transaction = user.transactions.find(tx_id)
+			success = @transaction.update_attributes(expense_params)
+		else
+			@transaction = user.transactions.create(params[:transaction].permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date))	
+		end
+		
+		respond_to do |format|
+			format.js { success }
+			format.html { render action: "edit" }
+			format.json { render json: @transaction.errors, status: :unprocessable_entity }
+		end
+	end
+
 	private
 
 	def expense_params
-		params.require(:expense).permit(:name, :description, :account_type, :year, :id)
+		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date)
 	end
 
 end
