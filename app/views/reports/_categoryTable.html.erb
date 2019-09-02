@@ -4,6 +4,13 @@
   <tr>
   <th>Category</th>
   <th><%= @quantum %></th>
+  
+  <% if defined?(columns)%>
+    <% columns.each do |col| %>
+      <th><%= col %></th>
+    <% end %>
+  <% end %>
+
   <th>Credit</th>
 	<th>Debit</th>
   </tr>
@@ -12,6 +19,11 @@
   <tr>
 	<td><%= tx.name %></td>
   <td><%= tx.quantum %></td>
+  <% if defined?(columns)%>
+    <% columns.each do |col| %>
+      <td><%= tx.respond_to?(col) ? tx[col] : 0 %></td>
+    <% end %>
+  <%end%>
 	<td><%= tx.respond_to?(:credit) ? tx.credit : 0  %></td>
 	<td><%= tx.respond_to?(:debit) ? tx.debit : 0 %></td>
   </tr>
