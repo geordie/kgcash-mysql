@@ -104,7 +104,7 @@ class ReportsController < ApplicationController
 		sJoinsExpense = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr"
 
 		sSelectIncome = sTimeAggregate + " as quantum, "\
-		"SUM(IF(accts_cr.account_type = 'Income', credit, debit*-1)) as 'Income', "\
+		"SUM(IF(accts_cr.account_type = 'Income', credit, debit*-1)) as 'income', "\
 		"IF(accts_cr.account_type = 'Income', accts_cr.id, accts_dr.id) as acct_id, "\
 		"IF(accts_cr.account_type = 'Income', accts_cr.name, accts_dr.name) as name"
 
