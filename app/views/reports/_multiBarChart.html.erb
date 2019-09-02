@@ -42,11 +42,11 @@
 
 		for( key in dataObj ){
 			// Fill in any blanks
-			for( i = 0 ; i <= maxQuantum - minQuantum + 1; i++)
+			for( i = 0 ; i <= maxQuantum; i++)
 			{
 				if( dataObj[key].values[i] == null)
 				{
-						dataObj[key].values[i] = {"x":i,"y":0};
+					dataObj[key].values[i] = {"x":i,"y":0};
 				}
 			}
 			dataObj[key].values.shift();
