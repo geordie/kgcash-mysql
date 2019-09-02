@@ -9,10 +9,10 @@
     <% columns.each do |col| %>
       <th><%= col %></th>
     <% end %>
+  <% else %>
+    <th>Credit</th>
+    <th>Debit</th>
   <% end %>
-
-  <th>Credit</th>
-	<th>Debit</th>
   </tr>
 
 <% data.each do |tx| %>
@@ -23,9 +23,11 @@
     <% columns.each do |col| %>
       <td><%= tx.respond_to?(col) ? tx[col] : 0 %></td>
     <% end %>
-  <%end%>
-	<td><%= tx.respond_to?(:credit) ? tx.credit : 0  %></td>
-	<td><%= tx.respond_to?(:debit) ? tx.debit : 0 %></td>
+  <% else %>
+    <td><%= tx.respond_to?(:credit) ? tx.credit : 0  %></td>
+    <td><%= tx.respond_to?(:debit) ? tx.debit : 0 %></td>
+  <% end %>
+
   </tr>
 <% end %>
 </table>
