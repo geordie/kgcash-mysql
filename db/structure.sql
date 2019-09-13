@@ -32,7 +32,7 @@ CREATE TABLE `accounts_users` (
   `account_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ar_internal_metadata`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -88,60 +88,6 @@ CREATE TABLE `categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=372 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `oauth_access_grants`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `oauth_access_grants` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `resource_owner_id` int(11) NOT NULL,
-  `application_id` int(11) NOT NULL,
-  `token` varchar(255) NOT NULL,
-  `expires_in` int(11) NOT NULL,
-  `redirect_uri` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `revoked_at` datetime DEFAULT NULL,
-  `scopes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `index_oauth_access_grants_on_token` (`token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `oauth_access_tokens`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `oauth_access_tokens` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `resource_owner_id` int(11) DEFAULT NULL,
-  `application_id` int(11) NOT NULL,
-  `token` varchar(255) NOT NULL,
-  `refresh_token` varchar(255) DEFAULT NULL,
-  `expires_in` int(11) DEFAULT NULL,
-  `revoked_at` datetime DEFAULT NULL,
-  `created_at` datetime NOT NULL,
-  `scopes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `index_oauth_access_tokens_on_token` (`token`),
-  UNIQUE KEY `index_oauth_access_tokens_on_refresh_token` (`refresh_token`),
-  KEY `index_oauth_access_tokens_on_resource_owner_id` (`resource_owner_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `oauth_applications`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `oauth_applications` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `uid` varchar(255) NOT NULL,
-  `secret` varchar(255) NOT NULL,
-  `redirect_uri` varchar(255) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `owner_id` int(11) DEFAULT NULL,
-  `owner_type` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `index_oauth_applications_on_uid` (`uid`),
-  KEY `index_oauth_applications_on_owner_id_and_owner_type` (`owner_id`,`owner_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `schema_migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -174,7 +120,7 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_category_id` (`category_id`),
   KEY `index_transactions_on_user_id` (`user_id`),
   KEY `index_transactions_on_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=139520 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=139784 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -220,6 +166,7 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20171103233556'),
 ('20171112235456'),
 ('20180429222356'),
-('20180429223856');
+('20180429223856'),
+('20190901223856');
 
 
