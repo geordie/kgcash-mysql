@@ -101,18 +101,24 @@ class ReportsController < ApplicationController
 		sJoinsIncomeA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 		sJoinsIncomeB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
 
-		sJoinsExpense = "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr"
+		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+		sJoinsExpenseB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
 
 		sSelectIncome = sTimeAggregate + " as quantum, "\
 		"SUM(IF(accts_cr.account_type = 'Income', credit, debit*-1)) as 'income', "\
 		"IF(accts_cr.account_type = 'Income', accts_cr.id, accts_dr.id) as acct_id, "\
 		"IF(accts_cr.account_type = 'Income', accts_cr.name, accts_dr.name) as name"
 
-		sSelectExpense = sTimeAggregate + " as quantum, sum(credit) as credit, accounts.name, acct_id_dr"
+		sSelectExpense = sTimeAggregate + " as quantum, "\
+		"SUM(IF(accts_dr.account_type = 'Expense', debit, credit*-1)) as 'expenses', "\
+		"IF(accts_dr.account_type = 'Expense', accts_dr.id, accts_cr.id) as acct_id, "\
+		"IF(accts_dr.account_type = 'Expense', accts_dr.name, accts_cr.name) as name"
 
 		sGroupByIncome = sTimeAggregate + ", IF(accts_cr.account_type = 'Income', accts_cr.id, accts_dr.id),"\
 		"IF(accts_cr.account_type = 'Income', accts_cr.name, accts_dr.name)"
-		sGroupByExpense = sTimeAggregate + ", acct_id_dr"
+		
+		sGroupByExpense = sTimeAggregate + ", IF(accts_dr.account_type = 'Expense', accts_dr.id, accts_cr.id),"\
+		"IF(accts_dr.account_type = 'Expense', accts_dr.name, accts_cr.name)"
 
 		sOrderByExpense = "acct_id_dr, " + sTimeAggregate
 
@@ -132,13 +138,18 @@ class ReportsController < ApplicationController
 		gon.income = @income
 
 		@expense = @user.transactions
-			.joins( sJoinsExpense )
+			.joins( sJoinsExpenseA )
+			.joins( sJoinsExpenseB )
 			.select(sSelectExpense)
 			.is_expense()
-			.where("(acct_id_dr in (select id from accounts where account_type = 'Expense'))")
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
+				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
+					"OR "\
+				"(acct_id_cr in (select id from accounts where account_type = 'Asset') "\
+				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
 			.in_year(@year)
 			.group( sGroupByExpense )
-			.order( sOrderByExpense )
+			.order( sTimeAggregate )
 
 		gon.expense = @expense
 

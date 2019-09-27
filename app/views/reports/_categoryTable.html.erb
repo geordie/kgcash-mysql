@@ -1,33 +1,50 @@
-<h4><%= title %></h4>
+<script type="text/javascript">
 
-<table class="table table-striped table-condensed">
-  <tr>
-  <th>Category</th>
-  <th><%= @quantum %></th>
-  
-  <% if defined?(columns)%>
-    <% columns.each do |col| %>
-      <th><%= col %></th>
-    <% end %>
-  <% else %>
-    <th>Credit</th>
-    <th>Debit</th>
-  <% end %>
-  </tr>
+var tableData = buildMonthlyCategoryReport( <%= local_assigns[:gonData] %>, "<%= local_assigns[:valueField] %>" );
 
-<% data.each do |tx| %>
-  <tr>
-	<td><%= tx.name %></td>
-  <td><%= tx.quantum %></td>
-  <% if defined?(columns)%>
-    <% columns.each do |col| %>
-      <td><%= tx.respond_to?(col) ? tx[col] : 0 %></td>
-    <% end %>
-  <% else %>
-    <td><%= tx.respond_to?(:credit) ? tx.credit : 0  %></td>
-    <td><%= tx.respond_to?(:debit) ? tx.debit : 0 %></td>
-  <% end %>
+console.log("tableData", tableData);
 
-  </tr>
-<% end %>
-</table>
+var columns = [
+    { head: 'Category', cl: 'title' },
+    { head: 'Jan', cl: 'center' },
+    { head: 'Feb', cl: 'center' },
+    { head: 'Mar', cl: 'num' },
+    { head: 'Apr', cl: 'num' },
+    { head: 'May', cl: 'num' },
+    { head: 'Jun', cl: 'num' },
+    { head: 'Jul', cl: 'num' },
+    { head: 'Aug', cl: 'num' },
+    { head: 'Sep', cl: 'num' },
+    { head: 'Oct', cl: 'num' },
+    { head: 'Nov', cl: 'num' },
+    { head: 'Dec', cl: 'num' },
+];
+
+var domId = "<%= local_assigns[:domId] ? "#" + domId : "#chartStacked" %>";
+
+var table = d3.select(domId)
+  .attr('class', 'table table-striped table-condensed')
+  .append("table");
+
+ // create table header
+table.append('thead').append('tr')
+  .selectAll('th')
+  .data(columns).enter()
+  .append('th')
+  .attr('class', function(d){return d.cl;})
+  .text(function(d){return d.head;});
+
+// create table body
+table.append('tbody')
+  .selectAll('tr')
+  .data(tableData)
+  .enter()
+  .append('tr')
+  .selectAll('td')
+  .data(function(row, i){
+    return row;
+  }).enter()
+  .append('td')
+  .html(function(d){return d;});
+
+</script>

@@ -12,10 +12,26 @@
   title: "Expenses",
   domId: "expense",
   data: "gon.expense",
-  valueField: "credit"
+  valueField: "expenses"
   }
 %>
 
-<%= render partial: "categoryTable", locals: {title: "Income", data: @income, columns: ["income"]} %>
+<h4>Income</h4>
+<div id="tableIncome"></div>
 
-<%= render partial: "categoryTable", locals: {title: "Expenses", data: @expense } %>
+<%= render partial: "categoryTable", locals: {
+  gonData: "gon.income",
+  domId: "tableIncome",
+  valueField: "income"
+  }
+%>
+
+<h4>Expenses</h4>
+<div id="tableExpense"></div>
+
+<%= render partial: "categoryTable", locals: {
+  gonData: "gon.expense",
+  domId: "tableExpense",
+  valueField: "expenses"
+  }
+%>
