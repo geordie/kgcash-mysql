@@ -20,8 +20,8 @@ class Transaction < ActiveRecord::Base
 	scope :in_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
 
 	scope :in_month_year, lambda { |month, year| where( 'tx_date >= ? AND tx_date < ?',
-					Date.new(year,month,1),
-					month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1) )
+					month.nil? ? Date.new( year,1,1) : Date.new(year,month,1),
+					!month.nil? && month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1) )
 		}
 
 	scope :in_debit_acct, lambda { |acct_id| where("acct_id_dr = ?", acct_id) unless acct_id.nil? }
