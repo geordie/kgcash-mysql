@@ -5,6 +5,7 @@ class IncomesController < ApplicationController
 		@user = current_user
 
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+		@month = params.has_key?(:month) ? params[:month].to_i : nil
 		category = params.has_key?(:category) ? params[:category].to_i : nil
 
 		@transactions = @user.transactions
@@ -12,7 +13,7 @@ class IncomesController < ApplicationController
 			.is_liability()
 			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income'))")
 			.in_credit_acct( category )
-			.in_year(@year)
+			.in_month_year(@month, @year)
 			.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
 
