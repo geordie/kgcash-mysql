@@ -22,6 +22,7 @@
 <%= render partial: "categoryTable", locals: {
   gonData: "gon.income",
   domId: "tableIncome",
+  year: @year,
   valueField: "income"
   }
 %>
@@ -32,6 +33,7 @@
 <%= render partial: "categoryTable", locals: {
   gonData: "gon.expense",
   domId: "tableExpense",
+  year: @year,
   valueField: "expenses"
   }
 %>

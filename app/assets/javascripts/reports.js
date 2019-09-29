@@ -152,9 +152,10 @@ function buildMonthlyCategoryReport( data, valueField )
 		key = thing['name'];
 		if (!(key in categoryReportData))
 		{
-			categoryReportData[key] = new Array(12);
+			categoryReportData[key] = new Array(13);
 		}
 		categoryReportData[key][thing.quantum-1] = thing[valueField];
+		categoryReportData[key][12] = thing.acct_id;
 	}
 	
 	data.forEach(item => f(item));
@@ -162,9 +163,10 @@ function buildMonthlyCategoryReport( data, valueField )
 	var arrayCategoryReportData = new Array();
 	
 	Object.keys(categoryReportData).forEach( function(elem){
+		
 		var record = categoryReportData[elem];
-		record.unshift(elem)
-		arrayCategoryReportData.push(record);
+		record.unshift([elem, record[12]])
+		arrayCategoryReportData.push(record.slice(0,13));
 	});
 
 	return arrayCategoryReportData;
