@@ -1,3 +1,8 @@
 *.git/*
-*/log*
-*/tmp*
+./log*
+./tmp/cache/*
+*.pem
+*DS_Store*
+*kgcash*.yaml
+./db/data.yml
+
