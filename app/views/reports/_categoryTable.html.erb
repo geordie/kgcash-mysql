@@ -20,6 +20,7 @@ var columns = [
 
 var domId = "<%= local_assigns[:domId] ? "#" + domId : "#chartStacked" %>";
 var year = "<%= local_assigns[:year] ? year : 2019 %>"
+var linkURLPath = "<%= local_assigns[:linkURLPath] ? linkURLPath : "../expenses" %>"
 
 var table = d3.select(domId)
   .attr('class', 'table table-striped table-condensed')
@@ -46,7 +47,7 @@ table.append('tbody')
   .enter()
   .append('td')
   .append('a')
-  .attr("href", function(d,i){if(i==0){catId=d[1];}return "../expenses?month=" + i + "&category=" + catId + "&year=" + year;})
+  .attr("href", function(d,i){if(i==0){catId=d[1];return null;}return linkURLPath + "?month=" + i + "&category=" + catId + "&year=" + year;})
   .html(function(d,i){if(i==0){ return d[0]}return d;});
 
 </script>
