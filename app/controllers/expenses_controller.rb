@@ -9,8 +9,13 @@ class ExpensesController < ApplicationController
 		category = params.has_key?(:category) ? params[:category].to_i : nil
 		account = params.has_key?(:account) ? params[:account].to_i : nil
 
+		sJoinsAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+
 		@transactions = @user.transactions
-			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
+			.joins(sJoinsAccounts)
+			.select("transactions.id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, "\
+			"IF(accts_cr.account_type = 'Expense', true, false) as is_expense "\
+			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
 					"OR "\
@@ -33,7 +38,7 @@ class ExpensesController < ApplicationController
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
 		@transactions = @user.transactions
-			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
+			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, 1 as 'is_expense'")
 			.is_expense()
 			.where("(acct_id_dr IS NULL)")
 			.in_year(@year)
