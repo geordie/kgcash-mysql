@@ -11,10 +11,12 @@ class ExpensesController < ApplicationController
 
 		@transactions = @user.transactions
 			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
-			.is_expense()
-			.where("(acct_id_dr IS NULL or acct_id_dr in (select id from accounts where account_type = 'Expense'))")
-			.in_debit_acct( category )
-			.in_credit_acct( account )
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
+					"OR "\
+				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
+			.in_account( category )
 			.in_month_year(@month, @year)
 			.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
