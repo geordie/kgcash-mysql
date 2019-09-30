@@ -8,8 +8,13 @@ class IncomesController < ApplicationController
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
 		category = params.has_key?(:category) ? params[:category].to_i : nil
 
+		sJoinsIncome = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+
 		@transactions = @user.transactions
-			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
+			.joins(sJoinsIncome)
+			.select("transactions.id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, " \
+			"IF(accts_cr.account_type = 'Income', true, false) as is_credit "\
+			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
 			"AND acct_id_cr in (select id from accounts where account_type = 'Income')) "\
 				"OR "\

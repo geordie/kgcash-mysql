@@ -10,7 +10,7 @@
 
 <% @transactions.each_with_index do |transaction, idx| %>
 <% @txAmount = (transaction.debit.nil? ? 0 : transaction.debit) %>
-<% @txAmountClass = "credit" %>
+<% @txAmountClass = (transaction.is_credit != 0 ? "credit" : "debit") %>
   <tr>
 	<td><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
 	<td><%= form_for transaction, :remote => true do |f| %>
@@ -27,4 +27,4 @@
 	</td>
   </tr>
 <% end %>
-</table>''
+</table>
