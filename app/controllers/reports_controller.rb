@@ -141,6 +141,7 @@ class ReportsController < ApplicationController
 			.joins( sJoinsExpenseA )
 			.joins( sJoinsExpenseB )
 			.select(sSelectExpense)
+			.is_expense()
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
 					"OR "\
