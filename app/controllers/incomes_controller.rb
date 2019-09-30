@@ -10,8 +10,11 @@ class IncomesController < ApplicationController
 
 		@transactions = @user.transactions
 			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
-			.is_liability()
-			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income'))")
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
+			"AND acct_id_cr in (select id from accounts where account_type = 'Income')) "\
+				"OR "\
+			"(acct_id_cr in (select id from accounts where account_type = 'Asset') "\
+			"AND acct_id_dr in (select id from accounts where account_type = 'Income'))")
 			.in_credit_acct( category )
 			.in_month_year(@month, @year)
 			.paginate(:page => params[:page])
