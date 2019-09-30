@@ -15,7 +15,7 @@ class IncomesController < ApplicationController
 				"OR "\
 			"(acct_id_cr in (select id from accounts where account_type = 'Asset') "\
 			"AND acct_id_dr in (select id from accounts where account_type = 'Income'))")
-			.in_credit_acct( category )
+			.in_account( category )
 			.in_month_year(@month, @year)
 			.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
