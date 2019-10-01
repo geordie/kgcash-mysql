@@ -14,7 +14,7 @@ class ExpensesController < ApplicationController
 		@transactions = @user.transactions
 			.joins(sJoinsAccounts)
 			.select("transactions.id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, "\
-			"IF(accts_cr.account_type = 'Expense', true, false) as is_expense "\
+			"IF(accts_cr.account_type = 'Expense', false, true) as is_expense "\
 			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\

@@ -11,7 +11,7 @@
 
 <% @transactions.each_with_index do |transaction, idx| %>
 <% @txAmount = (transaction.credit.nil? ? 0 : transaction.credit) %>
-<% @txAmountClass = (transaction.is_expense == 0 ? "debit" : "credit") %>
+<% @txAmountClass = (transaction.is_expense == 1 ? "debit" : "credit") %>
 
   <tr>
 	<td><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
