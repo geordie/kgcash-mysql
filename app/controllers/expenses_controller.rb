@@ -84,9 +84,10 @@ class ExpensesController < ApplicationController
 		user = current_user
 		tx_id = params[:transaction][:id]
 		
+		# Set debit to credit
+		params[:transaction][:debit] = params[:transaction][:credit]
 		success = false
 		if tx_id.present?
-
 			@transaction = user.transactions.find(tx_id)
 			success = @transaction.update_attributes(expense_params)
 		else
@@ -103,7 +104,7 @@ class ExpensesController < ApplicationController
 	private
 
 	def expense_params
-		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date)
+		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :debit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date)
 	end
 
 end
