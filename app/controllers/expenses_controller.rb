@@ -6,7 +6,7 @@ class ExpensesController < ApplicationController
 
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
-		category = params.has_key?(:category) ? params[:category].to_i : nil
+		@category = params.has_key?(:category) ? params[:category].to_i : nil
 		account = params.has_key?(:account) ? params[:account].to_i : nil
 
 		sJoinsAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
@@ -21,7 +21,7 @@ class ExpensesController < ApplicationController
 					"OR "\
 				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
-			.in_account( category )
+			.in_account( @category )
 			.in_month_year(@month, @year)
 			.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
