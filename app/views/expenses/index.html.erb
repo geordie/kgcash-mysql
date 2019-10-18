@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
       <div class="col-md-10">
-          <%= will_paginate @transactions %>
+        <%= will_paginate @transactions %>
       </div>
       <div class="col-md-2">
         <%= link_to "View Uncategorized", uncategorized_expenses_path %>
@@ -11,4 +11,9 @@
   </div>
 </div>
 
+<div class="row lead">
+  <div class="col-md-3">
+    <%= render 'month_navigator' %>
+  </div>
+</div>
 <%= render "expense_list" %>

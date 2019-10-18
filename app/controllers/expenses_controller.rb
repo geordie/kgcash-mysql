@@ -26,6 +26,9 @@ class ExpensesController < ApplicationController
 			.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
 
+		@monthPrev, @yearPrev = DateMath.last_month( @month, @year )
+		@monthNext, @yearNext = DateMath.next_month( @month, @year )
+
 		respond_to do |format|
 			format.html #index.html.erb
 			format.csv {}
