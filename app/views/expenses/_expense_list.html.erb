@@ -23,7 +23,7 @@
 	<td><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
 	<td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
 	<td><%= form_for transaction, :remote => true do |f| %>
-			<%= f.hidden_field :debit, value: transaction.debit.nil? ? transaction.credit : transaction.debit  %>
+			<%= f.hidden_field :debit, value: transaction.debit.nil? || transaction.debit == 0 ? transaction.credit : transaction.debit  %>
 			<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'expense_update', tabindex: ((idx+1)*2)+1 %>
 		<% end %>
 	</td>
