@@ -7,13 +7,15 @@ tmp/
 # Ignore application configuration
 config/application.yml
 config/database.yml
+keys/
 
 # Ignore GCP K8S config
-kgcash-*.yaml
-kgcash-*.json
+# kgcash-*.yaml
+# kgcash-*.json
 
 # Ignore
 script/scrape.rb
+build.sh
 deploy.sh
 devdeploy.sh
 db/data.yml
