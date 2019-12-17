@@ -120,7 +120,7 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_category_id` (`category_id`),
   KEY `index_transactions_on_user_id` (`user_id`),
   KEY `index_transactions_on_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=139784 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=140127 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
