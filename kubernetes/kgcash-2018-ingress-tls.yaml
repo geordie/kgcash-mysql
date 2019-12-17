@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kgcash-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: kgcash-ip
+    networking.gke.io/managed-certificates: kgcash-managed-certificate
+  labels:
+    app: kgcash
+spec:
+  backend:
+    serviceName: kgcash-nodeport
+    servicePort: 8080
