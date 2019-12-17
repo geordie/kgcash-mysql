@@ -9,10 +9,6 @@ config/application.yml
 config/database.yml
 keys/
 
-# Ignore GCP K8S config
-# kgcash-*.yaml
-# kgcash-*.json
-
 # Ignore
 script/scrape.rb
 build.sh
