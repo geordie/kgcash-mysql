@@ -30,9 +30,9 @@ buildMid( undefinedExpense, "#divUndefExpenses", "Undefined Expenses", undefined
 
 buildMid( undefinedIncome, "#divUndefIncome", "Undefined Income", undefined, 500 );
 
-buildPie( cat_expenses, totalExpense, "#divLeft", "Expense", undefined, 500, "./expenses?category=" );
+buildPie( cat_expenses, totalExpense, "#divLeft", "Expense", undefined, 500, "./expenses?year=" + <%= @year %> + "&category=" );
 
-buildPie( cat_income, totalIncome, "#divRight", "Income", undefined, 500, "./incomes?category=" );
+buildPie( cat_income, totalIncome, "#divRight", "Income", undefined, 500, "./incomes?year=" + <%= @year %> + "&category=" );
 
 buildMid( totalIncome - totalExpense, "#divMid", "Net", undefined, 500 );
 
