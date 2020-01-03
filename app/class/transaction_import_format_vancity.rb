@@ -51,8 +51,6 @@ class TransactionImportFormatVancity
 		# Split on multiple spaces
 		parts = @description.split(%r{[ ]{2,}})
 
-		puts parts.to_s
-
 		# Build a transaction type
 		@type = parts[0]
 
