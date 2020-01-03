@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-var tableData = buildMonthlyCategoryReport( <%= local_assigns[:gonData] %>, "<%= local_assigns[:valueField] %>" );
+var tableData = <%= local_assigns[:gonData] %>;
 
 var columns = [
     { head: 'Category', cl: 'title' },
@@ -15,7 +15,7 @@ var columns = [
     { head: 'Sep', cl: 'num' },
     { head: 'Oct', cl: 'num' },
     { head: 'Nov', cl: 'num' },
-    { head: 'Dec', cl: 'num' },
+    { head: 'Dec', cl: 'num' }
 ];
 
 var domId = "<%= local_assigns[:domId] ? "#" + domId : "#chartStacked" %>";

@@ -137,6 +137,9 @@ class ReportsController < ApplicationController
 
 		gon.income = @income
 
+		catSummaryIncome = CategorySummary.new( @income, "income" )
+		gon.income2 = catSummaryIncome.values
+
 		@expense = @user.transactions
 			.joins( sJoinsExpenseA )
 			.joins( sJoinsExpenseB )
@@ -152,6 +155,8 @@ class ReportsController < ApplicationController
 
 		gon.expense = @expense
 
+		catSummaryExpense = CategorySummary.new( @expense, "expenses" )
+		gon.expense2 = catSummaryExpense.values
 
 		respond_to do |format|
 			format.html #income.html.erb
