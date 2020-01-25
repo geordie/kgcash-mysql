@@ -1,5 +1,11 @@
 <h3>Income Statement</h3>
 
+<div class="row lead">
+	<div class="col-md-3">
+		<%= render 'expenses/year_navigator' %>
+	</div>
+</div>
+
 <%= render partial: "multiBarChart", locals: {
   title: "Income",
   domId: "income",
