@@ -1,9 +1,29 @@
 <h1>Welcome</h1>
 
+<div class="row lead">
+	<div class="col-md-3">
+		<%= render 'expenses/year_navigator' %>
+	</div>
+</div>
 
-You have <strong><%= link_to @transactions_expenses[0][:count], uncategorized_expenses_path %></strong> uncategorized expense transactions<br/>
-with a total value of <strong>$<%= @transactions_expenses[0][:sum] %></strong>.
+You have
+<strong>
+    <%= link_to @transactions_expenses[0][:count],
+    uncategorized_expenses_path(:year => @year) %>
+</strong> uncategorized expense transactions<br/>
+with a total value of
+<strong>
+    $<%= @transactions_expenses[0][:sum] %>
+</strong>
 <br/>
 <br/>
-You have <strong><%= link_to @transactions_revenues[0][:count], uncategorized_incomes_path %></strong> uncategorized revenue transactions<br/>
-with a total value of <strong>$<%= @transactions_revenues[0][:sum] %></strong>.
+You have
+<strong>
+    <%= link_to @transactions_revenues[0][:count],
+    uncategorized_incomes_path(:year => @year) %>
+</strong>
+uncategorized revenue transactions<br/>
+with a total value of
+<strong>
+    $<%= @transactions_revenues[0][:sum] %>
+</strong>
