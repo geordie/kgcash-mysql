@@ -2,31 +2,12 @@ class ReportsController < ApplicationController
 
 	def index
 
-		# Get user
 		@user = current_user
-
-		# Get budget
-		@budget_categories = @user.budgets[0].budget_categories
-
-		# Set date range
-		#TODO - Enable filtering by date range
-		time = Time.new
-		month = params.has_key?(:month) ? params[:month].to_i : nil
-		@year = params.has_key?(:year) ? params[:year].to_i : time.year
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.Now.year
 
 		@account = params.has_key?(:account) ? params[:account].to_i : nil
 		if @account && @account < 1
 			@account = nil
-		end
-
-		if month.nil?
-			@months = time.month
-			budgeted_amount_multiplier = time.year == @year ? @months : 12
-			@budget_categories.each do |bud_cat|
-				bud_cat_amount = bud_cat.amount.nil? ? 0 : bud_cat.amount
-				new_amount = (bud_cat_amount * budgeted_amount_multiplier)
-				bud_cat.amount = new_amount
-			end
 		end
 
 		@transactions_income = @user.transactions
