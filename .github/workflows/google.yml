@@ -40,6 +40,12 @@ jobs:
         service_account_email: ${{ secrets.GKE_EMAIL }}
         service_account_key: ${{ secrets.GKE_KEY }}
 
+    # Configure docker to use the gcloud command-line tool as a credential helper
+    - run: |
+        # Set up docker to authenticate
+        # via gcloud command-line tool.
+        gcloud auth configure-docker
+    
     - uses: whoan/docker-build-with-cache-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -48,12 +54,6 @@ jobs:
         image_name: ${{ secrets.GKE_PROJECT }}/${{ secrets.IMAGE }}
         image_tag: latest
         push_image_and_stages: false
-
-    # Configure docker to use the gcloud command-line tool as a credential helper
-    - run: |
-        # Set up docker to authenticate
-        # via gcloud command-line tool.
-        gcloud auth configure-docker
       
     # Build the Docker image
     - name: Build
