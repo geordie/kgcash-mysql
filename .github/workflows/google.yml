@@ -52,6 +52,7 @@ jobs:
       run: |
         docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
 
+    # Create tmp DB_CONFIG file for building into Docker container
     - name: Write database config file
       env:
         DB_CONFIG: ${{ secrets.DB_CONFIG }}
@@ -64,6 +65,7 @@ jobs:
       run: |
         docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" --cache-from gcr.io/"$GKE_PROJECT"/"$IMAGE":latest .
 
+    # Remove DB Config file
     - name: Remove database config file
       run: |
         rm ./config/database.yml
@@ -73,20 +75,9 @@ jobs:
       run: |
         docker -- push gcr.io/"$GKE_PROJECT"/"$IMAGE"
 
-    # Set up kustomize
-    - name: Set up Kustomize
-      run: |
-        curl -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-        chmod u+x ./kustomize
-
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
         kubectl delete deployments --all
         kubectl create -f ./kubernetes/kgcash-2018-frontend.yaml
-        #gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-        #./kustomize edit set image gcr.io/$GKE_PROJECT/$IMAGE:latest
-        #./kustomize build . | kubectl apply -f -
-        #kubectl rollout status deployment/kgcash
-        #kubectl get services -o wide
