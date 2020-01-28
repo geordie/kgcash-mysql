@@ -40,6 +40,15 @@ jobs:
         service_account_email: ${{ secrets.GKE_EMAIL }}
         service_account_key: ${{ secrets.GKE_KEY }}
 
+    - uses: whoan/docker-build-with-cache-action@v3
+      with:
+        username: ${{ secrets.GKE_KEY }}
+        #password: "${{ secrets.DOCKER_PASSWORD }}"
+        registry: gcr.io
+        image_name: ${{ secrets.GKE_PROJECT }}/${{ secrets.IMAGE }}
+        image_tag: latest
+        push_image_and_stages: false
+
     # Configure docker to use the gcloud command-line tool as a credential helper
     - run: |
         # Set up docker to authenticate
