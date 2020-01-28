@@ -57,7 +57,7 @@ jobs:
         DB_CONFIG: ${{ secrets.DB_CONFIG }}
       run: |
         pwd
-        echo "$DB_CONFIG" | base64 --decode > ./config/database.yml
+        echo "$DB_CONFIG" > ./config/database.yml
 
     # Build the Docker image
     - name: Build
