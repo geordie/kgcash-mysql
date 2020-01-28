@@ -49,7 +49,7 @@ jobs:
     # Build the Docker image
     - name: Build
       run: |        
-        docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" .
+        docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" --cache-from gcr.io/"$GKE_PROJECT"/"$IMAGE".
 
     # Push the Docker image to Google Container Registry
     - name: Publish
