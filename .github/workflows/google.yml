@@ -45,10 +45,16 @@ jobs:
         # Set up docker to authenticate
         # via gcloud command-line tool.
         gcloud auth configure-docker
-      
+
+
+    # Build the Docker image
+    - name: Build cache
+      run: |
+        docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
+
     # Build the Docker image
     - name: Build
-      run: |        
+      run: |
         docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" --cache-from gcr.io/"$GKE_PROJECT"/"$IMAGE":latest .
 
     # Push the Docker image to Google Container Registry
