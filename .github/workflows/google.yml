@@ -52,10 +52,20 @@ jobs:
       run: |
         docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
 
+    - name: Write database config file
+      env:
+        DB_CONFIG: ${{ secrets.DB_CONFIG }}
+      run: |
+        echo "$DB_CONFIG" | base64 --decode > ${HOME}/config/database.yml
+
     # Build the Docker image
     - name: Build
       run: |
         docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" --cache-from gcr.io/"$GKE_PROJECT"/"$IMAGE":latest .
+
+    - name: Remove database config file
+      run: |
+        rm ${HOME}/config/database.yml
 
     # Push the Docker image to Google Container Registry
     - name: Publish
