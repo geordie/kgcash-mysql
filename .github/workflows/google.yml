@@ -56,7 +56,8 @@ jobs:
       env:
         DB_CONFIG: ${{ secrets.DB_CONFIG }}
       run: |
-        echo "$DB_CONFIG" | base64 --decode > ${HOME}/config/database.yml
+        pwd
+        echo "$DB_CONFIG" | base64 --decode > ./config/database.yml
 
     # Build the Docker image
     - name: Build
@@ -65,7 +66,7 @@ jobs:
 
     - name: Remove database config file
       run: |
-        rm ${HOME}/config/database.yml
+        rm ./config/database.yml
 
     # Push the Docker image to Google Container Registry
     - name: Publish
