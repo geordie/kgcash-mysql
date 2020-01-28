@@ -43,7 +43,7 @@ jobs:
     - uses: whoan/docker-build-with-cache-action@v3
       with:
         username: ${{ secrets.GKE_KEY }}
-        #password: "${{ secrets.DOCKER_PASSWORD }}"
+        password: "${{ secrets.DOCKER_PASSWORD }}"
         registry: gcr.io
         image_name: ${{ secrets.GKE_PROJECT }}/${{ secrets.IMAGE }}
         image_tag: latest
