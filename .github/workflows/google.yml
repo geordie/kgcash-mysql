@@ -47,7 +47,7 @@ jobs:
         gcloud auth configure-docker
 
 
-    # Build the Docker image
+    # Cache latest Docker image to reduce build time
     - name: Build cache
       run: |
         docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
