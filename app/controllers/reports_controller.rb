@@ -3,7 +3,7 @@ class ReportsController < ApplicationController
 	def index
 
 		@user = current_user
-		@year = params.has_key?(:year) ? params[:year].to_i : Date.Now.year
+		@year = params.has_key?(:year) ? params[:year].to_i : DateTime.now.year
 
 		@account = params.has_key?(:account) ? params[:account].to_i : nil
 		if @account && @account < 1
