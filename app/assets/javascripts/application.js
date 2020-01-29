@@ -12,4 +12,4 @@
 //= require d3.min
 //= require nv.d3
 //= require dimple.v1.1.1.min
-//= require bootstrap
+//= require bootstrap.bundle.min
