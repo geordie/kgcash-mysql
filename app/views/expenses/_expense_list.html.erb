@@ -37,7 +37,7 @@
 				<a class="dropdown-item" href="<%= edit_transaction_path(:id => transaction.id)%>">Edit</a>
 				<a class="dropdown-item" href="<%= transaction_path(:id => transaction.id)%>">View</a>
 				<a class="dropdown-item" href="<%= split_expenses_path(:id => transaction.id)%>">Split</a>
-				<a class="dropdown-item" href="#">Delete</a>
+				<%= link_to( "Delete", transaction, method: :delete, data: { confirm: 'Delete Transaction?' }, class: "dropdown-item") %>
 			</div>
 		</div>
 	</td>
