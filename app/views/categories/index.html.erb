@@ -1,0 +1,14 @@
+<h3>Categories</h3>
+
+<table class="table table-striped table-condensed">
+	<tr>
+		<th>Name</th>
+	</tr>
+
+	<% @categories.each do |cat| %>
+		<tr>
+			<td><%= cat.name %></td>
+		</tr>
+	<% end %>
+
+</table>
