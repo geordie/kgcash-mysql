@@ -81,8 +81,7 @@ class TransactionsController < ApplicationController
 		@transaction.destroy
 
 		respond_to do |format|
-			#TODO Transactions index path no longer exists, so fix this next line
-			format.html { redirect_to :action => 'index' }
+			format.html { redirect_back(fallback_location: root_path) }
 			format.js   { render :nothing => true }
 			format.json { head :ok }
 		end
