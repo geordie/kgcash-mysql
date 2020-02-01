@@ -33,7 +33,6 @@ class AccountsController < ApplicationController
 	def edit
 		@user = current_user
 		@account = @user.accounts.find(params[:id])
-
 	end
 
 	def create
@@ -73,12 +72,12 @@ class AccountsController < ApplicationController
 
 		respond_to do |format|
 			if @account.update_attributes(account_params)
-			format.html { redirect_to accounts_path, notice: 'Account was successfully updated.' }
-			format.json { respond_with_bip(@account) }
-			format.js {render :nothing => true }
+				format.html { redirect_to accounts_path, notice: 'Account was successfully updated.' }
+				format.json { respond_with_bip(@account) }
+				format.js {render :nothing => true }
 			else
-			format.html { render action: "edit" }
-			format.json { render json: @account.errors, status: :unprocessable_entity }
+				format.html { render action: "edit" }
+				format.json { render json: @account.errors, status: :unprocessable_entity }
 			end
 		end
 	end
