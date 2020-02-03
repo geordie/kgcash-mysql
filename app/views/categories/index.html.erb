@@ -20,6 +20,7 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
 						<a class="dropdown-item" href="<%= edit_category_path(:id => cat.id)%>">Edit</a>
+						<%= link_to( "Delete", cat.becomes(Category), method: :delete, data: { confirm: 'Delete Category?' }, class: "dropdown-item") %>
 					</div>
 				</div>
 			</td>
@@ -27,3 +28,5 @@
 	<% end %>
 
 </table>
+
+<%= link_to 'New Category', new_category_path %>

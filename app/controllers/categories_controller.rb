@@ -1,7 +1,6 @@
 class CategoriesController < ApplicationController
 
 	def index
-
 		@user = current_user
 		@categories = @user.accounts
 
@@ -17,11 +16,44 @@ class CategoriesController < ApplicationController
 		@account = @user.accounts.find(params[:id])
 	end
 
+	def create
+		@user = current_user
+		if @user == nil
+			@user = User.last
+		end
+
+		@account = @user.accounts.create(category_params)
+
+		respond_to do |format|
+			if @account.save
+				format.html { redirect_to(categories_path, :notice => 'Category was successfully created for user.') }
+				format.json { render json: @account, status: :created, location: @account }
+			else
+				format.html { render action: "new" }
+				format.json { render json: @account.errors, status: :unprocessable_entity }
+			end
+		end
+	end
+
+	def show
+		@user = current_user
+		if @user == nil
+			@user = User.last
+		end
+
+		@account = @user.accounts.find(params[:id])
+
+		respond_to do |format|
+			format.html #show.html.erb
+			format.json {render json: @account}
+		end
+	end
+
 	def update
 		@account = Account.find(params[:id])
 
 		respond_to do |format|
-			if @account.update_attributes(account_params)
+			if @account.update_attributes(category_params)
 				format.html { redirect_to categories_path, notice: 'Account was successfully updated.' }
 				format.json { respond_with_bip(@account) }
 				format.js {render :nothing => true }
@@ -32,10 +64,32 @@ class CategoriesController < ApplicationController
 		end
 	end
 
+	def new
+		@user = current_user
+		@account = Account.new
+
+		respond_to do |format|
+			format.html # new.html.erb
+			format.json {render json: @account}
+		end
+	end
+
+	def destroy
+		@user = current_user
+		@account = @user.accounts.find(params[:id])
+		@account.destroy
+
+		respond_to do |format|
+			format.html { redirect_to categories_path }
+			format.js   { render :nothing => true }
+			format.json { head :ok }
+		end
+	end
+
 	private
 
-	def account_params
-		params.require(:account).permit(:name, :description, :account_type )
+	def category_params
+		params.require(:category).permit(:name, :description, :account_type )
 	end
 
 end

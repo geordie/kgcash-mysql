@@ -1,4 +1,4 @@
-<%= form_for(@account) do |f| %>
+<%= form_for @account.becomes(Category) do |f| %>
   <% if @account.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
@@ -18,6 +18,10 @@
   <div class="field form-group">
     <%= f.label :description %><br />
     <%= f.text_area( :description, { :class => 'form-control' }) %>
+  </div>
+  <div class="field form-group">
+    <%= f.label :account_type %><br />
+    <%= f.select :account_type, Account::AccountTypes, { :class => 'form-control' } %>
   </div>
   <br/>
   <div class="actions">
