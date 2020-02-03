@@ -9,7 +9,7 @@ class CategorySummary
 
 			if !@summaryBuilder.key?(item.acct_id)
 				@summaryBuilder[item.acct_id] = Array.new(13){0}
-				@summaryBuilder[item.acct_id][0] = [item.name, :id]
+				@summaryBuilder[item.acct_id][0] = [item.name, item.acct_id]
 			end
 
 			@summaryBuilder[item.acct_id][item.quantum] = item[valueKey]
