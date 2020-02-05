@@ -16,7 +16,8 @@ class CategorySummary
 			@summaryBuilder[item.acct_id][item.quantum] = amountMonth
 			@summaryBuilder[item.acct_id][0][2] += amountMonth
 		end
-		@values = @summaryBuilder.values
+		@values = @summaryBuilder.values.sort{ |a,b| b[0][2] <=> a[0][2] }
+
 	end
 
 end
