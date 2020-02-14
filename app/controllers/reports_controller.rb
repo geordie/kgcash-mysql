@@ -118,7 +118,7 @@ class ReportsController < ApplicationController
 
 		gon.income = @income
 
-		catSummaryIncome = CategorySummary.new( @income, "income" )
+		catSummaryIncome = CategorySummary.new( @income, "income", @year )
 		gon.income2 = catSummaryIncome.values
 
 		@expense = @user.transactions
@@ -136,7 +136,7 @@ class ReportsController < ApplicationController
 
 		gon.expense = @expense
 
-		catSummaryExpense = CategorySummary.new( @expense, "expenses" )
+		catSummaryExpense = CategorySummary.new( @expense, "expenses", @year )
 		gon.expense2 = catSummaryExpense.values
 
 		respond_to do |format|

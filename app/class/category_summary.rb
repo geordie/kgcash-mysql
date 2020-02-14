@@ -1,8 +1,9 @@
 class CategorySummary
 	attr_reader :values
 
-	def initialize( array, valueKey )
-		
+	def initialize( array, valueKey, year )
+
+		days = DateMath.days_past_in_year( year )
 		@summaryBuilder = Hash.new()
 		catTotal = 0
 
@@ -18,7 +19,7 @@ class CategorySummary
 		end
 
 		for item in @summaryBuilder.values do
-			item[0][3] = item[0][2]/365
+			item[0][3] = item[0][2]/days
 		end
 		@values = @summaryBuilder.values.sort{ |a,b| b[0][2] <=> a[0][2] }
 
