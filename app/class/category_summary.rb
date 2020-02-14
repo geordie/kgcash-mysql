@@ -10,11 +10,15 @@ class CategorySummary
 
 			if !@summaryBuilder.key?(item.acct_id)
 				@summaryBuilder[item.acct_id] = Array.new(13){0}
-				@summaryBuilder[item.acct_id][0] = [item.name, item.acct_id, 0]
+				@summaryBuilder[item.acct_id][0] = [item.name, item.acct_id, 0, 0]
 			end
 			amountMonth = item[valueKey].nil? ? 0 : item[valueKey]
 			@summaryBuilder[item.acct_id][item.quantum] = amountMonth
 			@summaryBuilder[item.acct_id][0][2] += amountMonth
+		end
+
+		for item in @summaryBuilder.values do
+			item[0][3] = item[0][2]/365
 		end
 		@values = @summaryBuilder.values.sort{ |a,b| b[0][2] <=> a[0][2] }
 

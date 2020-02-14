@@ -16,7 +16,8 @@ var columns = [
     { head: 'Oct', cl: 'num' },
     { head: 'Nov', cl: 'num' },
     { head: 'Dec', cl: 'num' },
-    { head: 'Total', cl: 'num' }
+    { head: 'Total', cl: 'num' },
+    { head: 'Daily', cl: 'num'}
 ];
 
 var domId = "<%= local_assigns[:domId] ? "#" + domId : "#chartStacked" %>";
@@ -57,15 +58,24 @@ table.append('tbody')
     }
   );
 
-  table
+  // Add column for total amount
+  addColumn(table, 2);
+
+  // Add column for daily amount
+  addColumn(table, 3);
+
+  function addColumn(element, index) {
+    element
     .selectAll('tr')
     .append('td')
     .html(function(d,i){
         if ( i > 0 ){
-          amount = tableData[i-1][0][2];
+          amount = tableData[i-1][0][index];
           return "$" + d3.format(",.0f")(amount);
         }
       }
-    )
+    )    
+  }
+
 
 </script>
