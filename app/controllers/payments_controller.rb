@@ -7,10 +7,14 @@ class PaymentsController < ApplicationController
 
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
+		sJoinsAccounts = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
+
 		@transactions = @user.transactions
-			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
+			.joins(sJoinsAccounts)
+			.select("transactions.id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, "\
+				"IF(accts_dr.account_type = 'Liability', true, false) as is_credit ")
 			.is_payment()
-			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income'))")
+			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income' or account_type = 'Expense'))")
 			.in_year(@year)
 			.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
