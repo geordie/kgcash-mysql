@@ -2,7 +2,7 @@ class CategoriesController < ApplicationController
 
 	def index
 		@user = current_user
-		@categories = @user.accounts
+		@categories = @user.sortedAccounts
 
 		respond_to do |format|
 			format.html #index.html.erb
