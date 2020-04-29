@@ -143,5 +143,8 @@ class ReportsController < ApplicationController
 			format.html #income.html.erb
 		end
 	end
+
+	def monthly
+	end
 	
 end
