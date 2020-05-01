@@ -50,6 +50,16 @@ class Transaction < ActiveRecord::Base
 			.group("acct_id_cr")
 	end
 
+	def self.expenses_by_category_OLD( user, year )
+		return user.transactions
+			.joins( "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr")
+			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_dr")
+			.where("(acct_id_cr in (select id from accounts where account_type = 'Liability' or account_type = 'Asset'))")
+			.where("(acct_id_dr IS NULL or acct_id_dr in (select id from accounts where account_type = 'Expense'))")
+			.in_year(year)
+			.group("acct_id_dr")
+	end
+
 	def self.income_by_category( user, year )
 		sTimeAggregate = "month(tx_date)"
 
@@ -79,6 +89,31 @@ class Transaction < ActiveRecord::Base
 	end
 
 	def self.expenses_by_category(user,year)
+		sTimeAggregate = "month(tx_date)"
+	
+		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+		sJoinsExpenseB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
+
+		sSelectExpense = sTimeAggregate + " as quantum, "\
+		"SUM(IF(accts_dr.account_type = 'Expense', debit, credit*-1)) as 'expenses', "\
+		"IF(accts_dr.account_type = 'Expense', accts_dr.id, accts_cr.id) as acct_id, "\
+		"IF(accts_dr.account_type = 'Expense', accts_dr.name, accts_cr.name) as name"
+	
+		sGroupByExpense = sTimeAggregate + ", IF(accts_dr.account_type = 'Expense', accts_dr.id, accts_cr.id),"\
+		"IF(accts_dr.account_type = 'Expense', accts_dr.name, accts_cr.name)"
+
+		return user.transactions
+			.joins( sJoinsExpenseA )
+			.joins( sJoinsExpenseB )
+			.select(sSelectExpense)
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
+					"OR "\
+				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
+			.in_year(year)
+			.group( sGroupByExpense )
+			.order( sTimeAggregate )
 	end
 
 	def ensure_hash
