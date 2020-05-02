@@ -17,12 +17,17 @@ class Transaction < ActiveRecord::Base
 
 	self.per_page = 50
 
-	scope :in_year, lambda { |year| where('tx_date >= ? AND tx_date < ?', Date.new( year,1,1) , Date.new( year + 1,1,1)) }
+	scope :in_year, lambda { |year| where(
+		'tx_date >= ? AND tx_date < ?',
+		Date.new( year,1,1),
+		Date.new( year + 1,1,1))
+	}
 
-	scope :in_month_year, lambda { |month, year| where( 'tx_date >= ? AND tx_date < ?',
-					month.nil? ? Date.new( year,1,1) : Date.new(year,month,1),
-					!month.nil? && month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1) )
-		}
+	scope :in_month_year, lambda { |month, year| where(
+		'tx_date >= ? AND tx_date < ?',
+		month.nil? ? Date.new( year,1,1) : Date.new(year,month,1),
+		!month.nil? && month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1) )
+	}
 
 	scope :in_debit_acct, lambda { |acct_id| where("acct_id_dr = ?", acct_id) unless acct_id.nil? }
 	scope :in_credit_acct, lambda { |acct_id| where("acct_id_cr = ?", acct_id) unless acct_id.nil? }
@@ -46,7 +51,7 @@ class Transaction < ActiveRecord::Base
 			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr")
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Expense'))")
 			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income'))")
-			.in_year(year)
+			.in_month_year(nil, year)
 			.group("acct_id_cr")
 	end
 
@@ -56,11 +61,11 @@ class Transaction < ActiveRecord::Base
 			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_dr")
 			.where("(acct_id_cr in (select id from accounts where account_type = 'Liability' or account_type = 'Asset'))")
 			.where("(acct_id_dr IS NULL or acct_id_dr in (select id from accounts where account_type = 'Expense'))")
-			.in_year(year)
+			.in_month_year(nil, year)
 			.group("acct_id_dr")
 	end
 
-	def self.income_by_category( user, year )
+	def self.income_by_category( user, year, month = nil )
 		sTimeAggregate = "month(tx_date)"
 
 		sJoinsIncomeA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
@@ -83,12 +88,12 @@ class Transaction < ActiveRecord::Base
 					"OR "\
 				"(acct_id_cr in (select id from accounts where account_type = 'Asset') "\
 				"AND acct_id_dr in (select id from accounts where account_type = 'Income'))")
-			.in_year(year)
+			.in_month_year(month, year)
 			.group( sGroupByIncome )
 			.order( sTimeAggregate )
 	end
 
-	def self.expenses_by_category(user,year)
+	def self.expenses_by_category(user,year, month=nil)
 		sTimeAggregate = "month(tx_date)"
 	
 		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
@@ -111,7 +116,7 @@ class Transaction < ActiveRecord::Base
 					"OR "\
 				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
-			.in_year(year)
+			.in_month_year(month, year)
 			.group( sGroupByExpense )
 			.order( sTimeAggregate )
 	end
