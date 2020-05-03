@@ -82,7 +82,7 @@ jobs:
     - name: Test
       run: |
         docker ps
-        docker run -e "RAILS_ENV=test" gcr.io/"$GKE_PROJECT"/"$IMAGE" rspec
+        docker run --net=host -e "RAILS_ENV=test" gcr.io/"$GKE_PROJECT"/"$IMAGE" rspec
 
     # Remove DB Config file
     - name: Remove database config file
