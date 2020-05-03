@@ -23,6 +23,7 @@ env:
   GKE_ZONE: us-west1-b
   GKE_CLUSTER: kgcash-2018-10
   IMAGE: kgcash
+  IMAGE_DB: kgcash-mysql
 
 jobs:
   setup-build-publish-deploy:
@@ -46,11 +47,18 @@ jobs:
         # via gcloud command-line tool.
         gcloud auth configure-docker
 
-
     # Cache latest Docker image to reduce build time
     - name: Build cache
       run: |
         docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
+        docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE_DB":latest
+
+    services:
+      db:
+        image: gcr.io/"$GKE_PROJECT"/"$IMAGE_DB"
+        ports:
+        - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     # Create tmp DB_CONFIG file for building into Docker container
     - name: Write database config file
