@@ -70,6 +70,11 @@ jobs:
       run: |
         rm ./config/database.yml
 
+    # Test
+    - name: Run tests
+      run: |
+        docker-compose run -e "RAILS_ENV=test" web rspec
+
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |
