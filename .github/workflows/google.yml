@@ -32,16 +32,16 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
 
-  services:
-    db:
-      image: mysql
-      environment:
-        MYSQL_ROOT_PASSWORD: password
-      ports:
+    services:
+      db:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
         - 3306:3306
-      options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-  steps:
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          
+    steps:
     - name: Checkout
       uses: actions/checkout@master
 
