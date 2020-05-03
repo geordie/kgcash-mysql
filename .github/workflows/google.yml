@@ -68,6 +68,9 @@ jobs:
 
     # Test
     - name: Test
+      runs:
+        using: 'docker'
+        image: 'docker://gcr.io/"$GKE_PROJECT"/"$IMAGE"'
       run: |
         docker run -e "RAILS_ENV=test" gcr.io/"$GKE_PROJECT"/"$IMAGE" rspec
 
