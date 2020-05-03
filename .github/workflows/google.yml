@@ -68,7 +68,7 @@ jobs:
     # Test
     - name: Test
       run: |
-        docker run -e "RAILS_ENV=test" kgcash_web rspec
+        docker run -e "RAILS_ENV=test" gcr.io/"$GKE_PROJECT"/"$IMAGE" rspec
 
     # Remove DB Config file
     - name: Remove database config file
