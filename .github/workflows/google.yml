@@ -23,9 +23,6 @@ env:
   GKE_ZONE: us-west1-b
   GKE_CLUSTER: kgcash-2018-10
   IMAGE: kgcash
-  IMAGE_DB: kgcash-mysql
-
-
 
 jobs:
   setup-build-publish-deploy:
@@ -62,7 +59,6 @@ jobs:
     - name: Build cache
       run: |
         docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
-        docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE_DB":latest
 
     # Create tmp DB_CONFIG file for building into Docker container
     - name: Write database config file
