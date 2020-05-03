@@ -1,6 +1,7 @@
 name: Verify
 on: [push]
 
+jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
@@ -40,7 +41,7 @@ on: [push]
           #PGHOST: localhost
           #PGUSER: myapp
         run: |
-          bin/rails db:create
+          bin/rails db:setup
 
       - name: Run tests
         run: bin/rspec
