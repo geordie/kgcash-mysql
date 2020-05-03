@@ -81,6 +81,7 @@ jobs:
     # Test
     - name: Test
       run: |
+        docker ps
         docker run -e "RAILS_ENV=test" gcr.io/"$GKE_PROJECT"/"$IMAGE" rspec
 
     # Remove DB Config file
