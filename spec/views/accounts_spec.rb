@@ -8,6 +8,6 @@ describe "accounts/index.html.erb", type: :view do
     
     render
 
-    expect(rendered).to match(/My Accountss/)
+    expect(rendered).to match(/My Accounts/)
   end
 end
