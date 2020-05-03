@@ -26,9 +26,17 @@ env:
   IMAGE_DB: kgcash-mysql
 
 jobs:
+  
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+    services:
+      db:
+        image: gcr.io/"$GKE_PROJECT"/"$IMAGE_DB"
+        ports:
+        - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
 
     - name: Checkout
@@ -52,13 +60,6 @@ jobs:
       run: |
         docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
         docker pull gcr.io/"$GKE_PROJECT"/"$IMAGE_DB":latest
-
-    services:
-      db:
-        image: gcr.io/"$GKE_PROJECT"/"$IMAGE_DB"
-        ports:
-        - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     # Create tmp DB_CONFIG file for building into Docker container
     - name: Write database config file
