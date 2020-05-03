@@ -25,15 +25,15 @@ jobs:
 
   tests:
     name: Tests
-	runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     services:
       db:
         image: mysql
-		environment:
-		- MYSQL_ROOT_PASSWORD=password
-		ports:
-		- 3306:3306
+        environment:
+        - MYSQL_ROOT_PASSWORD=password
+        ports:
+        - 3306:3306
 
     steps:
       - name: Checkout code
