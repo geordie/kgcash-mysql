@@ -18,11 +18,16 @@ RSpec.describe ExpensesController, :type => :controller do
 		end
 
 		it "loads @transactions" do
-			t1 = Transaction.create!(:tx_date => Date.new(2016,1,1), :user_id => @user.id)
-			t2 = Transaction.create!(:tx_date => Date.new(2016,1,2), :user_id => @user.id)
-
+			t1 = Transaction.create!(
+				:tx_date => DateTime.now,
+				:user_id => @user.id,
+				:debit => 1.2
+			)
 			get :index
+
 			expect(response.status).to eq(200)
+			# Expect 0 since the added transaction is not an expense
+			expect(assigns(:transactions).count).to eq(0)
 		end
 	end
 
