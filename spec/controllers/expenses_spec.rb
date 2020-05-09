@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe ExpensesController, :type => :controller do
 	include Sorcery::TestHelpers::Rails::Integration
-  include Sorcery::TestHelpers::Rails::Controller
+	include Sorcery::TestHelpers::Rails::Controller
 	#let!(:user) { Fabricate(:user) }
 
 	before :each do

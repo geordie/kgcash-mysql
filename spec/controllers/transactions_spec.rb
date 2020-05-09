@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe TransactionsController, :type => :controller do
 	include Sorcery::TestHelpers::Rails::Integration
-  include Sorcery::TestHelpers::Rails::Controller
+	include Sorcery::TestHelpers::Rails::Controller
 	#let!(:user) { Fabricate(:user) }
 
 	before :each do
@@ -32,17 +32,20 @@ RSpec.describe TransactionsController, :type => :controller do
 
 			get :index
 
-			expect(assigns(:transactions).count).to eq(2)
 			expect(response.status).to eq(200)
+			expect(assigns(:transactions).count).to eq(2)
+
 		end
 	end
 
 	describe 'GET #show' do
-	  let(:token) { double :accessible? => true }
+		let(:token) { double :accessible? => true }
 
-      it 'responds with 200' do
-        get :index
-        expect(response.status).to eq(200)
-      end
-    end
+		it 'responds with 200' do
+
+			get :index
+
+			expect(response.status).to eq(200)
+		end
+	end
 end
