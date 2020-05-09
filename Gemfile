@@ -31,6 +31,8 @@ gem 'coffee-rails'
 gem 'uglifier'
 #end
 
+gem 'rails-controller-testing'
+
 gem 'jquery-rails'
 gem "best_in_place", '~> 3.0.1'
 
