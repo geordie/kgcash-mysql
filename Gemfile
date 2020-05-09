@@ -31,8 +31,6 @@ gem 'coffee-rails'
 gem 'uglifier'
 #end
 
-gem 'rails-controller-testing'
-
 gem 'jquery-rails'
 gem "best_in_place", '~> 3.0.1'
 
@@ -49,6 +47,8 @@ gem 'gon'
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'faker'
+  gem 'rails-controller-testing'
 end
 
 group :test do
