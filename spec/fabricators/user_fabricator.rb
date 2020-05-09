@@ -1,4 +1,5 @@
 Fabricator(:user, :class_name => "User") do
+  accounts(count: 3)
   id { sequence }
   username { "admin" }
   password { "admin" }
