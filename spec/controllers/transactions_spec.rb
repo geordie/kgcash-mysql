@@ -18,16 +18,19 @@ RSpec.describe TransactionsController, :type => :controller do
 		end
 
 		it "loads @transactions" do
-			t1 = Transaction.create!(
-				:tx_date => DateTime.now, 
-				:user_id => @user.id,
-				:debit => 1.2
+			tx_amount = rand(100) + rand()
+
+			# Add transactions
+			Fabricate(:transaction,
+				user_id: @user.id,
+				credit: tx_amount,
+				debit: tx_amount
 			)
 
-			t2 = Transaction.create!(
-				:tx_date => DateTime.now,
-				:user_id => @user.id,
-				:debit => 3.4
+			Fabricate(:transaction,
+				user_id: @user.id,
+				credit: tx_amount + 2,
+				debit: tx_amount + 2
 			)
 
 			get :index
