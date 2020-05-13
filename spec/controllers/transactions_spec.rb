@@ -12,11 +12,6 @@ RSpec.describe TransactionsController, :type => :controller do
 
 	describe 'GET #index' do
 
-		it 'responds with 200' do
-			get :index
-			expect(response.status).to eq(200)
-		end
-
 		it "loads @transactions" do
 			tx_amount = rand(100) + rand()
 
@@ -48,6 +43,26 @@ RSpec.describe TransactionsController, :type => :controller do
 
 			get :index
 
+			expect(response.status).to eq(200)
+		end
+	end
+
+	describe 'GET #edit' do
+
+		it 'responds with 200' do
+
+			tx_amount = rand(100) + rand()
+
+			# Add a transaction
+			tx = Fabricate(:transaction,
+				user_id: @user.id,
+				credit: tx_amount,
+				debit: tx_amount
+			)
+
+			get :edit, params: { id: tx.id }
+
+			expect(assigns(:transaction).id).to eq(tx.id)
 			expect(response.status).to eq(200)
 		end
 	end
