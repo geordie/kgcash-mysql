@@ -1,4 +1,6 @@
 class Account < ActiveRecord::Base
+	include Comparable
+
 	has_and_belongs_to_many :users
 	has_many :budget_categories
 	has_many :budgets, :through => :budget_categories
@@ -16,5 +18,12 @@ class Account < ActiveRecord::Base
 
 	def transactions_per_month
 		(transactions.count / active_months).to_i
+	end
+
+	def <=> other
+		return 0 if !name && !other.name
+		return 1 if !name
+		return -1 if !other.name
+		name.downcase <=> other.name.downcase
 	end
 end
