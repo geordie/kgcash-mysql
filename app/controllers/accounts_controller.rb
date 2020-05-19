@@ -11,7 +11,7 @@ class AccountsController < ApplicationController
 		accounts.each do |a|
 			transactions = Transaction.all.in_account(a.id).order(:tx_date)
 			tx_count = transactions.count
-			continue if tx_count == 0
+			next if tx_count == 0
 
 			hashAccountInfo = Hash.new
 
