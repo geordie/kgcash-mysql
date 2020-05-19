@@ -34,7 +34,7 @@ RSpec.describe AccountsController, :type => :controller do
 
 	describe 'GET #edit' do
 
-		it 'responds with 200' do
+		it 'Gets the right account for editing' do
 
 			acct_id = @user.accounts[0].id
 
@@ -42,6 +42,20 @@ RSpec.describe AccountsController, :type => :controller do
 
 			expect(assigns(:account).id).to eq(acct_id)
 			expect(response.status).to eq(200)
+		end
+	end
+
+	describe 'GET #create' do
+
+		it 'should create a new account' do
+
+			acct_name = "Cheque Acct"
+			@account = {"name" => acct_name, "import_class" => "Vancity"}
+
+			expect{post :create, params: {account: @account}}.to change(Account, :count).by(1)
+
+			expect(assigns(:account).name).to eq(acct_name)
+			expect(response.status).to eq(302)
 		end
 	end
 end
