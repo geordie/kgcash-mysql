@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 	end
 
 	def sortedAccounts
-		return accounts.to_a.sort!{|a,b| a.name.downcase <=> b.name.downcase }
+		return accounts.to_a.sort
 	end
 
 	def account_selector(importonly = false)
