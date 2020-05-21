@@ -18,12 +18,14 @@ RSpec.describe TransactionsController, :type => :controller do
 			# Add transactions
 			Fabricate(:transaction,
 				user_id: @user.id,
+				tx_date: DateTime.now,
 				credit: tx_amount,
 				debit: tx_amount
 			)
 
 			Fabricate(:transaction,
 				user_id: @user.id,
+				tx_date: DateTime.now,
 				credit: tx_amount + 2,
 				debit: tx_amount + 2
 			)
@@ -31,7 +33,7 @@ RSpec.describe TransactionsController, :type => :controller do
 			get :index
 
 			expect(response.status).to eq(200)
-			expect(assigns(:transactions).count).to eq(2)
+			expect(assigns(:transactions).records.size).to(eq(2))
 
 		end
 	end

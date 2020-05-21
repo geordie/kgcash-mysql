@@ -62,8 +62,8 @@ RSpec.describe ExpensesController, :type => :controller do
 
 			expect(response.status).to eq(200)
 
-			# Expect 1 since of of the added transactions is not an expense
-			expect(assigns(:transactions).count).to eq(1)
+			# Expect 1 since one of the added transactions is not an expense
+			expect(assigns(:transactions).records.count).to eq 1
 		end
 	end
 

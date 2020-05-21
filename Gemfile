@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
-ruby '2.3.3'
+ruby '2.5.0'
 
 gem 'thin'
-gem 'rails', '5.1.3'
+gem 'rails', '5.2.3'
 
 gem 'rails_12factor'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2'
+gem 'mysql2', '~> 0.4.4'
 gem 'sorcery'
 gem 'json', '~> 1.8.2'
 gem 'execjs'
@@ -19,13 +19,13 @@ gem 'oj'
 gem 'will_paginate', '~> 3.0'
 gem "figaro"
 gem "foreman"
-gem 'yaml_db'
+gem 'yaml_db', '~> 0.7.0'
 gem 'whenever', require: false
 
 # Gems used only for assets and not required
 # in production environments by default.
 #group :assets do
-gem 'railties', "~> 5.1.3"
+gem 'railties', "~> 5.2.3"
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'

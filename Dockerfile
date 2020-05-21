@@ -1,6 +1,6 @@
-FROM ruby:2.3.3
+FROM ruby:2.5.0
 RUN apt-get update -qq && \
-  apt-get install -y build-essential mysql-client libmysqlclient-dev nodejs cron && \
+  apt-get install -y build-essential mysql-client default-libmysqlclient-dev nodejs cron && \
   apt-get clean autoclean && \
   apt-get autoremove -y && \
   rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log && \
