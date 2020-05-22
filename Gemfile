@@ -16,7 +16,7 @@ gem 'execjs'
 gem 'rabl'
 gem 'mechanize'
 gem 'oj'
-gem 'will_paginate', '~> 3.0'
+gem 'will_paginate', '~> 3.1.7'
 gem "figaro"
 gem "foreman"
 gem 'yaml_db', '~> 0.7.0'

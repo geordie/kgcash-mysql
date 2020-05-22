@@ -33,7 +33,7 @@ RSpec.describe TransactionsController, :type => :controller do
 			get :index
 
 			expect(response.status).to eq(200)
-			expect(assigns(:transactions).records.size).to(eq(2))
+			expect(assigns(:transactions).size).to(eq(2))
 
 		end
 	end
