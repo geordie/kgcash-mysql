@@ -38,7 +38,7 @@ RSpec.describe ExpensesController, :type => :controller do
 
 		it "loads the right number of expense @transactions" do
 
-			tx_amount = rand(100) + rand()
+			tx_amount = get_tx_amount()
 
 			# Add an expense transaction
 			Fabricate(:transaction,
