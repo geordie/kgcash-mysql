@@ -7,13 +7,34 @@ RSpec.describe TransactionsController, :type => :controller do
 
 	before :each do
 		@user = Fabricate(:user)
+
+		@acct_expense = nil
+		@acct_asset = nil
+		@acct_income = nil
+		@user.accounts.each do |acct|
+			if acct.account_type == "Expense"
+				@acct_expense = acct
+			elsif acct.account_type == "Asset"
+				@acct_asset = acct
+			elsif acct.account_type == "Income"
+				@acct_income = acct
+			end
+
+			if !@acct_expense.nil? &&
+				!@acct_asset.nil? &&
+				!@acct_income.nil?
+
+				break
+			end
+		end
+
 		login_user
 	end
 
 	describe 'GET #index' do
 
 		it "loads @transactions" do
-			tx_amount = rand(100) + rand()
+			tx_amount = get_tx_amount()
 
 			# Add transactions
 			Fabricate(:transaction,
@@ -39,8 +60,6 @@ RSpec.describe TransactionsController, :type => :controller do
 	end
 
 	describe 'GET #show' do
-		let(:token) { double :accessible? => true }
-
 		it 'responds with 200' do
 
 			get :index
@@ -53,7 +72,7 @@ RSpec.describe TransactionsController, :type => :controller do
 
 		it 'responds with 200' do
 
-			tx_amount = rand(100) + rand()
+			tx_amount = get_tx_amount()
 
 			# Add a transaction
 			tx = Fabricate(:transaction,
@@ -66,6 +85,29 @@ RSpec.describe TransactionsController, :type => :controller do
 
 			expect(assigns(:transaction).id).to eq(tx.id)
 			expect(response.status).to eq(200)
+		end
+	end
+
+	describe 'GET #create' do
+
+		it 'should create a new transaction' do
+
+			tx_amount = get_tx_amount()
+
+			@new_tx = {
+				"user_id" => @user.id,
+				"tx_date" => DateTime.now,
+				"details" => DateTime.now.to_s,
+				"acct_id_cr" => nil,
+				"credit" => nil,
+				"acct_id_dr" => @acct_expense.id,
+				"debit" => tx_amount
+			}
+
+			expect{post :create, params: {transaction: @new_tx}}.to change(Transaction, :count).by(1)
+
+			expect(assigns(:transaction).debit).to eq(tx_amount)
+			expect(response.status).to eq(302)
 		end
 	end
 end
