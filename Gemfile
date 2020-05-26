@@ -16,7 +16,8 @@ gem 'execjs'
 gem 'rabl'
 gem 'mechanize'
 gem 'oj'
-gem 'will_paginate', '~> 3.1.7'
+gem 'will_paginate', '~> 3.1.7
+'
 gem "figaro"
 gem "foreman"
 gem 'yaml_db', '~> 0.7.0'
@@ -46,7 +47,7 @@ gem 'gon'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 4.0.0'
   gem 'faker'
   gem 'rails-controller-testing'
 end
