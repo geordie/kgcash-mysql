@@ -2,11 +2,26 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
+require 'simplecov'
 
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+SimpleCov.start do
+	add_filter '/test/'
+	add_filter '/config/'
+	add_filter '/vendor/'
+
+	add_group 'Controllers', 'app/controllers'
+	add_group 'Models', 'app/models'
+	add_group 'Helpers', 'app/helpers'
+	add_group 'Mailers', 'app/mailers'
+end
+# This outputs the report to your public folder
+# You will want to add this to .gitignore
+SimpleCov.coverage_dir 'public/coverage'
 
 RSpec.configure do |config|
 	# ## Mock Framework
@@ -40,6 +55,7 @@ RSpec.configure do |config|
 
 	config.include Capybara::DSL
 end
+
 
 module Sorcery
 	module TestHelpers
