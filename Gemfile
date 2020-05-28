@@ -50,6 +50,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0.0'
   gem 'faker'
   gem 'rails-controller-testing'
+  gem 'simplecov', :require => false
 end
 
 group :test do
