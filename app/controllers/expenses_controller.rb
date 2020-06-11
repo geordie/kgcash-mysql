@@ -99,7 +99,7 @@ class ExpensesController < ApplicationController
 		
 		respond_to do |format|
 			format.js { success }
-			format.html { render action: "edit" }
+			format.html { success }
 			format.json { render json: @transaction.errors, status: :unprocessable_entity }
 		end
 	end
