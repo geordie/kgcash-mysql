@@ -36,10 +36,9 @@ module DateMath
 		currentYear = Date.today.year
 		if year < currentYear
 			return Date.new(year,12,31).yday
-		elsif year = currentYear
+		elsif year == currentYear
 			return Date.today.yday
-		else
-			return 0
 		end
+		return 0
 	end
 end
