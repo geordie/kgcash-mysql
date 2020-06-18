@@ -37,9 +37,6 @@ class AccountsController < ApplicationController
 
 	def create
 		@user = current_user
-		if @user == nil
-			@user = User.last
-		end
 		@account = @user.accounts.create(account_params)
 
 		respond_to do |format|
