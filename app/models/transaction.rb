@@ -24,9 +24,9 @@ class Transaction < ActiveRecord::Base
 	}
 
 	scope :in_month_year, lambda { |month, year| where(
-		'tx_date >= ? AND tx_date < ?',
+		"tx_date >= ? AND tx_date < ?",
 		month.nil? ? Date.new( year,1,1) : Date.new(year,month,1),
-		!month.nil? && month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1) )
+		!month.nil? && month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1))
 	}
 
 	scope :in_debit_acct, lambda { |acct_id| where("acct_id_dr = ?", acct_id) unless acct_id.nil? }
@@ -71,7 +71,8 @@ class Transaction < ActiveRecord::Base
 		sJoinsIncomeA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 		sJoinsIncomeB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
 
-		sSelectIncome = sTimeAggregate + " as quantum, "\
+		sSelectIncome = sTimeAggregate + " as xCategory, " +\
+		sTimeAggregate + " as xValue, "\
 		"SUM(IF(accts_cr.account_type = 'Income', credit, debit*-1)) as 'income', "\
 		"IF(accts_cr.account_type = 'Income', accts_cr.id, accts_dr.id) as acct_id, "\
 		"IF(accts_cr.account_type = 'Income', accts_cr.name, accts_dr.name) as name"
@@ -99,7 +100,8 @@ class Transaction < ActiveRecord::Base
 		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 		sJoinsExpenseB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
 
-		sSelectExpense = sTimeAggregate + " as quantum, "\
+		sSelectExpense = sTimeAggregate + " as xCategory, " +\
+		sTimeAggregate + " as xValue, "\
 		"SUM(IF(accts_dr.account_type = 'Expense', debit, credit*-1)) as 'expenses', "\
 		"IF(accts_dr.account_type = 'Expense', accts_dr.id, accts_cr.id) as acct_id, "\
 		"IF(accts_dr.account_type = 'Expense', accts_dr.name, accts_cr.name) as name"
@@ -116,6 +118,34 @@ class Transaction < ActiveRecord::Base
 					"OR "\
 				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
+			.in_month_year(month, year)
+			.group( sGroupByExpense )
+			.order( sTimeAggregate )
+	end
+
+	def self.spend_over_time(user,year, month=nil)
+		sTimeAggregate = "date(tx_date), DAYOFYEAR(tx_date)"
+
+		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+		sJoinsExpenseB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
+
+		sSelectExpense = "'spend' as name, "\
+		"DATE(tx_date) as xCategory, "\
+		"(DAYOFYEAR(tx_date)) as xValue, "\
+		"SUM(IF(accts_dr.account_type = 'Expense', debit, credit*-1)) as 'expenses' "
+
+		sGroupByExpense = sTimeAggregate
+
+		return user.transactions
+			.joins( sJoinsExpenseA )
+			.joins( sJoinsExpenseB )
+			.select(sSelectExpense)
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
+					"OR "\
+				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_dr in (select id from accounts where account_type = 'Expense')) "
+				)
 			.in_month_year(month, year)
 			.group( sGroupByExpense )
 			.order( sTimeAggregate )

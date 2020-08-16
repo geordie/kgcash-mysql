@@ -14,7 +14,7 @@ class CategorySummary
 				@summaryBuilder[item.acct_id][0] = [item.name, item.acct_id, 0, 0]
 			end
 			amountMonth = item[valueKey].nil? ? 0 : item[valueKey]
-			@summaryBuilder[item.acct_id][item.quantum] = amountMonth
+			@summaryBuilder[item.acct_id][item.xCategory] = amountMonth
 			@summaryBuilder[item.acct_id][0][2] += amountMonth
 		end
 

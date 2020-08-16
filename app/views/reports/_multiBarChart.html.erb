@@ -12,8 +12,8 @@
 <script type="text/javascript">
 
 	var valField = "<%= local_assigns[:valueField] ? valueField : "debit" %>"
-	function transform(data) {
-		// Destination format: [{key:name,values:[{x:quantum,y:debit},...]}]
+	function transformMulti(data, xCategoryType) {
+		// Destination format: [{key:name,values:[{x:xCategory,y:debit},...]}]
 
 		var data_nvd3 = new Array();
 		var dataObj = new Object();
@@ -23,11 +23,12 @@
 		for( var i = 0 ; i < data.length ; i++ ){
 
 			var key = data[i].name;
-			var quantum = data[i].quantum;
+			var xCategory = data[i].xCategory;
+			var xValue = data[i].xValue;
 			var value = data[i][valField];
 
-			minQuantum = Math.min(quantum,minQuantum);
-			maxQuantum = Math.max(quantum,maxQuantum);
+			minQuantum = Math.min(xValue,minQuantum);
+			maxQuantum = Math.max(xValue,maxQuantum);
 
 			if (!(key in dataObj)){
 				dataObj[key] = new Object();
@@ -35,18 +36,39 @@
 			}
 
 			var obj = new Object();
-			obj.x = quantum;
+			obj.x = xCategory;
 			obj.y = parseFloat(value);
-			dataObj[key].values[obj.x] = obj;
+			dataObj[key].values[xValue] = obj;
 		}
 
 		for( key in dataObj ){
+
+			// A variable to hold a default year in case xCategory is a date
+			var year = null;
+
 			// Fill in any blanks
-			for( i = 0 ; i <= maxQuantum; i++)
+			for( i = minQuantum ; i <= maxQuantum; i++)
 			{
 				if( dataObj[key].values[i] == null)
 				{
-					dataObj[key].values[i] = {"x":i,"y":0};
+					// Expect an int as fill value but allow for dates
+					var fillValue = i;
+					if( xCategoryType == typeof Date && !(year === null))
+					{
+						fillValue = formatDate(new Date(year, 0, i));
+						console.log(fillValue);
+					}
+					dataObj[key].values[i] = {"x":fillValue,"y":0};
+				}
+				// If xCategory is a date, get a default year
+				else if( xCategoryType == typeof Date && year === null )
+				{
+					var dateString = dataObj[key].values[i].x;
+					console.log(dateString);
+					var date = new Date(dateString);
+					date.setTime(date.getTime() + (12*60*60*1000))
+					year = date.getYear() + 1900;
+					console.log(year);
 				}
 			}
 			dataObj[key].values.shift();
@@ -64,7 +86,7 @@
 
 		var chartDataIndex = <%= local_assigns[:chartDataIndex] ? chartDataIndex : 0 %>;
 
-		var data = transform(<%= local_assigns[:data] %>);
+		var data = transformMulti(<%= local_assigns[:data] %>, <%= local_assigns[:xCategoryType] %>);
 
 		var height = 550;
 
@@ -98,5 +120,19 @@
 	}
 
 	buildMultiBarChart();
+
+	function formatDate(date) {
+		var d = new Date(date),
+			month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear();
+
+		if (month.length < 2)
+			month = '0' + month;
+		if (day.length < 2)
+			day = '0' + day;
+
+		return [year, month, day].join('-');
+	}
 
 </script>
