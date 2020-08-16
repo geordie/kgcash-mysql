@@ -34,7 +34,7 @@ resources :payments
 resources :reports do
   collection do
     get 'income', to: 'reports#income'
-    get 'monthly', to: 'reports#monthly'
+    get 'spend', to: 'reports#spend'
   end
 end
 

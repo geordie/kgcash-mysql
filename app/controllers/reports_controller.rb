@@ -78,7 +78,10 @@ class ReportsController < ApplicationController
 		end
 	end
 
-	def monthly
+	def spend
+		respond_to do |format|
+			format.html #spend.html.erb
+		end
 	end
 	
 end
