@@ -56,7 +56,7 @@
 		return data_nvd3;
 	}
 
-	function buildStackedAreaChart( )
+	function buildMultiBarChart( )
 	{
 		var domId = "<%= local_assigns[:domId] ? "#" + domId : "#chartStacked" %>";
 
@@ -64,7 +64,7 @@
 
 		var chartDataIndex = <%= local_assigns[:chartDataIndex] ? chartDataIndex : 0 %>;
 
-		var teams = transform(<%= local_assigns[:data] %>);
+		var data = transform(<%= local_assigns[:data] %>);
 
 		var height = 550;
 
@@ -85,7 +85,7 @@
 				.tickFormat(d3.format('d'));
 
 			d3.select(domId)
-				.datum(teams)
+				.datum(data)
 				.transition()
 				.duration(500)
 				.attr("height",height)
@@ -97,6 +97,6 @@
 		});
 	}
 
-	buildStackedAreaChart();
+	buildMultiBarChart();
 
 </script>
