@@ -3,16 +3,54 @@ require "spec_helper"
 RSpec.describe AccountsController, :type => :controller do
 	include Sorcery::TestHelpers::Rails::Integration
 	include Sorcery::TestHelpers::Rails::Controller
-	#let!(:user) { Fabricate(:user) }
 
 	before :each do
 		@user = Fabricate(:user)
+		@acct_expense = nil
+		@acct_asset = nil
+		@acct_income = nil
+		@user.accounts.each do |acct|
+			if acct.account_type == "Expense"
+				@acct_expense = acct
+			elsif acct.account_type == "Asset"
+				@acct_asset = acct
+			elsif acct.account_type == "Income"
+				@acct_income = acct
+			end
+
+			if !@acct_expense.nil? &&
+				!@acct_asset.nil? &&
+				!@acct_income.nil?
+
+				break
+			end
+		end
 		login_user
 	end
 
 	describe 'GET #index' do
 
 		it "loads @accounts" do
+
+			tx_amount = get_tx_amount()
+
+			# Add an expense transaction
+			Fabricate(:transaction,
+				user_id: @user.id,
+				acct_id_cr: @acct_asset.id,
+				credit: tx_amount,
+				acct_id_dr: @acct_expense.id,
+				debit: tx_amount
+			)
+
+			# Add an expense transaction
+			Fabricate(:transaction,
+				user_id: @user.id,
+				acct_id_cr: @acct_asset.id,
+				credit: tx_amount + 1.01,
+				acct_id_dr: @acct_expense.id,
+				debit: tx_amount + 1.01
+			)
 
 			get :index
 
@@ -26,7 +64,9 @@ RSpec.describe AccountsController, :type => :controller do
 
 		it 'responds with 200' do
 
-			get :index
+			acct_id = @user.accounts[0].id
+
+			get :show, params: { id: acct_id }
 
 			expect(response.status).to eq(200)
 		end
