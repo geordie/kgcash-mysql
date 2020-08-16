@@ -52,9 +52,6 @@ class AccountsController < ApplicationController
 
 	def show
 		@user = current_user
-		if @user == nil
-			@user = User.last
-		end
 
 		@account = @user.accounts.find(params[:id])
 
