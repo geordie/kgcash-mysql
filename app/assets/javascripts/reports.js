@@ -140,34 +140,3 @@ function catDetail( d, show, width, myEvent, totalAmount )
 		infobox.html("");
 	}
 }
-
-// This function transforms data that comes out of the reports controller
-// into data that can be quickly output into a table
-
-function buildMonthlyCategoryReport( data, valueField )
-{
-	var categoryReportData = new Object();
-
-	f = function(thing){
-		key = thing['name'];
-		if (!(key in categoryReportData))
-		{
-			categoryReportData[key] = new Array(13);
-		}
-		categoryReportData[key][thing.quantum-1] = thing[valueField];
-		categoryReportData[key][12] = thing.acct_id;
-	}
-	
-	data.forEach(item => f(item));
-
-	var arrayCategoryReportData = new Array();
-	
-	Object.keys(categoryReportData).forEach( function(elem){
-		
-		var record = categoryReportData[elem];
-		record.unshift([elem, record[12]])
-		arrayCategoryReportData.push(record.slice(0,13));
-	});
-
-	return arrayCategoryReportData;
-}
