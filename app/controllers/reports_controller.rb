@@ -79,6 +79,19 @@ class ReportsController < ApplicationController
 	end
 
 	def spend
+
+		@user = current_user
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+
+		@spending = Transaction.spend_over_time(@user, @year)
+		gon.spending = @spending
+
+		pp "****************************************"
+		pp "****************************************"
+		pp gon.spending.to_json
+		pp "****************************************"
+		pp "****************************************"
+
 		respond_to do |format|
 			format.html #spend.html.erb
 		end

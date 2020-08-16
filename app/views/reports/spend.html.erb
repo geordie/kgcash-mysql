@@ -21,6 +21,7 @@
 			<div class="col-md-2 "></div>
 			<div class="col-md-8 text-center" id="chart1">
 				<svg></svg>
+
 				<script>
 
 					DAYS = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
@@ -36,8 +37,6 @@
 						}
 						
 						data.values = dataValues;
-
-						console.log([data]);
 
 						return [data];
 					};
@@ -72,14 +71,23 @@
 							return chart;
 						});
 					};
-					
+
 					loadChart( chartData );
 				</script>
 			</div>
 			<div class="col-md-2"></div>
 		</div>
 	</div>
+	<%= render partial: "multiBarChart", locals: {
+		title: "Spend",
+		domId: "spend",
+		data: "gon.spending",
+		valueField: "expenses",
+		xCategoryType: "typeof Date"
+		}
+	%>
 </div>
+
 
 <script>
 	// Listen  for radio button events
