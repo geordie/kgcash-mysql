@@ -86,12 +86,6 @@ class ReportsController < ApplicationController
 		@spending = Transaction.spend_over_time(@user, @year)
 		gon.spending = @spending
 
-		pp "****************************************"
-		pp "****************************************"
-		pp gon.spending.to_json
-		pp "****************************************"
-		pp "****************************************"
-
 		respond_to do |format|
 			format.html #spend.html.erb
 		end
