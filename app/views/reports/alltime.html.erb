@@ -1,0 +1,15 @@
+<h2>All Time Spend</h2>
+
+<table class="table table-striped table-condensed">
+  <tr>
+	<th width="100px">Year</th>
+	<th>Total Expenses</th>
+  </tr>
+
+<% @expenses.each_with_index do |item, idx| %>
+	<tr>
+		<td><%= item.year %></td>
+		<td><%= number_to_currency(item.expenses, precision: 0) %></td>
+	</tr>
+<% end %>
+</table>

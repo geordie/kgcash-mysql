@@ -35,6 +35,7 @@ resources :reports do
   collection do
     get 'income', to: 'reports#income'
     get 'spend', to: 'reports#spend'
+    get 'alltime', to: 'reports#alltime'
   end
 end
 

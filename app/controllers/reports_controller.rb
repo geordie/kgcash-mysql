@@ -82,12 +82,47 @@ class ReportsController < ApplicationController
 
 		@user = current_user
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+		@month = params.has_key?(:month) ? params[:month].to_i : Date.today.month
 
-		@spending = Transaction.spend_over_time(@user, @year)
-		gon.spending = @spending
+		@spending = Transaction.spend_over_time(@user, @year, @month)
+
+		first_day = DateMath.first_day_of_month_ordinal(@year,@month)
+		last_day = DateMath.last_day_of_month_ordinal(@year,@month)
+
+		firstItem = @spending.first.as_json
+
+		results = Array.new(last_day - first_day+1)
+
+		j = 0
+		for i in first_day..last_day do
+
+			existingItem = @spending.where(:xValue == 1).first.as_json
+			if existingItem
+				results[j] = existingItem.clone()
+			else
+				newItem = firstItem.clone()
+				newItem[:xCategory] = Date.ordinal(@year,i).strftime("%Y-%m-%d")
+				newItem[:xValue] = i
+				newItem[:expenses] = 0
+				results[j] = newItem
+			end
+			j = j+1
+		end
+
+		gon.spending = results
 
 		respond_to do |format|
 			format.html #spend.html.erb
+		end
+	end
+
+	def alltime
+		@user = current_user
+
+		@expenses = Transaction.expenses_all_time(@user)
+
+		respond_to do |format|
+			format.html #alltime.html.erb
 		end
 	end
 	
