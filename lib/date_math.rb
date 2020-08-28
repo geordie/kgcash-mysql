@@ -41,4 +41,12 @@ module DateMath
 		end
 		return 0
 	end
+
+	def self.first_day_of_month_ordinal(year, month)
+		return Date.new(year,month,1).yday
+	end
+
+	def self.last_day_of_month_ordinal(year, month)
+		return Date.new(year,month,-1).yday
+	end
 end
