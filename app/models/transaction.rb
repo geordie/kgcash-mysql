@@ -177,6 +177,22 @@ class Transaction < ActiveRecord::Base
 			.order( sTimeAggregate )
 	end
 
+	def self.uncategorized_expenses(user, year=nil)
+		return user.transactions
+			.select("count(*) as count, sum(credit) as sum")
+			.is_expense()
+			.where("(acct_id_dr IS NULL)")
+			.in_year(year)
+	end
+
+	def self.uncategorized_revenue(user, year=nil)
+		return user.transactions
+			.select("count(*) as count, sum(debit) as sum")
+			.is_liability()
+			.where("(acct_id_cr IS NULL)")
+			.in_year(year)
+	end
+
 	def ensure_hash
 		if self.tx_hash.to_s == ''
 			self.tx_hash = build_hash
