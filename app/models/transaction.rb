@@ -2,8 +2,6 @@ require 'digest/md5'
 
 class Transaction < ActiveRecord::Base
 
-	attr_accessor :budget
-
 	validates_uniqueness_of :tx_hash
 	validates_presence_of :tx_date
 
@@ -160,8 +158,7 @@ class Transaction < ActiveRecord::Base
 		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 		sJoinsExpenseB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
 
-		sSelectExpense = "'spend' as name, "\
-		"YEAR(tx_date) as year, "\
+		sSelectExpense = "YEAR(tx_date) as year, "\
 		"SUM(IF(accts_dr.account_type = 'Expense', debit, credit*-1)) as 'expenses' "
 
 		sGroupByExpense = sTimeAggregate
@@ -214,10 +211,6 @@ class Transaction < ActiveRecord::Base
 	def format_date
 		@date = self.tx_date
 		@date.strftime( '%d-%b-%Y')
-	end
-
-	def attributes
-		super.merge('budget' => self.budget)
 	end
 
 end
