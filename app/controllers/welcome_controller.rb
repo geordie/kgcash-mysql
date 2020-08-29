@@ -7,8 +7,6 @@ class WelcomeController < ApplicationController
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
-		@accounts = @user.accounts
-
 		@transactions_expenses = @user.transactions
 			.select("count(*) as count, sum(credit) as sum")
 			.is_expense()
@@ -23,7 +21,6 @@ class WelcomeController < ApplicationController
 
 		respond_to do |format|
 			format.html #index.html.erb
-			format.json {render json: @accounts }
 		end
 	end
 
