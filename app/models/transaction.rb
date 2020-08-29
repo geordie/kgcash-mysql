@@ -17,10 +17,13 @@ class Transaction < ActiveRecord::Base
 
 	self.per_page = 50
 
-	scope :in_year, lambda { |year| where(
-		'tx_date >= ? AND tx_date < ?',
-		Date.new( year,1,1),
-		Date.new( year + 1,1,1))
+	scope :in_year, lambda { |year|
+		if !year.nil?
+			where(
+				'tx_date >= ? AND tx_date < ?',
+				Date.new( year,1,1),
+				Date.new( year + 1,1,1))
+		end
 	}
 
 	scope :in_month_year, lambda { |month, year| where(
@@ -179,18 +182,20 @@ class Transaction < ActiveRecord::Base
 
 	def self.uncategorized_expenses(user, year=nil)
 		return user.transactions
-			.select("count(*) as count, sum(credit) as sum")
+			.select("year(tx_date) as year, count(*) as count, sum(credit) as sum")
 			.is_expense()
 			.where("(acct_id_dr IS NULL)")
 			.in_year(year)
+			.group('year(tx_date)')
 	end
 
 	def self.uncategorized_revenue(user, year=nil)
 		return user.transactions
-			.select("count(*) as count, sum(debit) as sum")
+			.select("year(tx_date) as year, count(*) as count, sum(debit) as sum")
 			.is_liability()
 			.where("(acct_id_cr IS NULL)")
 			.in_year(year)
+			.group('year(tx_date)')
 	end
 
 	def ensure_hash
