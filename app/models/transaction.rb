@@ -161,8 +161,6 @@ class Transaction < ActiveRecord::Base
 		sSelectExpense = "YEAR(tx_date) as year, "\
 		"SUM(IF(accts_dr.account_type = 'Expense', debit, credit*-1)) as 'expenses' "
 
-		sGroupByExpense = sTimeAggregate
-
 		return user.transactions
 			.joins( sJoinsExpenseA )
 			.joins( sJoinsExpenseB )
@@ -173,13 +171,35 @@ class Transaction < ActiveRecord::Base
 				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_dr in (select id from accounts where account_type = 'Expense')) "
 				)
-			.group( sGroupByExpense )
+			.group( sTimeAggregate )
+			.order( sTimeAggregate )
+	end
+
+	def self.revenues_all_time(user)
+		sTimeAggregate = "year(tx_date)"
+
+		sJoinsIncomeA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+		sJoinsIncomeB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
+
+		sSelectRevenue = "YEAR(tx_date) as year, "\
+		"SUM(IF(accts_cr.account_type = 'Income', credit, debit*-1)) as 'revenue' "
+
+		return user.transactions
+			.joins( sJoinsIncomeA )
+			.joins( sJoinsIncomeB )
+			.select(sSelectRevenue)
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
+				"AND acct_id_cr in (select id from accounts where account_type = 'Income')) "\
+					"OR "\
+				"(acct_id_cr in (select id from accounts where account_type = 'Asset') "\
+				"AND acct_id_dr in (select id from accounts where account_type = 'Income'))")
+			.group( sTimeAggregate )
 			.order( sTimeAggregate )
 	end
 
 	def self.uncategorized_expenses(user, year=nil)
 		return user.transactions
-			.select("year(tx_date) as year, count(*) as count, sum(credit) as sum")
+			.select("year(tx_date) as year, count(*) as count, sum(credit) as uncategorized_expenses")
 			.is_expense()
 			.where("(acct_id_dr IS NULL)")
 			.in_year(year)
@@ -188,7 +208,7 @@ class Transaction < ActiveRecord::Base
 
 	def self.uncategorized_revenue(user, year=nil)
 		return user.transactions
-			.select("year(tx_date) as year, count(*) as count, sum(debit) as sum")
+			.select("year(tx_date) as year, count(*) as count, sum(debit) as uncategorized_revenue")
 			.is_liability()
 			.where("(acct_id_cr IS NULL)")
 			.in_year(year)
