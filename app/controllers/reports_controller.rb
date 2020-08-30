@@ -119,7 +119,42 @@ class ReportsController < ApplicationController
 	def alltime
 		@user = current_user
 
-		@expenses = Transaction.expenses_all_time(@user)
+		expenses = Transaction.expenses_all_time(@user)
+		uncategorized_expenses = Transaction.uncategorized_expenses(@user)
+		revenues = Transaction.revenues_all_time(@user)
+		uncategorized_revenue = Transaction.uncategorized_revenue(@user)
+
+		# Merge results into one data structure, indexed on year
+		@results = Hash.new
+
+		# Add expenses for each year
+		expenses.each do |item|
+			@results[item.year] = {"year"=>item.year,"expenses"=>item.expenses}
+		end
+
+		# Add uncategorized expenses for each year
+		uncategorized_expenses.each do |item|
+			@results[item.year]["uncategorized_expenses"] = item.uncategorized_expenses
+		end
+
+		# Add revenue for each year
+		revenues.each do |item|
+			@results[item.year]["revenue"] = item.revenue
+		end
+
+		# Add uncategorized revenue for each year
+		uncategorized_revenue.each do |item|
+			@results[item.year]["uncategorized_revenue"] = item.uncategorized_revenue
+		end
+
+		# Add net revenue for each year
+		@results.each do |item|
+			item[1]["net_revenue"] =
+			item[1]["revenue"].to_f +
+			item[1]["uncategorized_revenue"].to_f -
+			item[1]["expenses"].to_f -
+			item[1]["uncategorized_expenses"].to_f
+		end
 
 		respond_to do |format|
 			format.html #alltime.html.erb
