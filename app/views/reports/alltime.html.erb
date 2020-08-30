@@ -14,10 +14,9 @@
 	<tr>
 		<td><%= item[0][:year]%></td>
 		<td><%= number_to_currency(item[0][:expenses], precision: 0)%></td>
-		<td><%= number_to_currency(item[0][:uncategorized_expenses], precision: 0)%></td>
+		<td><%= link_to number_to_currency(item[0][:uncategorized_expenses],precision: 0), uncategorized_expenses_path(:year => item[0][:year]) %></td>
 		<td><%= number_to_currency(item[0][:revenue], precision: 0)%></td>
-		<td><%= link_to number_to_currency(item[0][:uncategorized_revenue], precision: 0),
-    uncategorized_incomes_path(:year => item[0][:year]) %></td>
+		<td><%= link_to number_to_currency(item[0][:uncategorized_revenue], precision: 0), uncategorized_incomes_path(:year => item[0][:year]) %></td>
 		<td><%= number_to_currency(item[0][:net_revenue], precision: 0)%></td>
 	</tr>
 <% end %>
