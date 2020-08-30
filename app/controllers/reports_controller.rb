@@ -125,35 +125,42 @@ class ReportsController < ApplicationController
 		uncategorized_revenue = Transaction.uncategorized_revenue(@user)
 
 		# Merge results into one data structure, indexed on year
-		@results = Hash.new
+		results_tmp = Hash.new
 
 		# Add expenses for each year
 		expenses.each do |item|
-			@results[item.year] = {"year"=>item.year,"expenses"=>item.expenses}
+			results_tmp[item.year] = {"year"=>item.year,:expenses=>item.expenses}
 		end
 
 		# Add uncategorized expenses for each year
 		uncategorized_expenses.each do |item|
-			@results[item.year]["uncategorized_expenses"] = item.uncategorized_expenses
+			results_tmp[item.year]["uncategorized_expenses"] = item.uncategorized_expenses
 		end
 
 		# Add revenue for each year
 		revenues.each do |item|
-			@results[item.year]["revenue"] = item.revenue
+			results_tmp[item.year]["revenue"] = item.revenue
 		end
 
 		# Add uncategorized revenue for each year
 		uncategorized_revenue.each do |item|
-			@results[item.year]["uncategorized_revenue"] = item.uncategorized_revenue
+			results_tmp[item.year]["uncategorized_revenue"] = item.uncategorized_revenue
 		end
 
-		# Add net revenue for each year
-		@results.each do |item|
+		@results = Array.new
+
+		# Drop the year index used to map hashes, and add net revenue for each year
+		results_tmp.each do |item|
 			item[1]["net_revenue"] =
-			item[1]["revenue"].to_f +
-			item[1]["uncategorized_revenue"].to_f -
-			item[1]["expenses"].to_f -
-			item[1]["uncategorized_expenses"].to_f
+			item[1]["revenue"] +
+			item[1]["uncategorized_revenue"] -
+			item[1][:expenses] -
+			item[1]["uncategorized_expenses"]
+			# Drop the first item (the year index from result_tmp item)
+			item.shift
+			# Put the truncated item on the front of the results array
+			# Note: this also reverses the order of the results (to year desc)
+			@results.unshift(item)
 		end
 
 		respond_to do |format|

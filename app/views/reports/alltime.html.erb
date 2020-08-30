@@ -12,12 +12,12 @@
 
 <% @results.each_with_index do |item, idx| %>
 	<tr>
-		<td><%= item[1]["year"]%></td>
-		<td><%= number_to_currency(item[1]["expenses"], precision: 0)%></td>
-		<td><%= number_to_currency(item[1]["uncategorized_expenses"], precision: 0)%></td>
-		<td><%= number_to_currency(item[1]["revenue"], precision: 0)%></td>
-		<td><%= number_to_currency(item[1]["uncategorized_revenue"], precision: 0)%></td>
-		<td><%= number_to_currency(item[1]["net_revenue"], precision: 0)%></td>
+		<td><%= item[0]["year"]%></td>
+		<td><%= number_to_currency(item[0][:expenses], precision: 0)%></td>
+		<td><%= number_to_currency(item[0]["uncategorized_expenses"], precision: 0)%></td>
+		<td><%= number_to_currency(item[0]["revenue"], precision: 0)%></td>
+		<td><%= number_to_currency(item[0]["uncategorized_revenue"], precision: 0)%></td>
+		<td><%= number_to_currency(item[0]["net_revenue"], precision: 0)%></td>
 	</tr>
 <% end %>
 </table>
