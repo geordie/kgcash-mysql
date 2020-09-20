@@ -12,8 +12,8 @@
 		<div class="card-body">
 			<p class="card-text">
 				<strong>Uncategorized: </strong>
-				<span class="credit">$<%= @transactions_revenues[0][:uncategorized_revenue] %></span>
-				(<%= link_to @transactions_revenues[0][:count],
+				<span class="credit">$<%= @revenues_uncategorized[0][:uncategorized_revenue] %></span>
+				(<%= link_to @revenues_uncategorized[0][:count],
 					uncategorized_expenses_path(:year => @year) %> transactions)
 			</p>
 		</div>
@@ -23,8 +23,8 @@
 		<div class="card-body">
 			<p class="card-text">
 				<strong>Uncategorized: </strong>
-				<span class="debit">$<%= @transactions_expenses[0][:uncategorized_expenses] %></span>
-				(<%= link_to @transactions_expenses[0][:count],
+				<span class="debit">$<%= @expenses_uncategorized[0][:uncategorized_expenses] %></span>
+				(<%= link_to @expenses_uncategorized[0][:count],
 					uncategorized_expenses_path(:year => @year) %> transactions)
 			</p>
 		</div>
