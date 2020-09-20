@@ -8,7 +8,6 @@ describe "welcome/index.html.erb", type: :view do
     
     render
 
-    expect(rendered).to match(/uncategorized revenue transactions/)
     expect(rendered).to match(/24376/)
   end
 end

@@ -7,40 +7,26 @@
 </div>
 
 <div class="card-deck">
-		<div class="card">
-		<h5 class="card-header">Spending</h5>
+	<div class="card">
+		<h5 class="card-header">Revenue</h5>
 		<div class="card-body">
-			<h5 class="card-title">Uncategorized</h5>
 			<p class="card-text">
-				You have
-				<strong>
-					<%= link_to @transactions_expenses[0][:count],
-					uncategorized_expenses_path(:year => @year) %>
-				</strong> uncategorized expense transactions<br/>
-				with a total value of
-				<strong>
-					$<%= @transactions_expenses[0][:uncategorized_expenses] %>
-				</strong>
+				<strong>Uncategorized: </strong>
+				<span class="credit">$<%= @transactions_revenues[0][:uncategorized_revenue] %></span>
+				(<%= link_to @transactions_revenues[0][:count],
+					uncategorized_expenses_path(:year => @year) %> transactions)
 			</p>
 		</div>
 	</div>
 	<div class="card">
-		<h5 class="card-header">Earning</h5>
+		<h5 class="card-header">Expenses</h5>
 		<div class="card-body">
-			<h5 class="card-title">Uncategorized</h5>
 			<p class="card-text">
-				You have
-				<strong>
-					<%= link_to @transactions_revenues[0][:count],
-					uncategorized_incomes_path(:year => @year) %>
-				</strong>
-				uncategorized revenue transactions<br/>
-				with a total value of
-				<strong>
-					$<%= @transactions_revenues[0][:uncategorized_revenue] %>
-				</strong>
+				<strong>Uncategorized: </strong>
+				<span class="debit">$<%= @transactions_expenses[0][:uncategorized_expenses] %></span>
+				(<%= link_to @transactions_expenses[0][:count],
+					uncategorized_expenses_path(:year => @year) %> transactions)
 			</p>
 		</div>
 	</div>
-
 </div>
