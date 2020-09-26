@@ -152,7 +152,7 @@ class Transaction < ActiveRecord::Base
 			.order( sTimeAggregate )
 	end
 
-	def self.expenses_all_time(user)
+	def self.expenses_all_time(user, year=nil)
 		sTimeAggregate = "year(tx_date)"
 
 		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
@@ -160,6 +160,8 @@ class Transaction < ActiveRecord::Base
 
 		sSelectExpense = "YEAR(tx_date) as year, "\
 		"SUM(IF(accts_dr.account_type = 'Expense', debit, credit*-1)) as 'expenses' "
+
+		sYearFilter = !year.nil? && year.is_a?(Integer) ? "year(tx_date) = " + year.to_s : ""
 
 		return user.transactions
 			.joins( sJoinsExpenseA )
@@ -171,11 +173,12 @@ class Transaction < ActiveRecord::Base
 				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_dr in (select id from accounts where account_type = 'Expense')) "
 				)
+			.where( sYearFilter )
 			.group( sTimeAggregate )
 			.order( sTimeAggregate )
 	end
 
-	def self.revenues_all_time(user)
+	def self.revenues_all_time(user, year=nil)
 		sTimeAggregate = "year(tx_date)"
 
 		sJoinsIncomeA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
@@ -184,15 +187,18 @@ class Transaction < ActiveRecord::Base
 		sSelectRevenue = "YEAR(tx_date) as year, "\
 		"SUM(IF(accts_cr.account_type = 'Income', credit, debit*-1)) as 'revenue' "
 
+		sYearFilter = !year.nil? && year.is_a?(Integer) ? "year(tx_date) = " + year.to_s : ""
+
 		return user.transactions
 			.joins( sJoinsIncomeA )
 			.joins( sJoinsIncomeB )
-			.select(sSelectRevenue)
+			.select( sSelectRevenue )
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
 				"AND acct_id_cr in (select id from accounts where account_type = 'Income')) "\
 					"OR "\
 				"(acct_id_cr in (select id from accounts where account_type = 'Asset') "\
 				"AND acct_id_dr in (select id from accounts where account_type = 'Income'))")
+			.where( sYearFilter )
 			.group( sTimeAggregate )
 			.order( sTimeAggregate )
 	end
