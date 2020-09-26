@@ -11,6 +11,10 @@
 		<h5 class="card-header">Revenue</h5>
 		<div class="card-body">
 			<p class="card-text">
+				<strong>Categorized: </strong>
+				<span class="credit">$<%= @revenue %></span>
+			</p>
+			<p class="card-text">
 				<strong>Uncategorized: </strong>
 				<span class="credit">$<%= @revenues_uncategorized[0][:uncategorized_revenue] %></span>
 				(<%= link_to @revenues_uncategorized[0][:count],
@@ -21,6 +25,10 @@
 	<div class="card">
 		<h5 class="card-header">Expenses</h5>
 		<div class="card-body">
+			<p class="card-text">
+				<strong>Categorized: </strong>
+				<span class="debit">$<%= @expenses %></span>
+			</p>
 			<p class="card-text">
 				<strong>Uncategorized: </strong>
 				<span class="debit">$<%= @expenses_uncategorized[0][:uncategorized_expenses] %></span>
