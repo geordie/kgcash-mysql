@@ -4,6 +4,7 @@ class CategorySummary
 	def initialize( array, valueKey, year )
 
 		days = DateMath.days_past_in_year( year )
+		months = DateMath.months_past_in_year( year )
 		@summaryBuilder = Hash.new()
 		catTotal = 0
 
@@ -19,7 +20,8 @@ class CategorySummary
 		end
 
 		for item in @summaryBuilder.values do
-			item[0][3] = item[0][2]/days
+			item[0][3] = item[0][2]/months
+			item[0][4] = item[0][2]/days
 		end
 		@values = @summaryBuilder.values.sort{ |a,b| b[0][2] <=> a[0][2] }
 

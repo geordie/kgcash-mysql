@@ -17,6 +17,7 @@ var columns = [
     { head: 'Nov', cl: 'num' },
     { head: 'Dec', cl: 'num' },
     { head: 'Total', cl: 'num' },
+    { head: 'Monthly', cl: 'num' },
     { head: 'Daily', cl: 'num'}
 ];
 
@@ -61,8 +62,11 @@ table.append('tbody')
   // Add column for total amount
   addColumn(table, 2);
 
-  // Add column for daily amount
+  // Add column for monthly amount
   addColumn(table, 3);
+
+  // Add column for daily amount
+  addColumn(table, 4);
 
   function addColumn(element, index) {
     element
