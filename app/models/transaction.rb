@@ -175,7 +175,7 @@ class Transaction < ActiveRecord::Base
 				)
 			.where( sYearFilter )
 			.group( sTimeAggregate )
-			.order( sTimeAggregate )
+			.order( Arel.sql(sTimeAggregate) )
 	end
 
 	def self.revenues_all_time(user, year=nil)
@@ -200,7 +200,7 @@ class Transaction < ActiveRecord::Base
 				"AND acct_id_dr in (select id from accounts where account_type = 'Income'))")
 			.where( sYearFilter )
 			.group( sTimeAggregate )
-			.order( sTimeAggregate )
+			.order( Arel.sql( sTimeAggregate ) )
 	end
 
 	def self.uncategorized_expenses(user, year=nil)
