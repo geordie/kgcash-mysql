@@ -36,9 +36,18 @@ describe "DateMath" do
 
 	it "gets the days past in the specified year" do
 		today = DateTime.now()
-		expect( DateMath.days_past_in_year(today.year)).to eq(today.yday)
-		expect( DateMath.days_past_in_year(2019)).to eq(365)
-		expect( DateMath.days_past_in_year(2016)).to eq(366)
-		expect( DateMath.days_past_in_year(3000)).to eq(0)
+		expect(DateMath.days_past_in_year(today.year)).to eq(today.yday)
+		expect(DateMath.days_past_in_year(2019)).to eq(365)
+		expect(DateMath.days_past_in_year(2016)).to eq(366)
+		expect(DateMath.days_past_in_year(3000)).to eq(0)
+	end
+
+	it "gets portion of year passed in months" do
+		today = DateTime.now()
+		expected = today.month - 1 +
+			(today.day / Time.days_in_month(today.month, today.year).to_f).round(2)
+		expect(DateMath.months_past_in_year(2019)).to eq(12)
+		expect(DateMath.months_past_in_year(2020)).to eq(expected)
+		expect(DateMath.months_past_in_year(20000)).to eq(0)
 	end
 end

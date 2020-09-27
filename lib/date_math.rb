@@ -49,4 +49,17 @@ module DateMath
 	def self.last_day_of_month_ordinal(year, month)
 		return Date.new(year,month,-1).yday
 	end
+
+	def self.months_past_in_year( year )
+		currentYear = Date.today.year
+		if year < currentYear
+			return 12
+		elsif year == currentYear
+			currentMonth = Date.today.month
+			daysInCurrentMonth = Time.days_in_month(currentMonth, currentYear)
+			percentMonthPassed = (Date.today.day / daysInCurrentMonth.to_f).round(2)
+			return (currentMonth-1 + percentMonthPassed).to_f
+		end
+		return 0
+	end
 end
