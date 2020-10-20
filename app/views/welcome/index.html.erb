@@ -13,9 +13,9 @@
 			<h4 class="my-0 font-weight-normal">Revenue</h4>
 		</div>
 		<div class="card-body">
-			<h1 class="card-title"><span class="credit"><%= number_to_currency(@revenue) %></span> </h1>
+			<h1 class="card-title"><span class="credit"><%= number_to_currency(@revenue, precision: 0) %></span> </h1>
 			<ul class="list-unstyled mt-3 mb-4">
-				<li><strong>Uncategorized:</strong> <span class="credit"><%= number_to_currency(@revenues_uncategorized_amount) %></span></li>
+				<li><strong>Uncategorized:</strong> <span class="credit"><%= number_to_currency(@revenues_uncategorized_amount, precision: 0) %></span></li>
 				<li><%= link_to @revenues_uncategorized_count,
 					uncategorized_incomes_path(:year => @year) %> transactions</li>
 			</ul>
@@ -26,9 +26,9 @@
 			<h4 class="my-0 font-weight-normal">Expenses</h4>
 		</div>
 		<div class="card-body">
-			<h1 class="card-title"><span class="debit"><%= number_to_currency(@expenses.to_s) %></span></h1>
+			<h1 class="card-title"><span class="debit"><%= number_to_currency(@expenses, precision: 0) %></span></h1>
 			<ul class="list-unstyled mt-3 mb-4">
-				<li><strong>Uncategorized:</strong> <span class="debit"><%= number_to_currency(@expenses_uncategorized_amount) %></span></li>
+				<li><strong>Uncategorized:</strong> <span class="debit"><%= number_to_currency(@expenses_uncategorized_amount, precision: 0) %></span></li>
 				<li><%= link_to @expenses_uncategorized_count,
 					uncategorized_expenses_path(:year => @year) %> transactions</li>
 			</ul>
@@ -39,7 +39,7 @@
 			<h4 class="my-0 font-weight-normal">Income</h4>
 		</div>
 		<div class="card-body">
-			<h1 class="card-title"><%= number_to_currency(@net_income) %></h1>
+			<h1 class="card-title"><%= number_to_currency(@net_income, precision: 0) %></h1>
 		</div>
 	</div>
 </div>
