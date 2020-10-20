@@ -10,6 +10,6 @@ describe "welcome/index.html.erb", type: :view do
     
     render
 
-    expect(rendered).to match(/24376/)
+    expect(rendered).to match(/24,376/)
   end
 end
