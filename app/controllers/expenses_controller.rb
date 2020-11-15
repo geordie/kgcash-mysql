@@ -59,7 +59,7 @@ class ExpensesController < ApplicationController
 
 		@user = current_user
 
-		@transaction = @user.transactions.find(params[:id])
+		@transaction = @user.transactions.find(@id)
 		@accounts = @user.account_selector
 
 		@transaction_new = @user.transactions.new()
@@ -73,35 +73,64 @@ class ExpensesController < ApplicationController
 		@transaction_new.acct_id_cr = @transaction.acct_id_cr
 		@transaction_new.acct_id_dr = @transaction.acct_id_dr
 
+		@transaction_list = [@transaction, @transaction_new]
+
 
 		respond_to do |format|
 			format.html
 		end
 	end
 
-	def update
-		split_update
+	def split_commit
+		
+		user = current_user
+		transactions = params[:transactions]
+
+		base_tx_id = params[:tx_id]
+
+		base_transaction = user.transactions.find(base_tx_id)
+
+		transactions.each do |transaction|
+			tx_id = transaction[0]
+			tx_params = transaction[1]
+			amount_new = tx_params[:credit].gsub(/[^\d\.-]/,'').to_f
+			if user.transactions.exists? tx_id
+
+				# Find the existing transaction
+				tx_existing = user.transactions.find(tx_id)
+
+				# Modify values for the split transaction
+				tx_existing.debit = amount_new
+				tx_existing.credit = amount_new
+				tx_existing.acct_id_dr = tx_params[:acct_id_dr]
+				tx_existing.notes = tx_params[:notes]
+
+				# Update the transaction hash
+				tx_existing.tx_hash = tx_existing.build_hash
+
+				#Save
+				tx_existing.save
+			else
+				# Copy attribute values from the base transaction
+				tx_new = Transaction.new(base_transaction.attributes.slice(*Transaction.attribute_names))
+
+				# Modify values for the split transaction
+				tx_new.id = nil
+				tx_new.debit = amount_new
+				tx_new.credit = amount_new
+				tx_new.acct_id_dr = tx_params[:acct_id_dr]
+				tx_new.notes = tx_params[:notes]
+
+				# Update the transaction hash
+				tx_new.tx_hash = tx_new.build_hash
+
+				# Save
+				tx_new.save
+			end
+		end
 	end
 
-	def split_update
-		user = current_user
-		tx_id = params[:transaction][:id]
-		
-		# Set debit to credit
-		params[:transaction][:debit] = params[:transaction][:credit]
-		success = false
-		if tx_id.present?
-			@transaction = user.transactions.find(tx_id)
-			success = @transaction.update_attributes(expense_params)
-		else
-			@transaction = user.transactions.create(params[:transaction].permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date))	
-		end
-		
-		respond_to do |format|
-			format.js { success }
-			format.html { success }
-			format.json { render json: @transaction.errors, status: :unprocessable_entity }
-		end
+	def update
 	end
 
 	private

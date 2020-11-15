@@ -19,6 +19,9 @@ resources :expenses do
     post 'split_update'
   end
   collection do
+    post 'split_commit'
+  end
+  collection do
     get 'split'
   end
 end
