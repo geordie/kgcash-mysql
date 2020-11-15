@@ -23,7 +23,8 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      component: kgcash
+      app: kgcash
+      tier: frontend
   template:
     metadata:
       labels:
