@@ -34,7 +34,7 @@ table.append('thead').append('tr')
   .selectAll('th')
   .data(columns).enter()
   .append('th')
-  .attr('class', function(d){return d.cl;})
+  .attr('class', 'text-center')
   .text(function(d){return d.head;});
 
 var catId = 0;
@@ -49,6 +49,7 @@ table.append('tbody')
   .data(function(d){return d;})
   .enter()
   .append('td')
+  .attr('class', 'text-center')
   .append('a')
   .attr("href", function(d,i){if(i==0){catId=d[1];return null;}return linkURLPath + "?month=" + i + "&category=" + catId + "&year=" + year;})
   .html(function(d,i){
