@@ -14,20 +14,20 @@
 <% @txAmountClass = (transaction.is_expense == 1 ? "debit" : "credit") %>
 
   <tr>
-	<td><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
-	<td><%= form_for transaction, :remote => true do |f| %>
-			<%= f.select :acct_id_cr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_cr), {}, :class => 'expense_update', tabindex: "-1" %>
+	<td class="align-middle"><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
+	<td class="align-middle"><%= form_for transaction, :remote => true do |f| %>
+			<%= f.select :acct_id_cr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_cr), {}, :class => 'expense_update select', tabindex: "-1" %>
 		<% end %>
 	</td>
-	<td><%= best_in_place transaction, :details, :as => :textarea %></td>
-	<td><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
-	<td class="<%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
-	<td><%= form_for transaction, :remote => true do |f| %>
+	<td class="align-middle"><%= best_in_place transaction, :details, :as => :textarea %></td>
+	<td class="align-middle"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
+	<td class="align-middle <%= @txAmountClass %>"><%= number_to_currency(@txAmount) %></td>
+	<td class="align-middle select"><%= form_for transaction, :remote => true do |f| %>
 			<%= f.hidden_field :debit, value: transaction.debit.nil? || transaction.debit == 0 ? transaction.credit : transaction.debit  %>
-			<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'expense_update', tabindex: ((idx+1)*2)+1 %>
+			<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'expense_update select', tabindex: ((idx+1)*2)+1 %>
 		<% end %>
 	</td>
-	<td>
+	<td class="align-middle">
 		<div class="dropdown">
 
 			<a class="btn btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
