@@ -1,31 +1,23 @@
-<%= form_for (@transaction) do |f| %>
-  <% if @transaction.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
 
-      <ul>
-      <% @transaction.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+	<div class="row">
+		<div class="col-md-2">
+			<strong>Transaction Date:</strong>
+		</div>
+		<div class="col-md-2">
+			<%= @transaction.tx_date%>
+		</div>
 
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <%= f.label "Date"%>
-      <%= f.text_field :tx_date, class: 'col-sm-6 form-control' %>
-    </div>
+		<div class="col-md-1">
+			<strong>Account:</strong>
+		</div>
+		<div class="col-md-2">
+			<%= @transaction.acct_id_cr%>
+		</div>
 
-    <div class="form-group col-md-4">
-      <%= f.label "Account"%><br/>
-      <%= f.select :acct_id_cr, @accounts,{}, { :class => 'col-sm-6 form-control' } %>
-    </div>
-
-    <div class="form-group col-md-4">
-      <%= f.label "Amount"%>
-      <%= f.text_field :credit, class: 'col-sm-6 form-control' %>
-    </div>
-  </div>
-
-<% end %>
+		<div class="col-md-1">
+			<strong>Amount:</strong>
+		</div>
+		<div class="col-md-2">
+			<%= number_to_currency(@transaction.credit) %>
+		</div>
+	</div>
