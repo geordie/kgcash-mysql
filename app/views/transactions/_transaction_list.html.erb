@@ -15,12 +15,12 @@
   <tr>
 	<td><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
 	<td><%= form_for transaction, :remote => true do |f| %>
-		<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'expense_update', tabindex: ((idx+1)*2)+1 %>
+		<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'transaction_update', tabindex: ((idx+1)*2)+1 %>
 	<% end %>
 	</td>
 	<td class="debit"><%= number_to_currency(txDebit) %></td>
 	<td><%= form_for transaction, :remote => true do |f| %>
-			<%= f.select :acct_id_cr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_cr), {}, :class => 'expense_update', tabindex: "-1" %>
+			<%= f.select :acct_id_cr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_cr), {}, :class => 'transaction_update', tabindex: "-1" %>
 		<% end %>
 	</td>	
 	<td class="credit"><%= number_to_currency(txCredit) %></td>
