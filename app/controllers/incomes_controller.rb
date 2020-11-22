@@ -12,7 +12,7 @@ class IncomesController < ApplicationController
 
 		@transactions = @user.transactions
 			.joins(sJoinsIncome)
-			.select("transactions.id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, " \
+			.select("transactions.id, tx_date, credit, debit as 'amount', tx_type, details, notes, acct_id_cr, acct_id_dr, " \
 			"IF(accts_cr.account_type = 'Income', true, false) as is_credit "\
 			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
@@ -37,7 +37,7 @@ class IncomesController < ApplicationController
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
 		@transactions = @user.transactions
-			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, 1 as is_credit")
+			.select("id, tx_date, credit, debit as 'amount', tx_type, details, notes, acct_id_cr, acct_id_dr, 1 as is_credit")
 			.is_liability()
 			.where("(acct_id_cr IS NULL)")
 			.in_year(@year)
