@@ -14,7 +14,7 @@ class ExpensesController < ApplicationController
 		@transactions = @user.transactions
 			.joins(sJoinsAccounts)
 			.select("transactions.id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, "\
-			"IF(accts_cr.account_type = 'Expense', false, true) as is_expense "\
+			"IF(accts_cr.account_type = 'Expense', 'credit', 'debit') as txType "\
 			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
@@ -41,7 +41,7 @@ class ExpensesController < ApplicationController
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
 		@transactions = @user.transactions
-			.select("id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, 1 as 'is_expense'")
+			.select("id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, 'debit' as 'txType'")
 			.is_expense()
 			.where("(acct_id_dr IS NULL)")
 			.in_year(@year)

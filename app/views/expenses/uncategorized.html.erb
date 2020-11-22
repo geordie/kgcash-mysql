@@ -17,4 +17,4 @@
   </div>
 </div>
 
-<%= render "expense_list" %>
+<%= render partial: "transactions/typed_transaction_list", locals: {txType: 'expense'} %>

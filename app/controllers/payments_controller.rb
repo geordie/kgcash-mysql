@@ -11,8 +11,8 @@ class PaymentsController < ApplicationController
 
 		@transactions = @user.transactions
 			.joins(sJoinsAccounts)
-			.select("transactions.id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, "\
-				"IF(accts_dr.account_type = 'Liability', true, false) as is_credit ")
+			.select("transactions.id, tx_date, credit, debit, debit as 'amount', tx_type, details, notes, acct_id_cr, acct_id_dr, "\
+				"IF(accts_dr.account_type = 'Liability', 'credit', 'debit') as txType ")
 			.is_payment()
 			.where("(acct_id_cr IS NULL or acct_id_cr not in (select id from accounts where account_type = 'Liability'))")
 			.in_year(@year)
