@@ -1,9 +1,5 @@
 $(function (){
 
-	$('.delete_post').bind('ajax:success', function() {
-    	$(this).closest('tr').fadeOut();
-	});
-
 	$('.expense_note').keydown( function(e) {
 		if( e.key == " " && e.originalEvent.path[0].localName == 'span'){
 			e.preventDefault();
