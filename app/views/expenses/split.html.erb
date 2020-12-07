@@ -22,6 +22,12 @@
 					<th>Category</th>
 				</tr>
 				<%= render partial: "split_row", locals: {transactions: @transaction_list, f: f} %>
+				<tr>
+					<td></td>
+					<td>Totals:</td>
+					<td><span id="totalSplitAmount"></span></td>
+					<td></td>
+				</tr>
 			</table>
 		</div>
 	</div>

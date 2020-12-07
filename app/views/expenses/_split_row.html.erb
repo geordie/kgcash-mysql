@@ -8,7 +8,7 @@
 				<%= tx.details %>
 			</td>
 			<td><%= tx_form.text_field :notes, value: tx.notes, id: (tx.id.nil? ? 0 : tx.id)%>
-			<td><%= tx_form.text_field :credit, value: number_to_currency(tx.credit) %></td>
+			<td><%= tx_form.text_field :credit, value: number_to_currency(tx.credit), class: "split_item_amount" %></td>
 			<td>
 				<%= tx_form.hidden_field :debit, value: tx.debit.nil? || tx.debit == 0 ? tx.credit : tx.debit  %>
 				<%= tx_form.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', tx.acct_id_dr), { :include_blank => "select type"} %>
