@@ -11,49 +11,49 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :tx_date %><br />
-    <%= f.text_field :tx_date %>
+    <%= f.text_field :tx_date, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :posting_date %><br />
-    <%= f.text_field :posting_date %>
+    <%= f.text_field :posting_date, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :acct_id_cr %><br />
-    <%= f.select :acct_id_cr, @accounts %>
+    <%= f.select :acct_id_cr, @accounts, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :debit %><br />
-    <%= f.text_field :debit %>
+    <%= f.text_field :debit, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :credit %><br />
-    <%= f.text_field :credit %>
+    <%= f.text_field :credit, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :tx_type %><br />
-    <%= f.text_field :tx_type %>
+    <%= f.text_field :tx_type, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :details %><br />
-    <%= f.text_field :details %>
+    <%= f.text_field :details, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :acct_id_dr %><br />
-    <%= f.select :acct_id_dr, @accounts %>
+    <%= f.select :acct_id_dr, @accounts, class: "form-control" %>
   </div>
 
-  <div class="field">
+  <div class="form-group">
     <%= f.label :notes %><br />
-    <%= f.text_field :notes %>
+    <%= f.text_field :notes, class: "form-control" %>
   </div>
 
   <div class="actions">
