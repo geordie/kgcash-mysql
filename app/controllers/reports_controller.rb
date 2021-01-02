@@ -134,16 +134,25 @@ class ReportsController < ApplicationController
 
 		# Add uncategorized expenses for each year
 		uncategorized_expenses.each do |item|
+			if !results_tmp.include? item.year
+				results_tmp[item.year] = {:year=>item.year}
+			end
 			results_tmp[item.year][:uncategorized_expenses] = item.uncategorized_expenses
 		end
 
 		# Add revenue for each year
 		revenues.each do |item|
+			if !results_tmp.include? item.year
+				results_tmp[item.year] = {:year=>item.year}
+			end
 			results_tmp[item.year][:revenue] = item.revenue
 		end
 
 		# Add uncategorized revenue for each year
 		uncategorized_revenue.each do |item|
+			if !results_tmp.include? item.year
+				results_tmp[item.year] = {:year=>item.year}
+			end
 			results_tmp[item.year][:uncategorized_revenue] = item.uncategorized_revenue
 		end
 
