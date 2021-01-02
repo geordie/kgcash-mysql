@@ -44,10 +44,11 @@ describe "DateMath" do
 
 	it "gets portion of year passed in months" do
 		today = DateTime.now()
+		y = today.year
 		expected = today.month - 1 +
 			(today.day / Time.days_in_month(today.month, today.year).to_f).round(2)
-		expect(DateMath.months_past_in_year(2019)).to eq(12)
-		expect(DateMath.months_past_in_year(2020)).to eq(expected)
-		expect(DateMath.months_past_in_year(20000)).to eq(0)
+		expect(DateMath.months_past_in_year(y-1)).to eq(12)
+		expect(DateMath.months_past_in_year(y)).to eq(expected)
+		expect(DateMath.months_past_in_year(y+1000)).to eq(0)
 	end
 end
