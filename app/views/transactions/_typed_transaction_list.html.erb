@@ -2,6 +2,7 @@
 <% transactionType = (local_assigns[:txType]) ? txType : 'expense' %>
 <% categoryAccountType = transactionType == 'expense' ? 'acct_id_dr' : 'acct_id_cr' %>
 <% txAccountType = transactionType == 'expense' ? 'acct_id_cr' : 'acct_id_dr' %>
+<% txAmountToUpdate = transactionType == 'expense' ? 'debit' : 'credit' %>
 
 <table class="table table-striped table-condensed">
 	<tr>
@@ -27,7 +28,7 @@
 		<td class="align-middle tx"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
 		<td class="align-middle tx <%= txAmountClass %>"><%= number_to_currency(transaction.amount) %></td>
 		<td class="align-middle tx"><%= form_for transaction, :remote => true do |f| %>
-				<%= f.hidden_field :debit, value: [transaction.debit.to_i, transaction.credit.to_i].max() %>
+				<%= f.hidden_field txAmountToUpdate, value: [transaction.debit.to_i, transaction.credit.to_i].max() %>
 				<%= f.select categoryAccountType, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction[categoryAccountType]), { :include_blank => "select type"}, :class => 'transaction_update select', tabindex: ((idx+1)*2)+1 %>
 			<% end %>
 		</td>
