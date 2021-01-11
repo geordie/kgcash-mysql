@@ -192,5 +192,19 @@ class ReportsController < ApplicationController
 			format.html #alltime.html.erb
 		end
 	end
+
+	def category
+		@user = current_user
+
+		@results = Array.new
+
+		expenses = Transaction.expenses_by_category(@user)
+
+		gon.expense = expenses
+
+		respond_to do |format|
+			format.html #alltime.html.erb
+		end
+	end
 	
 end
