@@ -16,9 +16,6 @@ resources :expenses do
     get 'uncategorized'
   end
   collection do
-    post 'split_update'
-  end
-  collection do
     post 'split_commit'
   end
   collection do
@@ -39,6 +36,7 @@ resources :reports do
     get 'income', to: 'reports#income'
     get 'spend', to: 'reports#spend'
     get 'alltime', to: 'reports#alltime'
+    get 'category', to: 'reports#category'
   end
 end
 
