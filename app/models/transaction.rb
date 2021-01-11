@@ -26,8 +26,18 @@ class Transaction < ActiveRecord::Base
 
 	scope :in_month_year, lambda { |month, year| where(
 		"tx_date >= ? AND tx_date < ?",
-		month.nil? ? Date.new( year,1,1) : Date.new(year,month,1),
-		!month.nil? && month < 12 ? Date.new(year, month+1, 1 ) : Date.new(year+1,1,1))
+
+			year.nil? ?
+				Date.new(1900,1,1) :
+				(month.nil? ?
+					Date.new( year,1,1) :
+					Date.new(year,month,1)),
+
+			year.nil? ?
+				Date.new(DateTime.now.year+1, 1, 1) :
+				(!month.nil? && month < 12 ?
+					Date.new(year, month+1, 1 ) :
+					Date.new(year+1,1,1)))
 	}
 
 	scope :in_debit_acct, lambda { |acct_id| where("acct_id_dr = ?", acct_id) unless acct_id.nil? }
@@ -95,8 +105,8 @@ class Transaction < ActiveRecord::Base
 			.order( sTimeAggregate )
 	end
 
-	def self.expenses_by_category(user,year, month=nil)
-		sTimeAggregate = "month(tx_date)"
+	def self.expenses_by_category(user,year=nil, month=nil)
+		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
 	
 		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 		sJoinsExpenseB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
