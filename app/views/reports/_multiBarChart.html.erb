@@ -11,7 +11,8 @@
 
 <script type="text/javascript">
 
-	var valField = "<%= local_assigns[:valueField] ? valueField : "debit" %>"
+	var valField = "<%= local_assigns[:valueField] ? valueField : "debit" %>";
+
 	function transformMulti(data, xCategoryType) {
 		// Destination format: [{key:name,values:[{x:xCategory,y:debit},...]}]
 
@@ -56,23 +57,21 @@
 					if( xCategoryType == typeof Date && !(year === null))
 					{
 						fillValue = formatDate(new Date(year, 0, i));
-						console.log(fillValue);
 					}
 					dataObj[key].values[i] = {"x":fillValue,"y":0};
 				}
+
 				// If xCategory is a date, get a default year
 				else if( xCategoryType == typeof Date && year === null )
 				{
 					var dateString = dataObj[key].values[i].x;
-					console.log(dateString);
 					var date = new Date(dateString);
 					date.setTime(date.getTime() + (12*60*60*1000))
 					year = date.getYear() + 1900;
-					console.log(year);
 				}
 			}
-			dataObj[key].values.shift();
-			var entry = {"key":key,"values":dataObj[key].values};
+
+			var entry = {"key":key,"values":dataObj[key].values.slice(minQuantum)};
 			data_nvd3.push(entry);
 		}
 		return data_nvd3;
@@ -91,6 +90,7 @@
 		var height = 550;
 
 		var chart;
+
 		nv.addGraph(function() {
 			chart = nv.models.multiBarChart()
 				.stacked(true)
@@ -104,12 +104,12 @@
 				.showMaxMin(false);
 
 			chart.yAxis
-				.tickFormat(d3.format('d'));
+				.tickFormat(d3.format('$,d'));
 
 			d3.select(domId)
 				.datum(data)
 				.transition()
-				.duration(500)
+				.duration(200)
 				.attr("height",height)
 				.call(chart);
 
