@@ -76,8 +76,8 @@ class Transaction < ActiveRecord::Base
 			.group("acct_id_dr")
 	end
 
-	def self.income_by_category( user, year, month = nil )
-		sTimeAggregate = "month(tx_date)"
+	def self.income_by_category( user, year=nil, month = nil )
+		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
 
 		sJoinsIncomeA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 		sJoinsIncomeB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
