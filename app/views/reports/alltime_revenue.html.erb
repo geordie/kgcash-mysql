@@ -1,0 +1,13 @@
+<h2>All Time Expenses</h2>
+
+<div class="container">
+
+<%= render partial: "multiBarChart", locals: {
+	title: "Revenue",
+	domId: "revenue",
+	data: "gon.revenue",
+	valueField: "income"
+	}
+%>
+
+</div>
