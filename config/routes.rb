@@ -36,7 +36,8 @@ resources :reports do
     get 'income', to: 'reports#income'
     get 'spend', to: 'reports#spend'
     get 'alltime', to: 'reports#alltime'
-    get 'category', to: 'reports#category'
+    get 'alltime_expenses', to: 'reports#alltime_expenses'
+    get 'alltime_revenue', to: 'reports#alltime_revenue'
   end
 end
 
