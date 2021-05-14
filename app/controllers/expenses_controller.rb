@@ -104,6 +104,7 @@ class ExpensesController < ApplicationController
 				tx_existing.credit = amount_new
 				tx_existing.acct_id_dr = tx_params[:acct_id_dr]
 				tx_existing.notes = tx_params[:notes]
+				tx_existing.parent_id = base_transaction.id
 
 				# Update the transaction hash
 				tx_existing.tx_hash = tx_existing.build_hash
@@ -120,6 +121,7 @@ class ExpensesController < ApplicationController
 				tx_new.credit = amount_new
 				tx_new.acct_id_dr = tx_params[:acct_id_dr]
 				tx_new.notes = tx_params[:notes]
+				tx_new.parent_id = base_transaction.id
 
 				# Update the transaction hash
 				tx_new.tx_hash = tx_new.build_hash
