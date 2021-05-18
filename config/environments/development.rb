@@ -1,6 +1,8 @@
 Kgcash::Application.configure do
-  # Settings specified here will take precedence over those in config/application.rb
 
+  config.active_storage.service = :google_dev
+
+  # Settings specified here will take precedence over those in config/application.rb
   config.log_level = :debug
 
   # In the development environment your application's code is reloaded on

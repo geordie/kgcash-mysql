@@ -9,6 +9,8 @@ resources :users
 
 resources :transactions
 
+resources :documents
+
 resources :transaction_imports
 
 resources :expenses do

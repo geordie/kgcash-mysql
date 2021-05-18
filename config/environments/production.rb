@@ -1,4 +1,7 @@
 Kgcash::Application.configure do
+
+  config.active_storage.service = :google_prod
+
   # Settings specified here will take precedence over those in config/application.rb
 
   config.log_level = :warn

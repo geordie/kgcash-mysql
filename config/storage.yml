@@ -1,0 +1,14 @@
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+google_dev:
+  service: GCS
+  project: kgcash
+  credentials: <%= Rails.root.join("config/secrets/kgcash-dev-gcp-cloud-storage-key.json") %>
+  bucket: kgcash-dev
+
+google_prod:
+  service: GCS
+  project: kgcash
+  bucket: kgcash-dev
