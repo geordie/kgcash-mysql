@@ -19,3 +19,4 @@ server.*
 public/coverage
 *.code-workspace
 config/secrets/*
+storage/*
