@@ -18,3 +18,4 @@ db/data.yml
 server.*
 public/coverage
 *.code-workspace
+config/secrets/*
