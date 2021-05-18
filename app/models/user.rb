@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
 	has_many :budgets
 	has_many :categories
 	has_many :transactions
+	has_and_belongs_to_many :documents
 	has_and_belongs_to_many :accounts
 
 	def sortedCategories
