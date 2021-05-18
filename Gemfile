@@ -9,6 +9,7 @@ gem 'rails_12factor'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
+gem "google-cloud-storage", "~> 1.8", require: false
 gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 gem 'mysql2', '~> 0.4.4'
 gem 'sorcery', '~> 0.16.1'
