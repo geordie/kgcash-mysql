@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @document.name %>
+</p>
+
+<p>
+  <b>Attachment:</b>
+  <%= link_to @document.file.filename, @document.file, target: '_blank' %>
+</p>
+
+<%= link_to 'Edit', edit_document_path(@document) %> |
