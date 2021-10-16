@@ -13,7 +13,7 @@ gem "google-cloud-storage", "~> 1.8", require: false
 gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 gem 'mysql2', '~> 0.4.4'
 gem 'sorcery', '~> 0.16.1'
-gem 'json', '~> 1.8.2'
+gem 'json', '~> 2.3'
 gem 'execjs'
 gem 'rabl'
 gem 'mechanize', '~> 2.8'
