@@ -6,7 +6,6 @@ class CategorySummary
 		days = DateMath.days_past_in_year( year )
 		months = DateMath.months_past_in_year( year )
 		@summaryBuilder = Hash.new()
-		catTotal = 0
 
 		for item in array do
 
