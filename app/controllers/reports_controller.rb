@@ -61,16 +61,14 @@ class ReportsController < ApplicationController
 		@user = current_user
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
-		@income = Transaction.income_by_category(@user, @year)
-		gon.income = @income
+		income = Transaction.income_by_category(@user, @year)
 
-		catSummaryIncome = CategorySummary.new( @income, "income", @year )
+		catSummaryIncome = CategorySummary.new( income, "income", @year )
 		gon.income2 = catSummaryIncome.values
 
-		@expense = Transaction.expenses_by_category(@user, @year)
-		gon.expense = @expense
+		expense = Transaction.expenses_by_category(@user, @year)
 
-		catSummaryExpense = CategorySummary.new( @expense, "expenses", @year )
+		catSummaryExpense = CategorySummary.new( expense, "expenses", @year )
 		gon.expense2 = catSummaryExpense.values
 
 		respond_to do |format|
