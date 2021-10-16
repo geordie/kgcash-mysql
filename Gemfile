@@ -16,7 +16,7 @@ gem 'sorcery', '~> 0.16.1'
 gem 'json', '~> 1.8.2'
 gem 'execjs'
 gem 'rabl'
-gem 'mechanize'
+gem 'mechanize' '~> 2.8'
 gem 'oj'
 gem 'will_paginate', '~> 3.1.7
 '
