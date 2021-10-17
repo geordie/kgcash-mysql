@@ -6,6 +6,7 @@ class CategorySummary
 		days = DateMath.days_past_in_year( year )
 		months = DateMath.months_past_in_year( year )
 		month_totals = Array.new(12){0}
+		grand_total = 0
 		@summaryBuilder = Hash.new()
 
 		for item in array do
@@ -27,6 +28,7 @@ class CategorySummary
 			@summaryBuilder[item.acct_id][0]["total"] += amountMonth
 
 			month_totals[idx] += amountMonth
+			grand_total += amountMonth
 		end
 
 		for item in @summaryBuilder.values do
@@ -38,9 +40,9 @@ class CategorySummary
 		monthly_totals = {
 			"cat_name" => "Totals",
 			"cat_id" => 10000,
-			"total" => 0,
-			"monthly" => 0,
-			"daily" => 0,
+			"total" => grand_total,
+			"monthly" => grand_total/months,
+			"daily" => grand_total/days,
 			"months" => month_totals
 		}
 		@summaryBuilder.append([monthly_totals])
