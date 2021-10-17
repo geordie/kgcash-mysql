@@ -46,37 +46,55 @@ table.append('tbody')
   .enter()
   .append('tr')
   .selectAll('td')
-  .data(function(d){return d;})
+  .data(expandMonths)
   .enter()
   .append('td')
   .attr('class', 'text-center')
   .append('a')
-  .attr("href", function(d,i){if(i==0){catId=d[1];return null;}return linkURLPath + "?month=" + i + "&category=" + catId + "&year=" + year;})
+  .attr("href", buildHref)
   .html(function(d,i){
       if(i==0){
-        return d[0]
+        return d.cat_name;
       }
-      return "$" + d3.format(",.0f")(d);
+      else if(i<13){
+        return "$" + d3.format(",.0f")(d);
+      }
     }
   );
 
   // Add column for total amount
-  addColumn(table, 2);
+  addColumn(table, "total");
 
   // Add column for monthly amount
-  addColumn(table, 3);
+  addColumn(table, "monthly");
 
   // Add column for daily amount
-  addColumn(table, 4);
+  addColumn(table, "daily");
+
+  // This function pulls the months array out of the input data and
+  // makes it a sibling of the hash in which it was originally contained.
+  // This step makes the month step avaible as data for presenting as table
+  // cells by D3.
+  function expandMonths(data, idx){
+    return data.concat(data[0].months);
+  }
+
+  function buildHref(d,i){
+    if(i==0){
+      catId=d.cat_id;
+      return null;
+    }
+    return linkURLPath + "?month=" + i + "&category=" + catId + "&year=" + year;
+  }
 
   function addColumn(element, index) {
     element
     .selectAll('tr')
     .append('td')
     .html(function(d,i){
+        // Ignore the header row by requiring i > 0
         if ( i > 0 ){
-          amount = tableData[i-1][0][index];
-          return "$" + d3.format(",.0f")(amount);
+          return "$" + d3.format(",.0f")(d[0][index]);
         }
       }
     )    

@@ -10,20 +10,29 @@ class CategorySummary
 		for item in array do
 
 			if !@summaryBuilder.key?(item.acct_id)
-				@summaryBuilder[item.acct_id] = Array.new(13){0}
-				@summaryBuilder[item.acct_id][0] = [item.name, item.acct_id, 0, 0]
+				@summaryBuilder[item.acct_id] = Array.new(1){0}
+				@summaryBuilder[item.acct_id][0] = {
+					"cat_name" => item.name,
+					"cat_id" => item.acct_id,
+					"total" => 0,
+					"monthly" => 0,
+					"daily" => 0,
+					"months" => Array.new(12){0}
+				}
 			end
+			idx = [item.xCategory-1, 0].max
 			amountMonth = item[valueKey].nil? ? 0 : item[valueKey]
-			@summaryBuilder[item.acct_id][item.xCategory] = amountMonth
-			@summaryBuilder[item.acct_id][0][2] += amountMonth
+			@summaryBuilder[item.acct_id][0]["months"][idx] = amountMonth
+			@summaryBuilder[item.acct_id][0]["total"] += amountMonth
 		end
 
 		for item in @summaryBuilder.values do
-			item[0][3] = item[0][2]/months
-			item[0][4] = item[0][2]/days
+			item[0]["monthly"] = item[0]["total"]/months
+			item[0]["daily"] = item[0]["total"]/days
 		end
-		@values = @summaryBuilder.values.sort{ |a,b| b[0][2] <=> a[0][2] }
+		@values = @summaryBuilder.values.sort{ |a,b| b[0]["total"] <=> a[0]["total"] }
 
+		return @values
 	end
 
 end
