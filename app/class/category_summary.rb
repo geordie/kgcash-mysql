@@ -5,6 +5,7 @@ class CategorySummary
 
 		days = DateMath.days_past_in_year( year )
 		months = DateMath.months_past_in_year( year )
+		month_totals = Array.new(12){0}
 		@summaryBuilder = Hash.new()
 
 		for item in array do
@@ -24,13 +25,27 @@ class CategorySummary
 			amountMonth = item[valueKey].nil? ? 0 : item[valueKey]
 			@summaryBuilder[item.acct_id][0]["months"][idx] = amountMonth
 			@summaryBuilder[item.acct_id][0]["total"] += amountMonth
+
+			month_totals[idx] += amountMonth
 		end
 
 		for item in @summaryBuilder.values do
 			item[0]["monthly"] = item[0]["total"]/months
 			item[0]["daily"] = item[0]["total"]/days
 		end
-		@values = @summaryBuilder.values.sort{ |a,b| b[0]["total"] <=> a[0]["total"] }
+		@summaryBuilder = @summaryBuilder.values.sort{ |a,b| b[0]["total"] <=> a[0]["total"] }
+
+		monthly_totals = {
+			"cat_name" => "Totals",
+			"cat_id" => 10000,
+			"total" => 0,
+			"monthly" => 0,
+			"daily" => 0,
+			"months" => month_totals
+		}
+		@summaryBuilder.append([monthly_totals])
+
+		@values = @summaryBuilder
 
 		return @values
 	end
