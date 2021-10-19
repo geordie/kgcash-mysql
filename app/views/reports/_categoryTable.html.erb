@@ -97,6 +97,7 @@ table.append('tbody')
     element
     .selectAll('tr')
     .append('td')
+    .attr('class', 'text-center')
     .html(function(d,i){
         // Ignore the header row by requiring i > 0
         if ( i > 0 ){
