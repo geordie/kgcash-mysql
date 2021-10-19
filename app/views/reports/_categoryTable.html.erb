@@ -84,6 +84,12 @@ table.append('tbody')
       catId=d.cat_id;
       return null;
     }
+    // This is a poor, indirect way to check for the Totals row.
+    // And we won't set href for the Totals row.
+    if( catId == 0)
+    {
+      return null;
+    }
     return linkURLPath + "?month=" + i + "&category=" + catId + "&year=" + year;
   }
 

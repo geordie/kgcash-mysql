@@ -39,7 +39,7 @@ class CategorySummary
 
 		monthly_totals = {
 			"cat_name" => "Totals",
-			"cat_id" => 10000,
+			"cat_id" => 0,
 			"total" => grand_total,
 			"monthly" => grand_total/months,
 			"daily" => grand_total/days,
