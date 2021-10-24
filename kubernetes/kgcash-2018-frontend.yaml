@@ -62,6 +62,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: kgcash-cloud-storage-credentials
+              key: kgcash-cloud-storage-credentials
 
 
         # The bookshelf process listens on port 80 for web traffic by default.

@@ -11,5 +11,5 @@ google_dev:
 google_prod:
   service: GCS
   project: kgcash
-  credentials: <%= ENV['GOOGLE_APPLICATION_CREDENTIALS'].as_json %>
+  # credentials: <%= ENV['GOOGLE_APPLICATION_CREDENTIALS'].as_json %>
   bucket: kgcash-prod
