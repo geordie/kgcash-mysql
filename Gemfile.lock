@@ -66,7 +66,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
-    chronic (0.10.2)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
       railties (>= 5.2.0)
@@ -325,8 +324,6 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    whenever (1.0.0)
-      chronic (>= 0.6.3)
     will_paginate (3.1.8)
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -367,7 +364,6 @@ DEPENDENCIES
   thin
   turn
   uglifier
-  whenever
   will_paginate (~> 3.1.7)
   yaml_db (~> 0.7.0)
 
