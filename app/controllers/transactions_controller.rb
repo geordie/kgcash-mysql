@@ -106,6 +106,21 @@ class TransactionsController < ApplicationController
 		end
 	end
 
+	def new_attachment
+		transaction_id = params.has_key?(:transaction_id) ? params[:transaction_id] : nil
+		@transaction = Transaction.find(transaction_id)
+		respond_to do |format|
+			format.html
+			format.js
+		end
+	end
+
+	def update_attachment
+		transaction_id = params.has_key?(:transaction_id) ? params[:transaction_id] : nil
+		@transaction = Transaction.find(transaction_id) 
+		@transaction.attachment.attach(params[:transaction][:attachment])
+	end
+
 	private
 
 	def sort_column
