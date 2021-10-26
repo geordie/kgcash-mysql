@@ -34,7 +34,6 @@
 		</td>
 		<td class="align-middle tx">
 			<div class="dropdown">
-
 				<a class="btn btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					...
 				</a>
@@ -44,6 +43,7 @@
 					<% if transactionType == 'expense'%>
 						<a class="dropdown-item" href="<%= split_expenses_path(:id => transaction.id)%>">Split</a>
 					<% end %>
+					<%= link_to( "Add Attachment", transaction_new_attachment_path(:transaction_id => transaction.id), {:remote => true, 'data-toggle' => 'modal', 'data-backdrop'=>'static','data-target' => '#modal-window', class: "dropdown-item"})  %>
 					<%= link_to( "Delete", transaction, method: :delete, data: { confirm: 'Delete Transaction?' }, class: "dropdown-item") %>
 				</div>
 			</div>
@@ -51,3 +51,5 @@
 	</tr>
 <% end %>
 </table>
+
+<div id="modal-window" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
