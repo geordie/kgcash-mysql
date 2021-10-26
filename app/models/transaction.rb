@@ -1,6 +1,8 @@
 require 'digest/md5'
 
-class Transaction < ActiveRecord::Base
+class Transaction < ApplicationRecord
+
+	has_one_attached :attachment
 
 	validates_uniqueness_of :tx_hash
 	validates_presence_of :tx_date
