@@ -10,29 +10,29 @@
 		<th><%= sortable "account_id", "Account" %></th>
 		<th><%= sortable "details" %></th>
 		<th><%= sortable "notes" %></th>
-		<th width="75px"><%= sortable "credit", "Amount" %></th>
+		<th class="text-center" width="75px"><%= sortable "credit", "Amount" %></th>
 		<th>Category</th>
-		<th>Action</th>
+		<th class="text-center">Action</th>
 	</tr>
 
 <% @transactions.each_with_index do |transaction, idx| %>
 	<% txAmountClass = transaction.txType %>
 
 	<tr>
-		<td class="align-middle tx"><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
-		<td class="align-middle tx"><%= form_for transaction, :remote => true do |f| %>
+		<td class="tx"><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
+		<td class="tx"><%= form_for transaction, :remote => true do |f| %>
 				<%= f.select txAccountType, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction[txAccountType]), {}, :class => 'transaction_update select', tabindex: "-1" %>
 			<% end %>
 		</td>
-		<td class="align-middle tx"><%= best_in_place transaction, :details, :as => :textarea %></td>
-		<td class="align-middle tx"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
-		<td class="align-middle tx <%= txAmountClass %>"><%= number_to_currency(transaction.amount) %></td>
-		<td class="align-middle tx"><%= form_for transaction, :remote => true do |f| %>
+		<td class="tx"><%= best_in_place transaction, :details, :as => :textarea %></td>
+		<td class="tx"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
+		<td class="text-center tx <%= txAmountClass %>"><%= number_to_currency(transaction.amount) %></td>
+		<td class="tx"><%= form_for transaction, :remote => true do |f| %>
 				<%= f.hidden_field txAmountToUpdate, value: [transaction.debit.to_i, transaction.credit.to_i].max() %>
 				<%= f.select categoryAccountType, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction[categoryAccountType]), { :include_blank => "select type"}, :class => 'transaction_update select', tabindex: ((idx+1)*2)+1 %>
 			<% end %>
 		</td>
-		<td class="align-middle tx">
+		<td class="text-center tx">
 			<div class="dropdown">
 				<a class="btn btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					...
