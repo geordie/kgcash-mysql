@@ -38,15 +38,6 @@ gem "best_in_place", '~> 3.0.1'
 
 gem 'gon'
 
-# Use unicorn as the web server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
-
 group :development, :test do
   gem 'rspec-rails', '~> 4.0.0'
   gem 'faker'
