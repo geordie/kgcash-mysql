@@ -28,7 +28,7 @@ gem 'yaml_db', '~> 0.7.0'
 # in production environments by default.
 #group :assets do
 gem 'railties', "~> 5.2.3"
-gem 'sass-rails'
+gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'
 #end
