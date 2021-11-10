@@ -5,7 +5,7 @@ FROM ruby:2.5.9-alpine
   #apt-get autoremove -y && \
   #rm -rf /var/lib/apt /var/lib/dpkg /var/lib/cache /var/lib/log && \
 RUN apk update && apk upgrade && \
-  apk add build-base mariadb-client mariadb-dev nodejs git && \
+  apk add build-base mariadb-client mariadb-dev nodejs git bash tzdata && \
   rm -rf /var/cache/apk/* && \
   mkdir /kgcash
 WORKDIR /kgcash
