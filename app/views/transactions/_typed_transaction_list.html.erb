@@ -13,6 +13,7 @@
 		<th class="text-center" width="75px"><%= sortable "credit", "Amount" %></th>
 		<th>Category</th>
 		<th class="text-center">Action</th>
+		<th></th>
 	</tr>
 
 <% @transactions.each_with_index do |transaction, idx| %>
@@ -45,6 +46,24 @@
 					<% end %>
 					<%= link_to( "Add Attachment", transaction_new_attachment_path(:transaction_id => transaction.id), {:remote => true, 'data-toggle' => 'modal', 'data-backdrop'=>'static','data-target' => '#modal-window', class: "dropdown-item"})  %>
 					<%= link_to( "Delete", transaction, method: :delete, data: { confirm: 'Delete Transaction?' }, class: "dropdown-item") %>
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="dropdown">
+				<a class="btn btn-sm" href="#" role="button" id="attachmentDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<%= transaction.attachment.attached? ?
+						image_tag("attachment.png", height: '16', width: '16') :
+						"" %>
+				</a>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="attachmentDropdownMenuButton">
+					<% if transaction.attachment.attached? %>
+						<%= link_to( "Show Attachment", url_for(transaction.attachment), class: "dropdown-item" ) %>
+						<%= link_to( 'Delete Attachment', transaction_delete_attachment_url(transaction),
+							method: :delete,
+							class: "dropdown-item",
+							data: { confirm: 'Are you sure?' }) %>
+					<% end %>
 				</div>
 			</div>
 		</td>
