@@ -6,7 +6,7 @@ class SetTransactionsCreatedAtNotNull < ActiveRecord::Migration[4.2]
     end
 
     Transaction.where(updated_at: nil).each do |tx|
-      tx.updated_at = Date.now
+      tx.updated_at = Time.now
     	tx.save();
     end
 
