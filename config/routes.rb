@@ -10,6 +10,7 @@ resources :users
 resources :transactions do
   get 'new_attachment'
   patch 'update_attachment'
+  delete 'delete_attachment'
 end
 
 resources :documents
