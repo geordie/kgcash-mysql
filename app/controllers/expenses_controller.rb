@@ -132,6 +132,7 @@ class ExpensesController < ApplicationController
 				tx_new.acct_id_dr = tx_params[:acct_id_dr]
 				tx_new.notes = tx_params[:notes]
 				tx_new.parent_id = base_transaction.id
+				tx_new.created_at = Time.now
 
 				# Copy attachment if there is one
 				if base_transaction.attachment.attached?
