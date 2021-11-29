@@ -40,4 +40,11 @@
   <%= @transaction.notes %>
 </p>
 
-<%= link_to 'Edit', edit_transaction_path(@transaction) %> |
+<p>
+  <b>Attachment:</b>
+  <%= @transaction.attachment.attached? ?
+    link_to( @transaction.attachment.filename, url_for(@transaction.attachment)) :
+    "(none)" %>
+</p>
+
+<%= link_to 'Edit', edit_transaction_path(@transaction) %>
