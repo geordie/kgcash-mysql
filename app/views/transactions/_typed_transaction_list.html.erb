@@ -44,7 +44,9 @@
 					<% if transactionType == 'expense'%>
 						<a class="dropdown-item" href="<%= split_expenses_path(:id => transaction.id)%>">Split</a>
 					<% end %>
-					<%= link_to( "Add Attachment", transaction_new_attachment_path(:transaction_id => transaction.id), {:remote => true, 'data-toggle' => 'modal', 'data-backdrop'=>'static','data-target' => '#modal-window', class: "dropdown-item"})  %>
+					<% if !transaction.attachment.attached? %>
+						<%= link_to( "Add Attachment", transaction_new_attachment_path(:transaction_id => transaction.id), {:remote => true, 'data-toggle' => 'modal', 'data-backdrop'=>'static','data-target' => '#modal-window', class: "dropdown-item"})  %>
+					<% end %>
 					<%= link_to( "Delete", transaction, method: :delete, data: { confirm: 'Delete Transaction?' }, class: "dropdown-item") %>
 				</div>
 			</div>
