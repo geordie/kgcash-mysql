@@ -13,7 +13,7 @@ class ExpensesController < ApplicationController
 
 		@transactions = @user.transactions
 			.joins(sJoinsAccounts)
-			.select("transactions.id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, "\
+			.select("transactions.id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, "\
 			"IF(accts_cr.account_type = 'Expense', 'credit', 'debit') as txType "\
 			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
