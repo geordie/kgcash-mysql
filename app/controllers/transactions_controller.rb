@@ -119,6 +119,23 @@ class TransactionsController < ApplicationController
 		transaction_id = params.has_key?(:transaction_id) ? params[:transaction_id] : nil
 		@transaction = Transaction.find(transaction_id) 
 		@transaction.attachment.attach(params[:transaction][:attachment])
+		respond_to do |format|
+			format.html { redirect_back fallback_location: transactions_url }
+			format.json { head :no_content }
+		end
+	end
+
+	def delete_attachment
+		transaction_id = params.has_key?(:transaction_id) ? params[:transaction_id] : nil
+		transaction = Transaction.find(transaction_id)
+		if transaction.attachment.attached?
+			transaction.attachment.purge
+		end
+
+		respond_to do |format|
+			format.html { redirect_back fallback_location: transactions_url }
+			format.json { head :no_content }
+		end
 	end
 
 	private
