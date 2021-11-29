@@ -75,25 +75,27 @@ class ExpensesController < ApplicationController
 
 		@transaction_list = [@transaction, @transaction_new]
 
-
 		respond_to do |format|
 			format.html
 		end
 	end
 
 	def split_commit
-		
+
 		user = current_user
-		transactions = params[:transactions]
 
+		# Get the base transaction
 		base_tx_id = params[:tx_id]
-
 		base_transaction = user.transactions.find(base_tx_id)
+
+		# Get the transactions to commit
+		transactions = params[:transactions]
 
 		transactions.each do |transaction|
 			tx_id = transaction[0]
 			tx_params = transaction[1]
 			amount_new = tx_params[:credit].gsub(/[^\d\.-]/,'').to_f
+
 			if user.transactions.exists? tx_id
 
 				# Find the existing transaction
@@ -105,6 +107,14 @@ class ExpensesController < ApplicationController
 				tx_existing.acct_id_dr = tx_params[:acct_id_dr]
 				tx_existing.notes = tx_params[:notes]
 				tx_existing.parent_id = base_transaction.id
+
+				# Copy attachment if there is one
+				if base_transaction.attachment.attached?
+					tx_existing.attachment.attach \
+					:io           => StringIO.new(base_transaction.attachment.download),
+					:filename     => base_transaction.attachment.filename,
+					:content_type => base_transaction.attachment.content_type
+				end
 
 				# Update the transaction hash
 				tx_existing.tx_hash = tx_existing.build_hash
@@ -122,6 +132,14 @@ class ExpensesController < ApplicationController
 				tx_new.acct_id_dr = tx_params[:acct_id_dr]
 				tx_new.notes = tx_params[:notes]
 				tx_new.parent_id = base_transaction.id
+
+				# Copy attachment if there is one
+				if base_transaction.attachment.attached?
+					tx_new.attachment.attach \
+					:io           => StringIO.new(base_transaction.attachment.download),
+					:filename     => base_transaction.attachment.filename,
+					:content_type => base_transaction.attachment.content_type
+				end
 
 				# Update the transaction hash
 				tx_new.tx_hash = tx_new.build_hash
