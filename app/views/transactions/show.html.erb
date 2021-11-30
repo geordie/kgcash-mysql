@@ -47,4 +47,5 @@
     "(none)" %>
 </p>
 
-<%= link_to 'Edit', edit_transaction_path(@transaction) %>
+<h3>Related Transactions</h3>
+<%= render partial: "transactions/typed_transaction_list", locals: {txType: 'expense'} %>
