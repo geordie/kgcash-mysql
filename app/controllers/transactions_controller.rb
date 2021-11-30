@@ -10,6 +10,22 @@ class TransactionsController < ApplicationController
 		end
 		@transaction = @user.transactions.find(params[:id])
 
+		sJoinsAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+
+		@transactions = @user.transactions
+			.joins(sJoinsAccounts)
+			.select("transactions.id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, "\
+			"IF(accts_cr.account_type = 'Expense', 'credit', 'debit') as txType "\
+			)
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
+					"OR "\
+				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
+			.where(parent_id: params[:id])
+			.paginate(:page => params[:page])
+			.order(sort_column + ' ' + sort_direction)
+
 		respond_to do |format|
 			format.html #show.html.erb
 			format.json {render json: @transaction}
