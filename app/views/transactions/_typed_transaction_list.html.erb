@@ -71,7 +71,7 @@
 								<%= image_tag("connected.png", height: '16', width: '16') %>
 							</a>
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="connectedDropdownMenuButton">
-								<%= link_to( "Show Related", "#", class: "dropdown-item" ) %>
+								<%= link_to( "Show Related", transaction_path(:id => transaction.parent_id), class: "dropdown-item" ) %>
 							</div>
 						<% else %>
 							<%= image_tag("empty.png", height: '16', width: '16') %>
