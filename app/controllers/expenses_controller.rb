@@ -149,6 +149,10 @@ class ExpensesController < ApplicationController
 				tx_new.save
 			end
 		end
+
+		respond_to do |format|
+			format.html { redirect_to(transaction_path(:id => base_tx_id)) }
+		end
 	end
 
 	def update
