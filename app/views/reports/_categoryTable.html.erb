@@ -3,22 +3,22 @@
 var tableData = <%= local_assigns[:gonData] %>;
 
 var columns = [
-    { head: 'Category', cl: 'title' },
-    { head: 'Jan', cl: 'center' },
-    { head: 'Feb', cl: 'center' },
-    { head: 'Mar', cl: 'num' },
-    { head: 'Apr', cl: 'num' },
-    { head: 'May', cl: 'num' },
-    { head: 'Jun', cl: 'num' },
-    { head: 'Jul', cl: 'num' },
-    { head: 'Aug', cl: 'num' },
-    { head: 'Sep', cl: 'num' },
-    { head: 'Oct', cl: 'num' },
-    { head: 'Nov', cl: 'num' },
-    { head: 'Dec', cl: 'num' },
-    { head: 'Total', cl: 'num' },
-    { head: 'Monthly', cl: 'num' },
-    { head: 'Daily', cl: 'num'}
+    { head: 'Category' },
+    { head: 'Jan' },
+    { head: 'Feb' },
+    { head: 'Mar' },
+    { head: 'Apr' },
+    { head: 'May' },
+    { head: 'Jun' },
+    { head: 'Jul' },
+    { head: 'Aug' },
+    { head: 'Sep' },
+    { head: 'Oct' },
+    { head: 'Nov' },
+    { head: 'Dec' },
+    { head: 'Total' },
+    { head: 'Monthly' },
+    { head: 'Daily'}
 ];
 
 var domId = "<%= local_assigns[:domId] ? "#" + domId : "#chartStacked" %>";
