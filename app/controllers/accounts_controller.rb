@@ -11,14 +11,16 @@ class AccountsController < ApplicationController
 		accounts.each do |a|
 			transactions = Transaction.all.in_account(a.id).order(:tx_date)
 			tx_count = transactions.count
-			next if tx_count == 0
 
 			hashAccountInfo = Hash.new
 
 			hashAccountInfo["account"] = a
 			hashAccountInfo["tx_count"] = tx_count
-			hashAccountInfo["tx_first"] = transactions[0].tx_date
-			hashAccountInfo["tx_last"] = transactions[tx_count-1].tx_date
+
+			if tx_count > 0
+				hashAccountInfo["tx_first"] = transactions[0].tx_date
+				hashAccountInfo["tx_last"] = transactions[tx_count-1].tx_date
+			end
 
 			@accounts_array.push(hashAccountInfo)
 		end
