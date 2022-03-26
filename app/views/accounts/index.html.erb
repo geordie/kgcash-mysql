@@ -18,8 +18,13 @@
 			<td><%= account.name %></td>
 			<td><%= account.account_type %></td>
 
-			<td><%= account_info["tx_first"].strftime('%b %e, %Y') %></td>
-			<td><%= account_info["tx_last"].strftime('%b %e, %Y') %></td>
+			<% if account_info["tx_count"] > 0 %>
+				<td><%= account_info["tx_first"].strftime('%b %e, %Y') %></td>
+				<td><%= account_info["tx_last"].strftime('%b %e, %Y') %></td>
+			<% else %>
+				<td>-</td><td>-</td>
+			<% end %>
+
 			<td><%= account_info["tx_count"] %></td>
 
 			<td><%= link_to 'Show', account %></td>
