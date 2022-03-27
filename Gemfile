@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.5.9'
+ruby '2.6.9'
 
 gem 'thin'
 gem 'rails', '5.2.6.3'
@@ -17,8 +17,8 @@ gem 'execjs'
 gem 'rabl'
 gem 'mechanize', '~> 2.8'
 gem 'oj'
-gem 'will_paginate', '~> 3.1.7
-'
+gem 'will_paginate', '~> 3.1.7'
+gem 'nokogiri', '>= 1.13.2'
 gem "figaro"
 gem "foreman"
 gem 'yaml_db', '~> 0.7.0'
