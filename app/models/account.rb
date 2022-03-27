@@ -5,7 +5,7 @@ class Account < ActiveRecord::Base
 	has_many :budget_categories
 	has_many :budgets, :through => :budget_categories
 
-	SupportedFormats = ["Vancity","RBC Visa","Vancity Visa","Vancity Visa (New)"]
+	SupportedFormats = ["Vancity","RBC Visa","Vancity Visa","Vancity Visa (New)","RBC Chequing"]
 	AccountTypes = ["Expense","Income","Asset","Liability"]
 
 	scope :importable, lambda {where("import_class IS NOT NULL")}

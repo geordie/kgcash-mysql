@@ -18,6 +18,8 @@ class TransactionImportFormat
 			return TransactionImportFormatVancityVisa.new
 		elsif typeId == "Vancity Visa (New)"
 			return TransactionImportFormatVancityVisaNew.new
+		elsif typeId == "RBC Chequing"
+			return TransactionImportFormatRbcChequing
 		end
 
 		return nil
