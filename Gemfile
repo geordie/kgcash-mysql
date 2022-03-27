@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.5.9'
 
 gem 'thin'
-gem 'rails', '5.2.4.6'
+gem 'rails', '5.2.6.3'
 
 gem 'rails_12factor'
 
@@ -10,7 +10,6 @@ gem 'rails_12factor'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem "google-cloud-storage", "~> 1.8", require: false
-gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 gem 'mysql2', '~> 0.4.4'
 gem 'sorcery', '~> 0.16.1'
 gem 'json', '~> 2.3'
