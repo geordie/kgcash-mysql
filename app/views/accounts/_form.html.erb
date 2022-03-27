@@ -19,6 +19,10 @@
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
+  <div class="field form-group">
+    <%= f.label :account_type %><br />
+    <%= f.select :account_type, Account::AccountTypes, { :class => 'form-control' } %>
+  </div>
   <div class="field">
     <%= f.label :import_class %><br />
     <%= f.select :import_class, Account::SupportedFormats %>
