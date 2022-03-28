@@ -4,7 +4,7 @@ class Transaction < ApplicationRecord
 
 	has_one_attached :attachment
 
-	validates_uniqueness_of :tx_hash
+	validates_uniqueness_of :tx_hash, case_sensitive: false
 	validates_presence_of :tx_date
 
 	belongs_to :category
