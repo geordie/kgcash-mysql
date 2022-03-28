@@ -1,16 +1,14 @@
 source 'https://rubygems.org'
-ruby '2.6.9'
+ruby '3.0.3'
 
 gem 'thin'
-gem 'rails', '5.2.6.3'
-
-gem 'rails_12factor'
+gem 'rails', '6.0.3.7'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem "google-cloud-storage", "~> 1.8", require: false
-gem 'mysql2', '~> 0.4.4'
+gem 'mysql2', '~> 0.5.3'
 gem 'sorcery', '~> 0.16.1'
 gem 'json', '~> 2.3'
 gem 'execjs'
@@ -26,7 +24,7 @@ gem 'yaml_db', '~> 0.7.0'
 # Gems used only for assets and not required
 # in production environments by default.
 #group :assets do
-gem 'railties', "~> 5.2.3"
+gem 'railties', ">= 6.0.3.7"
 gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'

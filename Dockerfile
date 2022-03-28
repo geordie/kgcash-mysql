@@ -1,4 +1,4 @@
-FROM ruby:2.6-alpine
+FROM ruby:3.0.3-alpine
 #RUN apt-get update -qq && \
   #apt-get install -y build-essential mariadb-client default-libmysqlclient-dev nodejs cron && \
   #apt-get clean autoclean && \
