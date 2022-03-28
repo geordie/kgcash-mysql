@@ -15,7 +15,7 @@ gem 'execjs'
 gem 'rabl'
 gem 'mechanize', '~> 2.8'
 gem 'oj'
-gem 'will_paginate', '~> 3.1.7'
+gem 'will_paginate', '>= 3.3.1'
 gem 'nokogiri', '>= 1.13.2'
 gem "figaro"
 gem "foreman"
@@ -31,7 +31,7 @@ gem 'uglifier'
 #end
 
 gem 'jquery-rails'
-gem "best_in_place", '~> 3.0.1'
+gem "best_in_place", '>= 3.1.0'
 
 gem 'gon'
 
