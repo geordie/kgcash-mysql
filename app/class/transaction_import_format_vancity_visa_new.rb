@@ -23,12 +23,12 @@ class TransactionImportFormatVancityVisaNew
 
 		# Credit
 		if !fields[6].nil? && !fields[6].empty?
-			credit = BigDecimal.new( fields[6].delete("$\",()") )
+			credit = BigDecimal( fields[6].delete("$\",()") )
 		end
 
 		# Debit
 		if !fields[7].nil? && !fields[7].empty?
-			debit = BigDecimal.new( fields[7].delete("$\",()") )
+			debit = BigDecimal( fields[7].delete("$\",()") )
 		end
 
 		# Get the description

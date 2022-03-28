@@ -18,7 +18,7 @@ class TransactionImportFormatVancityVisa
 
 		# Get credit and debit amounts
 		@flag = fields[8]
-		@amount = BigDecimal.new( fields[2].delete("$\",()") )
+		@amount = BigDecimal( fields[2].delete("$\",()") )
 
 		# Get the description
 		details = fields[3]
