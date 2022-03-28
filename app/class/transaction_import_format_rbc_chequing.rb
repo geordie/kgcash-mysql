@@ -3,8 +3,9 @@ require 'csv'
 class TransactionImportFormatRbcChequing
 
 	# Sample Transactions in CSV Format
-	# Account Type,Account Number,Transaction Date,Cheque Number,Description 1,Description 2,CAD$,USD$
-	# Visa,4.51224E+15,11/26/2013,,CAR2GO 855-454-1002 BC,,-$14.47,
+
+	# "Account Type","Account Number","Transaction Date","Cheque Number","Description 1","Description 2","CAD$","USD$"
+	# Chequing,00010-5858402,1/11/2022,,"MONTHLY FEE",,-10.95,,
 
 	def buildTransaction( csvline, account_id )
 		fields = CSV.parse(csvline)[0]
@@ -19,7 +20,7 @@ class TransactionImportFormatRbcChequing
 		sDate = date.strftime( '%y-%m-%d' )
 
 		# Get credit and debit amounts
-		@amount = BigDecimal.new( fields[6].delete("$\",") )
+		@amount = BigDecimal( fields[6].delete("$\",") )
 
 		# Get the description
 		details = fields[4]
