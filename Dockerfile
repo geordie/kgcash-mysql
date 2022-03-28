@@ -11,7 +11,7 @@ RUN apk update && apk upgrade && \
 WORKDIR /kgcash
 ADD Gemfile /kgcash/Gemfile
 ADD Gemfile.lock /kgcash/Gemfile.lock
-RUN bundle config git.allow_insecure true & bundle install
+RUN bundle install
 ADD . /kgcash
 # Reset entrypoint to override base image.
 ENTRYPOINT []
