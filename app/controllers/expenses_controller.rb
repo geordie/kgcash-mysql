@@ -7,7 +7,6 @@ class ExpensesController < ApplicationController
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
 		@category = params.has_key?(:category) ? params[:category].to_i : nil
-		account = params.has_key?(:account) ? params[:account].to_i : nil
 
 		sJoinsAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 
