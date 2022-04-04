@@ -60,7 +60,7 @@ class TransactionsController < ApplicationController
 		@transaction = user.transactions.find(params[:id])
 
 		respond_to do |format|
-			if @transaction.update_attributes(transaction_params)
+			if @transaction.update(transaction_params)
 				format.html {  redirect_to transactions_path, notice: 'Transaction was successfully updated.' }
 				format.json { respond_with_bip(@transaction) }
 				format.js {
