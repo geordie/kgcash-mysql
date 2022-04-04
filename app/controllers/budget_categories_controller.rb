@@ -59,7 +59,7 @@ class BudgetCategoriesController < ApplicationController
 		@budget_category = BudgetCategory.find(params[:id])
 
 		respond_to do |format|
-			if @budget_category.update_attributes(budget_category_params)
+			if @budget_category.update(budget_category_params)
 				format.html { redirect_to :action => 'index', notice: 'Budget Category was successfully updated.' }
 				format.json { head :ok }
 			else
