@@ -24,3 +24,7 @@
 </div>
 
 <%= render partial: "transactions/typed_transaction_list", locals: {txType: 'expense'} %>
+
+<% @accountTotals.each do |acctTot| %>
+	<%= acctTot.to_json%>
+<% end %>
