@@ -25,6 +25,28 @@ class ExpensesController < ApplicationController
 			.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
 
+		# Build a total value spent on the category per account
+		@accountTotals = Hash.new()
+		if !@category.nil?
+			@transactions.each do |t|
+				if t.acct_id_dr == @category
+					acct = Account.find(t.acct_id_cr)
+					if @accountTotals.has_key?(t.acct_id_cr)
+						@accountTotals[t.acct_id_cr][1] += t.debit
+					else
+						@accountTotals[t.acct_id_cr] = [acct.name, t.credit]
+					end
+				else
+					acct = Account.find(t.acct_id_dr)
+					if @accountTotals.has_key?(t.acct_id_dr)
+						@accountTotals[t.acct_id_dr][1] -= t.credit
+					else
+						@accountTotals[t.acct_id_dr] = [acct.name, t.credit * -1]
+					end
+				end
+			end
+		end
+
 		@monthPrev, @yearPrev = DateMath.last_month( @month, @year )
 		@monthNext, @yearNext = DateMath.next_month( @month, @year )
 
