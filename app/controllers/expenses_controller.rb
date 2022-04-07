@@ -28,14 +28,16 @@ class ExpensesController < ApplicationController
 		# Build a total value spent on the category per account
 		@accountTotals = Hash.new()
 		if !@category.nil?
+			total = 0
 			@transactions.each do |t|
 				if t.acct_id_dr == @category
 					acct = Account.find(t.acct_id_cr)
 					if @accountTotals.has_key?(t.acct_id_cr)
 						@accountTotals[t.acct_id_cr][1] += t.debit
 					else
-						@accountTotals[t.acct_id_cr] = [acct.name, t.credit]
+						@accountTotals[t.acct_id_cr] = [acct.name, t.debit]
 					end
+					total += t.debit
 				else
 					acct = Account.find(t.acct_id_dr)
 					if @accountTotals.has_key?(t.acct_id_dr)
@@ -43,8 +45,10 @@ class ExpensesController < ApplicationController
 					else
 						@accountTotals[t.acct_id_dr] = [acct.name, t.credit * -1]
 					end
+					total -= t.debit
 				end
 			end
+			@accountTotals[-1] = ["Total", total]
 		end
 
 		@monthPrev, @yearPrev = DateMath.last_month( @month, @year )
