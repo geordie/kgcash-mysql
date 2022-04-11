@@ -27,6 +27,12 @@ class ExpensesController < ApplicationController
 
 		# Build a total value spent on the category per account
 		@accountTotals = Hash.new()
+		accounts_importable = @user.accounts.importable
+
+		accounts_importable.each do |acct_importable|
+			@accountTotals[acct_importable.id] = [acct_importable.name, 0]
+		end
+
 		if !@category.nil?
 			total = 0
 			@transactions.each do |t|
