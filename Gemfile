@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '3.0.3'
 
 gem 'thin'
-gem 'rails', '6.0.4.7'
+gem 'rails', '6.0.4.8'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -13,7 +13,6 @@ gem 'sorcery', '~> 0.16.1'
 gem 'json', '~> 2.3'
 gem 'prawn', '>= 2.4.0'
 gem 'execjs'
-gem 'rabl'
 gem 'oj'
 gem 'will_paginate', '>= 3.3.1'
 gem 'nokogiri', '>= 1.13.2'
