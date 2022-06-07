@@ -178,6 +178,10 @@ GEM
       rack (>= 1.2, < 3)
     oj (3.13.11)
     os (1.1.4)
+    pdf-core (0.9.0)
+    prawn (2.4.0)
+      pdf-core (~> 0.9.0)
+      ttfunk (~> 1.7)
     public_suffix (4.0.6)
     rabl (0.15.0)
       activesupport (>= 2.3.14)
@@ -281,6 +285,7 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.10)
     trailblazer-option (0.1.2)
+    ttfunk (1.7.0)
     turn (0.9.6)
       ansi
     tzinfo (1.2.9)
@@ -320,6 +325,7 @@ DEPENDENCIES
   mysql2 (~> 0.5.3)
   nokogiri (>= 1.13.2)
   oj
+  prawn (>= 2.4.0)
   rabl
   rails (= 6.0.4.7)
   rails-controller-testing

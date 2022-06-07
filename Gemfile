@@ -11,6 +11,7 @@ gem "google-cloud-storage", "~> 1.8", require: false
 gem 'mysql2', '~> 0.5.3'
 gem 'sorcery', '~> 0.16.1'
 gem 'json', '~> 2.3'
+gem 'prawn', '>= 2.4.0'
 gem 'execjs'
 gem 'rabl'
 gem 'oj'
