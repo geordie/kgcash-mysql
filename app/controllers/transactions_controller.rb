@@ -1,6 +1,5 @@
 class TransactionsController < ApplicationController
-
-	helper_method :sort_column, :sort_direction
+	include TransactionControllerConcern
 
 	def show
 
@@ -155,14 +154,6 @@ class TransactionsController < ApplicationController
 	end
 
 	private
-
-	def sort_column
-		['tx_date','account','details','notes','amount'].include?(params[:sort]) ? params[:sort] : "tx_date"
-	end
-
-	def sort_direction
-		%w[asc desc].include?(params[:direction]) ?  params[:direction] : "desc"
-	end
 
 	def transaction_params
 		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :debit, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date)
