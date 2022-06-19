@@ -13,7 +13,7 @@ class AssetTransfersController < ApplicationController
 		@transactions = @user.transactions
 			.joins(sJoinsIncome)
 			.select("transactions.id, tx_date, credit, debit, debit as 'amount', tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, " \
-			"IF(accts_cr.account_type = 'Income', 'credit', 'debit') as txType "\
+			"IF(accts_cr.import_class IS NOT NULL, 'credit', 'debit') as txType "\
 			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
 			"AND acct_id_cr in (select id from accounts where account_type = 'Asset')) ")
