@@ -49,11 +49,4 @@ class IncomesController < ApplicationController
 			format.csv {}
 		end
 	end
-
-	private
-
-	def expense_params
-		params.require(:income).permit(:name, :description, :account_type)
-	end
-
 end
