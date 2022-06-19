@@ -28,9 +28,10 @@
               Transactions
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownTransactions">
-              <%= link_to "Income & Savings", incomes_path, { :class=>"dropdown-item" } %>
-              <%= link_to "Payments & Refunds", payments_path, { :class=>"dropdown-item" } %>
               <%= link_to "Expenses", expenses_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Income", incomes_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Asset Transfers", asset_transfers_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Payments & Refunds", payments_path, { :class=>"dropdown-item" } %>
               <%= link_to "Import", new_transaction_import_path, { :class=>"dropdown-item" } %>
               <%= link_to "Create New", new_transaction_path, { :class=>"dropdown-item" } %>
             </div>
