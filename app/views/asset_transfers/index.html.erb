@@ -1,0 +1,15 @@
+<h3>Income</h3>
+
+<div class="row lead">
+	<div class="col-md-3">
+		<%= render 'expenses/year_navigator' %>
+	</div>
+</div>
+
+<div class="row lead">
+	<div class="col-md-3">
+		<%= render 'expenses/month_navigator' %>
+	</div>
+</div>
+
+<%= render partial: "transactions/typed_transaction_list", locals: {txType: 'income'} %>
