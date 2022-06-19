@@ -37,6 +37,8 @@ end
 
 resources :payments
 
+resources :asset_transfers
+
 resources :reports do
   collection do
     get 'income', to: 'reports#income'
