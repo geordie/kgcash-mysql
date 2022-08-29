@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '3.0.3'
 
 gem 'thin'
-gem 'rails', '6.0.4.8'
+gem 'rails', '6.0.5.1'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -23,7 +23,7 @@ gem 'yaml_db', '~> 0.7.0'
 # Gems used only for assets and not required
 # in production environments by default.
 #group :assets do
-gem 'railties', ">= 6.0.3.7"
+gem 'railties', ">= 6.0.5.1"
 gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'
@@ -35,7 +35,7 @@ gem "best_in_place", '>= 3.1.0'
 gem 'gon'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 4.0.0'
+  gem 'rspec-rails', '>= 4.2'
   gem 'faker'
   gem 'rails-controller-testing'
   gem 'simplecov', :require => false
