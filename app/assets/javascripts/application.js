@@ -12,3 +12,4 @@
 //= require d3.min
 //= require nv.d3
 //= require bootstrap.bundle.min
+//= require echarts.min
