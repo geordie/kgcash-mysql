@@ -106,12 +106,6 @@ function buildMid( amount, selector, title, width, height, formatter )
 		.text(formatter + Math.round(amount));
 }
 
-function getDimensions( container )
-{
-	var width = parseInt(container.style("width"));
-	var height = parseInt(container.style("height"));
-}
-
 function catDetail( d, show, width, myEvent, totalAmount )
 {
 	// save selection of infobox so that we can later change it's position
