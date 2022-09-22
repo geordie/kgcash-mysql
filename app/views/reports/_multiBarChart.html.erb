@@ -3,7 +3,7 @@
 	</div>
 	<div class="col-md-10 center-block text-center">
 		<h2><%= title if local_assigns[:title] %></h2>
-		<svg id="<%= local_assigns[:domId] ? domId : "chartStacked" %>"></svg>
+		<div id="<%= local_assigns[:domId] ? domId : "chartStacked" %>" style="width: 100%;height:800px;"></div>
 	</div>
 	<div class="col-md-1">
 	</div>
@@ -13,126 +13,71 @@
 
 	var valField = "<%= local_assigns[:valueField] ? valueField : "debit" %>";
 
-	function transformMulti(data, xCategoryType) {
-		// Destination format: [{key:name,values:[{x:xCategory,y:debit},...]}]
+	function transformMulti( data, xCategoryType ){
 
-		var data_nvd3 = new Array();
+		var data_echart = new Object();
+		var seriesArray = new Array();
 		var dataObj = new Object();
+		var xAxis = new Array();
 		var minQuantum = Number.MAX_SAFE_INTEGER;
 		var maxQuantum = 0;
 
 		for( var i = 0 ; i < data.length ; i++ ){
 
-			var key = data[i].name;
+			// X-Axis work
+			// Get the name of the X-axis category
 			var xCategory = data[i].xCategory;
-			var xValue = data[i].xValue;
+			// Shift min and max if needed based on current value
+			minQuantum = Math.min(xCategory,minQuantum);
+			maxQuantum = Math.max(xCategory,maxQuantum);
+
+			// Y-Axis work
+			// Get the name of the series
+			var series = data[i].name;
+			// Get the value of the series
 			var value = data[i][valField];
 
-			minQuantum = Math.min(xValue,minQuantum);
-			maxQuantum = Math.max(xValue,maxQuantum);
-
-			if (!(key in dataObj)){
-				dataObj[key] = new Object();
-				dataObj[key].values = new Array();
+			// Add the series to a temp data structure if doesn't exist
+			if (!(series in dataObj)){
+				dataObj[series] = new Object();
+				dataObj[series].data = new Array();
 			}
 
-			var obj = new Object();
-			obj.x = xCategory;
-			obj.y = parseFloat(value);
-			dataObj[key].values[xValue] = obj;
+			// Set the series value in the temp object
+			dataObj[series].data[xCategory] = parseFloat(value);
 		}
 
 		for( key in dataObj ){
-
-			// A variable to hold a default year in case xCategory is a date
-			var year = null;
-
-			// Fill in any blanks
-			for( i = minQuantum ; i <= maxQuantum; i++)
+			for( i = minQuantum; i <= maxQuantum; i++)
 			{
-				if( dataObj[key].values[i] == null)
+				// Fill in any blanks
+				if( dataObj[key].data[i] == null)
 				{
-					// Expect an int as fill value but allow for dates
-					var fillValue = i;
-					if( xCategoryType == typeof Date && !(year === null))
-					{
-						fillValue = formatDate(new Date(year, 0, i));
-					}
-					dataObj[key].values[i] = {"x":fillValue,"y":0};
-				}
-
-				// If xCategory is a date, get a default year
-				else if( xCategoryType == typeof Date && year === null )
-				{
-					var dateString = dataObj[key].values[i].x;
-					var date = new Date(dateString);
-					date.setTime(date.getTime() + (12*60*60*1000))
-					year = date.getYear() + 1900;
+					dataObj[key].data[i] = 0;
 				}
 			}
 
-			var entry = {"key":key,"values":dataObj[key].values.slice(minQuantum)};
-			data_nvd3.push(entry);
+			var entry = {"name":key,"type":'bar',"stack":"dollars","data":dataObj[key].data.slice(minQuantum)};
+			seriesArray.push(entry);
 		}
-		return data_nvd3;
+
+		// Build xAxis
+		for( j = minQuantum; j <= maxQuantum; j++){ xAxis.push(j);}
+
+		// Populate the echart options data structure
+		data_echart["grid"] = {"left": "3%","right": "4%","bottom": "3%","containLabel": true};
+		data_echart["legend"] = {};
+		data_echart["series"] = seriesArray;
+		data_echart["tooltip"] = {"trigger":'axis',"axisPointer":{"type":'shadow'}};
+		data_echart["xAxis"] = {"type":"category","data":xAxis};
+		data_echart["yAxis"] = {"type":"value"};
+
+		return data_echart;
 	}
 
-	function buildMultiBarChart( )
-	{
-		var domId = "<%= local_assigns[:domId] ? "#" + domId : "#chartStacked" %>";
-
-		var avg = "<%= local_assigns[:average] ? average : nil %>";
-
-		var chartDataIndex = <%= local_assigns[:chartDataIndex] ? chartDataIndex : 0 %>;
-
-		var data = transformMulti(<%= local_assigns[:data] %>, <%= local_assigns[:xCategoryType] %>);
-
-		var height = 550;
-
-		var chart;
-
-		nv.addGraph(function() {
-			chart = nv.models.multiBarChart()
-				.stacked(true)
-				.showControls(false)
-				.clipEdge(true)
-				.useInteractiveGuideline(true)
-				.height(height)
-				;
-
-			chart.xAxis
-				.showMaxMin(false);
-
-			chart.yAxis
-				.tickFormat(d3.format('$,d'));
-
-			d3.select(domId)
-				.datum(data)
-				.transition()
-				.duration(200)
-				.attr("height",height)
-				.call(chart);
-
-			nv.utils.windowResize(chart.update);
-
-			return chart;
-		});
-	}
-
-	buildMultiBarChart();
-
-	function formatDate(date) {
-		var d = new Date(date),
-			month = '' + (d.getMonth() + 1),
-			day = '' + d.getDate(),
-			year = d.getFullYear();
-
-		if (month.length < 2)
-			month = '0' + month;
-		if (day.length < 2)
-			day = '0' + day;
-
-		return [year, month, day].join('-');
-	}
-
+	// Add the chart to the page
+	var chartDom = document.getElementById("<%= local_assigns[:domId] ? domId : "chartStacked" %>");
+	var myChart = echarts.init(chartDom);
+	var chartOptions = transformMulti(<%= local_assigns[:data] %>, <%= local_assigns[:xCategoryType] %>);
+	chartOptions && myChart.setOption(chartOptions);
 </script>
