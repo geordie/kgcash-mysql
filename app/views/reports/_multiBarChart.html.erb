@@ -13,7 +13,7 @@
 
 	var valField = "<%= local_assigns[:valueField] ? valueField : "debit" %>";
 
-	function transformMulti( data, xCategoryType ){
+	function transformMulti( data ){
 
 		var data_echart = new Object();
 		var seriesArray = new Array();
@@ -78,6 +78,6 @@
 	// Add the chart to the page
 	var chartDom = document.getElementById("<%= local_assigns[:domId] ? domId : "chartStacked" %>");
 	var myChart = echarts.init(chartDom);
-	var chartOptions = transformMulti(<%= local_assigns[:data] %>, <%= local_assigns[:xCategoryType] %>);
+	var chartOptions = transformMulti(<%= local_assigns[:data] %>);
 	chartOptions && myChart.setOption(chartOptions);
 </script>
