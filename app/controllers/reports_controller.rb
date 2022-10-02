@@ -204,7 +204,9 @@ class ReportsController < ApplicationController
 
 		expenses = Transaction.expenses_by_category(@user)
 
-		gon.expense = expenses
+		echart = transform_to_echart( expenses, "expenses" )
+
+		gon.echart = echart
 
 		respond_to do |format|
 			format.html #alltime.html.erb
@@ -218,11 +220,78 @@ class ReportsController < ApplicationController
 
 		revenue = Transaction.income_by_category(@user)
 
-		gon.revenue = revenue
+		echart = transform_to_echart( revenue, "income" )
+
+		gon.echart = echart
 
 		respond_to do |format|
 			format.html #alltime.html.erb
 		end
+	end
+
+	private
+
+	def transform_to_echart( data, valField )
+
+		data_echart = Hash.new();
+		seriesArray = Array.new();
+		dataObj = Hash.new();
+		xAxis = Array.new();
+		minQuantum = 1000000
+		maxQuantum = 0
+
+		data.each do |item,i|
+
+			# X-Axis work
+			# Get the name of the X-axis category
+			xCategory = item.xCategory
+			# Shift min and max if needed based on current value
+			minQuantum = [xCategory.to_i ,minQuantum].min
+			maxQuantum = [xCategory,maxQuantum].max
+
+			# Y-Axis work
+			# Get the name of the series
+			series = item.name
+			# Get the value of the series
+			value = item[valField]
+
+			# Add the series to a temp data structure if doesn't exist
+			if !dataObj.has_key?(series)
+				dataObj[series] = Hash.new()
+				dataObj[series]["data"] = Array.new()
+			end
+
+			# Set the series value in the temp object
+			dataObj[series]["data"][xCategory] = value.to_f
+		end
+
+		dataObj.keys.each do |dataKey|
+
+			# Fill in any blanks in the temp data structure
+			(minQuantum..maxQuantum).each do |i|
+				if dataObj[dataKey]["data"][i].nil?
+					dataObj[dataKey]["data"][i] = 0
+				end
+			end
+
+			entry = {"name":dataKey,"type":'bar',"stack":"dollars","data":dataObj[dataKey]["data"].slice(minQuantum,maxQuantum-1)};
+			seriesArray.push(entry);
+		end
+
+		# Build xAxis
+		(minQuantum..maxQuantum).each do |i|
+			xAxis.push(i)
+		end
+
+		# Populate the echart options data structure
+		data_echart["grid"] = {"left": "3%","right": "4%","bottom": "3%","containLabel": true};
+		data_echart["legend"] = {};
+		data_echart["series"] = seriesArray;
+		data_echart["tooltip"] = {"trigger":'axis',"axisPointer":{"type":'shadow'},"extraCssText":'text-align:left'};
+		data_echart["xAxis"] = {"type":"category","data":xAxis};
+		data_echart["yAxis"] = {"type":"value"};
+
+		return data_echart;
 	end
 	
 end

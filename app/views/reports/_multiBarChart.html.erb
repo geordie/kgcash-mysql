@@ -11,73 +11,12 @@
 
 <script type="text/javascript">
 
-	var valField = "<%= local_assigns[:valueField] ? valueField : "debit" %>";
-
-	function transformMulti( data ){
-
-		var data_echart = new Object();
-		var seriesArray = new Array();
-		var dataObj = new Object();
-		var xAxis = new Array();
-		var minQuantum = Number.MAX_SAFE_INTEGER;
-		var maxQuantum = 0;
-
-		for( var i = 0 ; i < data.length ; i++ ){
-
-			// X-Axis work
-			// Get the name of the X-axis category
-			var xCategory = data[i].xCategory;
-			// Shift min and max if needed based on current value
-			minQuantum = Math.min(xCategory,minQuantum);
-			maxQuantum = Math.max(xCategory,maxQuantum);
-
-			// Y-Axis work
-			// Get the name of the series
-			var series = data[i].name;
-			// Get the value of the series
-			var value = data[i][valField];
-
-			// Add the series to a temp data structure if doesn't exist
-			if (!(series in dataObj)){
-				dataObj[series] = new Object();
-				dataObj[series].data = new Array();
-			}
-
-			// Set the series value in the temp object
-			dataObj[series].data[xCategory] = parseFloat(value);
-		}
-
-		for( key in dataObj ){
-			// Fill in any blanks in the temp data structure
-			for( i = minQuantum; i <= maxQuantum; i++)
-			{
-				if( dataObj[key].data[i] == null)
-				{
-					dataObj[key].data[i] = 0;
-				}
-			}
-
-			var entry = {"name":key,"type":'bar',"stack":"dollars","data":dataObj[key].data.slice(minQuantum)};
-			seriesArray.push(entry);
-		}
-
-		// Build xAxis
-		for( j = minQuantum; j <= maxQuantum; j++){ xAxis.push(j);}
-
-		// Populate the echart options data structure
-		data_echart["grid"] = {"left": "3%","right": "4%","bottom": "3%","containLabel": true};
-		data_echart["legend"] = {};
-		data_echart["series"] = seriesArray;
-		data_echart["tooltip"] = {"trigger":'axis',"axisPointer":{"type":'shadow'},"extraCssText":'text-align:left'};
-		data_echart["xAxis"] = {"type":"category","data":xAxis};
-		data_echart["yAxis"] = {"type":"value"};
-
-		return data_echart;
-	}
-
 	// Add the chart to the page
 	var chartDom = document.getElementById("<%= local_assigns[:domId] ? domId : "chartStacked" %>");
 	var myChart = echarts.init(chartDom);
-	var chartOptions = transformMulti(<%= local_assigns[:data] %>);
+
+	var chartOptions = <%= local_assigns[:data] %>;
+
 	chartOptions && myChart.setOption(chartOptions);
+
 </script>
