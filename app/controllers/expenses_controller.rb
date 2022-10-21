@@ -57,9 +57,6 @@ class ExpensesController < ApplicationController
 			@accountTotals[-1] = ["Total", total]
 		end
 
-		@monthPrev, @yearPrev = DateMath.last_month( @month, @year )
-		@monthNext, @yearNext = DateMath.next_month( @month, @year )
-
 		respond_to do |format|
 			format.html #index.html.erb
 			format.csv {}
