@@ -74,6 +74,23 @@ class ReportsController < ApplicationController
 		end
 	end
 
+	def cashflow
+
+		@user = current_user
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+		@month = params.has_key?(:month) ? params[:month].to_i : Date.today.month
+
+		@income_array = Transaction.income_by_account(@user, @year, @month)
+
+		@cash_spend_array = Transaction.cash_spend_by_account(@user, @year, @month)
+
+		@credit_spend_array = Transaction.credit_spend_by_account(@user, @year, @month)
+
+		respond_to do |format|
+			format.html #cashflow.html.erb
+		end
+	end
+
 	def alltime
 		@user = current_user
 
