@@ -1,0 +1,53 @@
+<h1>Cashflow</h1>
+
+<div class="row lead">
+	<div class="col-md-3">
+		<%= render 'expenses/year_navigator' %>
+	</div>
+</div>
+
+<div class="row lead">
+	<div class="col-md-3">
+		<%= render 'expenses/month_navigator' %>
+	</div>
+</div>
+
+<h2>Income</h2>
+
+<table class="table table-striped table-condensed">
+
+<% @income_array.each do |income| %>
+	<tr>
+		<td width="160px"><%= income.name %></td>
+		<td><%= number_to_currency(income.credit, precision: 0) %></td>
+	</tr>
+<% end %>
+
+</table>
+
+<h2>Cash Spent</h2>
+
+<table class="table table-striped table-condensed">
+
+<% @cash_spend_array.each do |cash_spend| %>
+	<tr>
+		<td width="160px"><%= cash_spend.name %></td>
+		<td><%= number_to_currency(cash_spend.credit, precision: 0) %></td>
+	</tr>
+<% end %>
+
+</table>
+
+
+<h2>Credit Used</h2>
+
+<table class="table table-striped table-condensed">
+
+<% @credit_spend_array.each do |credit_spend| %>
+	<tr>
+		<td width="160px"><%= credit_spend.name %></td>
+		<td><%= number_to_currency(credit_spend.credit, precision: 0) %></td>
+	</tr>
+<% end %>
+
+</table>
