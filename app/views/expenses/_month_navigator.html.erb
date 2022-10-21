@@ -1,12 +1,11 @@
 <% if !@month.nil? && @month > 0 %>
-	<%= link_to '<', (local_assigns[:pathPrev]) ?
-		pathPrev :
-		expenses_path(:month => @monthPrev, :year => @yearPrev, :category => @category )
-	%>
+
+	<% monthPrev, yearPrev = DateMath.last_month( @month, @year ) %>
+	<% monthNext, yearNext = DateMath.next_month( @month, @year ) %>
+
+	<%= link_to '<', request.query_parameters.merge({:month => monthPrev, :year => yearPrev}) %>
+
 	<%= Date::MONTHNAMES[@month].to_s + ", " + @year.to_s %>
 
-	<%= link_to '>', (local_assigns[:pathNext]) ?
-		pathNext :
-		expenses_path(:month => @monthNext, :year => @yearNext, :category => @category )
-	%>
+	<%= link_to '>', request.query_parameters.merge({:month => monthNext, :year => yearNext}) %>
 <% end %>
