@@ -181,6 +181,25 @@ class Transaction < ApplicationRecord
 	end
 
 	def self.credit_spend_by_account(user,year=nil, month=nil)
+		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
+
+		sJoinsIncomeAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+
+		sSelectIncome = sTimeAggregate + " as quanta, " +\
+		"accts_cr.name, " +\
+		"accts_cr.id, " +\
+		"SUM(IF(accts_cr.account_type = 'Income', credit, credit)) as 'credit'"
+
+		sGroupIncomeAccount = sTimeAggregate + ", accts_cr.id"
+
+		return user.transactions
+			.joins( sJoinsIncomeAccounts )
+			.select(sSelectIncome)
+			.where("(acct_id_cr in (select id from accounts " +\
+				"where account_type = 'Liability' and import_class is not NULL))")
+			.in_month_year(month, year)
+			.group( sGroupIncomeAccount )
+			.order( sTimeAggregate )
 	end
 
 	def self.expenses_all_time(user, year=nil)
