@@ -67,12 +67,13 @@ class ExpensesController < ApplicationController
 		@user = current_user
 
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+		@month = params.has_key?(:month) ? params[:month].to_i : nil
 
 		@transactions = @user.transactions
 			.select("id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, 'debit' as 'txType'")
 			.is_expense()
 			.where("(acct_id_dr IS NULL)")
-			.in_year(@year)
+			.in_month_year(@month, @year)
 			.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
 
