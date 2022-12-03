@@ -12,7 +12,10 @@
 	</div>
 </div>
 
-<h2>Income</h2>
+<% iTotalInflow = 0%>
+<% iTotalOutflow = 0%>
+
+<h2>Inflow</h2>
 
 <table class="table table-striped table-condensed">
 
@@ -20,12 +23,18 @@
 	<tr>
 		<td width="160px"><%= income.name %></td>
 		<td><%= number_to_currency(income.credit, precision: 0) %></td>
+		<% iTotalInflow += income.credit %>
 	</tr>
 <% end %>
 
+	<tr>
+		<td width="160px"><b>Total Income</b></td>
+		<td><b><%= number_to_currency(iTotalInflow, precision: 0) %></b></td>
+	</tr>
+
 </table>
 
-<h2>Cash Spent</h2>
+<h2>Outflow</h2>
 
 <table class="table table-striped table-condensed">
 
@@ -33,21 +42,22 @@
 	<tr>
 		<td width="160px"><%= cash_spend.name %></td>
 		<td><%= number_to_currency(cash_spend.credit, precision: 0) %></td>
+		<% iTotalOutflow += cash_spend.credit%>
 	</tr>
 <% end %>
-
-</table>
-
-
-<h2>Credit Used</h2>
-
-<table class="table table-striped table-condensed">
-
 <% @credit_spend_array.each do |credit_spend| %>
 	<tr>
 		<td width="160px"><%= credit_spend.name %></td>
 		<td><%= number_to_currency(credit_spend.credit, precision: 0) %></td>
+		<% iTotalOutflow += credit_spend.credit%>
 	</tr>
 <% end %>
 
+	<tr>
+		<td width="160px"><b>Total Income</b></td>
+		<td><b><%= number_to_currency(iTotalOutflow, precision: 0) %></b></td>
+	</tr>
+
 </table>
+
+<h2>Net Cashflow: <%= number_to_currency(iTotalInflow - iTotalOutflow, precision: 0) %></h2>
