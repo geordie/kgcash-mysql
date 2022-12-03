@@ -166,15 +166,17 @@ class Transaction < ApplicationRecord
 		sSelectIncome = sTimeAggregate + " as quanta, " +\
 		"accts_cr.name, " +\
 		"accts_cr.id, " +\
-		"SUM(IF(accts_cr.account_type = 'Income', credit, credit)) as 'credit'"
+		"SUM(credit) as credit"
 
 		sGroupIncomeAccount = sTimeAggregate + ", accts_cr.id"
 
 		return user.transactions
 			.joins( sJoinsIncomeAccounts )
 			.select(sSelectIncome)
-			.where("(acct_id_cr in (select id from accounts " +\
-				"where account_type = 'Asset' and import_class is not NULL))")
+			.where("(acct_id_cr IN (select id from accounts " +\
+				"where account_type = 'Asset' and import_class is not NULL) " +\
+				"AND acct_id_dr IN (select id from accounts " +\
+				"where account_type = 'Expense'))")
 			.in_month_year(month, year)
 			.group( sGroupIncomeAccount )
 			.order( sTimeAggregate )
@@ -188,7 +190,7 @@ class Transaction < ApplicationRecord
 		sSelectIncome = sTimeAggregate + " as quanta, " +\
 		"accts_cr.name, " +\
 		"accts_cr.id, " +\
-		"SUM(IF(accts_cr.account_type = 'Income', credit, credit)) as 'credit'"
+		"SUM(credit) as 'credit'"
 
 		sGroupIncomeAccount = sTimeAggregate + ", accts_cr.id"
 
@@ -196,7 +198,9 @@ class Transaction < ApplicationRecord
 			.joins( sJoinsIncomeAccounts )
 			.select(sSelectIncome)
 			.where("(acct_id_cr in (select id from accounts " +\
-				"where account_type = 'Liability' and import_class is not NULL))")
+				"where account_type = 'Liability' and import_class is not NULL) " +\
+				"AND acct_id_dr IN (select id from accounts " +\
+				"where account_type = 'Expense'))")
 			.in_month_year(month, year)
 			.group( sGroupIncomeAccount )
 			.order( sTimeAggregate )
