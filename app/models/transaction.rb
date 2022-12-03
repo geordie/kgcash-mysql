@@ -144,7 +144,7 @@ class Transaction < ApplicationRecord
 		sSelectIncome = sTimeAggregate + " as quanta, " +\
 		"accts_cr.name, " +\
 		"accts_cr.id, " +\
-		"SUM(IF(accts_cr.account_type = 'Income', credit, credit)) as 'credit'"
+		"SUM(credit) as 'credit'"
 
 		sGroupIncomeAccount = sTimeAggregate + ", accts_cr.id"
 
