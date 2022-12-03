@@ -16,7 +16,7 @@
 	</tr>
 
 <% @transactions.each_with_index do |transaction, idx| %>
-	<% txAmountClass = transaction.txType %>
+	<% txAmountClass = transaction.respond_to?(:txType) ? transaction.txType :  'credit'%>
 
 	<tr>
 		<td class="tx"><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
