@@ -39,6 +39,15 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
           
     steps:
+
+    - name: Setup python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Export gcloud related env variable
+      run: export CLOUDSDK_PYTHON="/usr/bin/python3"
+
     - name: Verify MySQL connection from host
       run: |
         mysql --host 127.0.0.1 --port ${{ job.services.db.ports[3306] }} -uroot -proot -e "SHOW GRANTS FOR 'root'@'localhost'"
