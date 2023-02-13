@@ -29,6 +29,10 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     services:
       db:
         image: mysql:5.7
@@ -53,10 +57,11 @@ jobs:
         mysql --host 127.0.0.1 --port ${{ job.services.db.ports[3306] }} -uroot -proot -e "SHOW GRANTS FOR 'root'@'localhost'"
 
     - name: Checkout
-      uses: actions/checkout@main
+      uses: actions/checkout@v3
 
     # Setup gcloud CLI
     - id: 'auth'
+      name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
         service_account_email: ${{ secrets.GKE_EMAIL }}
