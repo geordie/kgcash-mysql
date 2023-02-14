@@ -55,7 +55,7 @@ jobs:
 
     - name: Update GKE
       run: |
-        cloud components install gke-gcloud-auth-plugin
+        gcloud components install gke-gcloud-auth-plugin
 
     - name: Verify MySQL connection from host
       run: |
