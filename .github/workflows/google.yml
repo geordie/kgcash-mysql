@@ -24,6 +24,7 @@ env:
   GKE_CLUSTER: kgcash-2018-10
   IMAGE: kgcash
   USE_GKE_GCLOUD_AUTH_PLUGIN: true
+  export REPO_URL: https://packages.cloud.google.com/apt
 
 jobs:
   setup-build-publish-deploy:
@@ -54,8 +55,7 @@ jobs:
       run: export CLOUDSDK_PYTHON="/usr/bin/python3"
 
     - name: Update GKE
-      run: |
-        export REPO_URL="https://packages.cloud.google.com/apt" 
+      run: | 
         sudo wget -q https://packages.cloud.google.com/apt/doc/apt-key.gpg -O /usr/share/keyrings/cloud.google.gpg
 
         sudo apt-get update -y
