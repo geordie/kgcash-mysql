@@ -82,7 +82,7 @@ jobs:
     # Configure docker to use the gcloud command-line tool as a credential helper
     - name: Set up docker to authenticate via gcloud
       run: |
-        gcloud auth configure-docker
+        gcloud auth configure-docker gcr.io
 
     # Cache latest Docker image to reduce build time
     - name: Build cache
