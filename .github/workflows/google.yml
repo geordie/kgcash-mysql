@@ -54,13 +54,6 @@ jobs:
     - name: Export gcloud related env variable
       run: export CLOUDSDK_PYTHON="/usr/bin/python3"
 
-    - name: Update GKE
-      run: | 
-        sudo wget -q https://packages.cloud.google.com/apt/doc/apt-key.gpg -O /usr/share/keyrings/cloud.google.gpg
-
-        sudo apt-get update -y
-        sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
-
     - name: Verify MySQL connection from host
       run: |
         mysql --host 127.0.0.1 --port ${{ job.services.db.ports[3306] }} -uroot -proot -e "SHOW GRANTS FOR 'root'@'localhost'"
