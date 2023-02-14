@@ -46,7 +46,8 @@ jobs:
 
     - name: Update GKE
       run: |
-         sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+        sudo apt update 
+        sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
          
     - name: Setup python
       uses: actions/setup-python@v4
