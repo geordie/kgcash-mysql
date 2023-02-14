@@ -24,7 +24,7 @@ env:
   GKE_CLUSTER: kgcash-2018-10
   IMAGE: kgcash
   USE_GKE_GCLOUD_AUTH_PLUGIN: true
-  export REPO_URL: https://packages.cloud.google.com/apt
+  REPO_URL: https://packages.cloud.google.com/apt
 
 jobs:
   setup-build-publish-deploy:
