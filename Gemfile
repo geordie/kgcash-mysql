@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '3.0.3'
 
 gem 'thin'
-gem 'rails', '6.0.5.1'
+gem 'rails', '6.0.6.1'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -23,7 +23,7 @@ gem 'yaml_db', '~> 0.7.0'
 # Gems used only for assets and not required
 # in production environments by default.
 #group :assets do
-gem 'railties', ">= 6.0.5.1"
+gem 'railties', ">= 6.0.6.1"
 gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'
