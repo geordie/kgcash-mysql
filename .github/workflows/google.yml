@@ -44,6 +44,11 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
           
     steps:
+
+    - name: Update GKE
+      run: |
+        sudo apt update
+        sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
          
     - name: Setup python
       uses: actions/setup-python@v4
