@@ -27,3 +27,68 @@ $(function (){
 		$('#totalSplitAmount')[0].innerText = "$" + sumTotal.toFixed(2) ;
 	});
 });
+
+// Parse text out of a provided HTML DOM table cell
+function parseTableCell(cell){
+	text = cell.textContent;
+	select = cell.querySelector('select');
+	dropdown = cell.querySelector('div.dropdown');
+	if(select){
+		if(select.value && select.value.toLowerCase() !== 'null') {
+			text = select.options[select.selectedIndex].text;
+		}
+	} else if (dropdown){
+		text = '';
+	}
+	return text;
+}
+
+// Convert a provided HTML DOM table to CSV
+function toCsv(table) {
+
+    // Get all rows
+    rows = table.querySelectorAll('tr');
+
+	// Get text from each cell and join with commas
+    return [].slice
+        .call(rows)
+        .map(function (row) {
+            // Query all cells
+            cells = row.querySelectorAll('th,td');
+            return [].slice
+                .call(cells)
+                .map(function (cell) {
+					return parseTableCell(cell);
+                })
+                .join(',');
+        })
+        .join('\n');
+};
+
+// Create a link to download a file,
+// click the link to trigger a download,
+// then remove the link
+download = function (text, fileName) {
+    link = document.createElement('a');
+    link.setAttribute('href', `data:text/csv;charset=utf-8,${encodeURIComponent(text)}`);
+    link.setAttribute('download', fileName);
+
+    link.style.display = 'none';
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+};
+
+// Function to be triggered by UI element that download a CSV of transaction data
+function exportCsv(){
+	// Get the table by hardcoded ID
+	table = document.getElementById('transactions');
+
+	// Export to csv
+	csv = toCsv(table);
+
+	// Download it
+	download(csv, 'download.csv');
+}
