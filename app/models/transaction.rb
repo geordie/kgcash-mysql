@@ -137,16 +137,17 @@ class Transaction < ApplicationRecord
 	end
 
 	def self.income_by_account(user,year=nil, month=nil)
-		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
+		sTimeAggregate = year.nil? ? " " : "year(tx_date)"
+		sTimeAggregate += month.nil? ? "" : "month(tx_date)"
 
-		sJoinsIncomeAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+		sJoinsIncomeAccounts = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
 
 		sSelectIncome = sTimeAggregate + " as quanta, " +\
-		"accts_cr.name, " +\
-		"accts_cr.id, " +\
+		"accts_dr.name, " +\
+		"accts_dr.id, " +\
 		"SUM(credit) as 'credit'"
 
-		sGroupIncomeAccount = sTimeAggregate + ", accts_cr.id"
+		sGroupIncomeAccount = sTimeAggregate + ", accts_dr.id"
 
 		return user.transactions
 			.joins( sJoinsIncomeAccounts )
@@ -158,8 +159,8 @@ class Transaction < ApplicationRecord
 	end
 
 	def self.cash_spend_by_account(user,year=nil, month=nil)
-
-		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
+		sTimeAggregate = year.nil? ? " " : "year(tx_date)"
+		sTimeAggregate += month.nil? ? "" : "month(tx_date)"
 
 		sJoinsIncomeAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 
@@ -183,7 +184,8 @@ class Transaction < ApplicationRecord
 	end
 
 	def self.credit_spend_by_account(user,year=nil, month=nil)
-		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
+		sTimeAggregate = year.nil? ? " " : "year(tx_date)"
+		sTimeAggregate += month.nil? ? "" : "month(tx_date)"
 
 		sJoinsIncomeAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 
