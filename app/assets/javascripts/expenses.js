@@ -86,9 +86,9 @@ function exportCsv(){
 	// Get the table by hardcoded ID
 	table = document.getElementById('transactions');
 
-	// Export to csv
+	// Generate csv
 	csv = toCsv(table);
 
-	// Download it
+	// Download csv
 	download(csv, 'download.csv');
 }
