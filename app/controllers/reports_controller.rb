@@ -78,7 +78,7 @@ class ReportsController < ApplicationController
 
 		@user = current_user
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
-		@month = params.has_key?(:month) ? params[:month].to_i : Date.today.month
+		@month = params.has_key?(:month) ? params[:month].to_i : nil
 
 		@income_array = Transaction.income_by_account(@user, @year, @month)
 
