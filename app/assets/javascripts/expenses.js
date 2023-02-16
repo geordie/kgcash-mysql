@@ -4,7 +4,7 @@ $(function (){
 		if( e.key == " " && e.currentTarget.localName == 'span'){
 			$(this).click();
 		}
-		else if (e.keyCode == 9 && e.currentTarget.localName == 'input'){
+		else if (e.keyCode == 9 ){
 			var tabIndex = $(this).context.tabIndex;
 			$('[tabindex=' + tabIndex + ']').focus();
 		}
