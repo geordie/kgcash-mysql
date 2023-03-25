@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   def sortable(column, title = nil)
     title ||= column.titleize
     direction = (sort_column && sort_direction == "asc") ? "desc" : "asc"
