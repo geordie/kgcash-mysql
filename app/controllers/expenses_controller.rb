@@ -10,7 +10,7 @@ class ExpensesController < ApplicationController
 
 		sJoinsAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 
-		@transactions = @user.transactions
+		@pagy, @transactions = pagy(@user.transactions
 			.joins(sJoinsAccounts)
 			.select("transactions.id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, "\
 			"IF(accts_cr.account_type = 'Expense', 'credit', 'debit') as txType "\
@@ -22,8 +22,8 @@ class ExpensesController < ApplicationController
 				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
 			.in_account( @category )
 			.in_month_year(@month, @year)
-			.paginate(:page => params[:page])
-			.order(sort_column + ' ' + sort_direction)
+			#.paginate(:page => params[:page])
+			.order(sort_column + ' ' + sort_direction))
 
 		# Build a total value spent on the category per account
 		@accountTotals = Hash.new()
