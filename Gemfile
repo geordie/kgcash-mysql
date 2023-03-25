@@ -19,6 +19,7 @@ gem 'nokogiri', '>= 1.13.2'
 gem "figaro"
 gem "foreman"
 gem 'yaml_db', '~> 0.7.0'
+gem 'pagy', '~> 6.0' # omit patch digit
 
 # Gems used only for assets and not required
 # in production environments by default.
