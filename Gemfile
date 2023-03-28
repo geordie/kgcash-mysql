@@ -14,7 +14,6 @@ gem 'json', '~> 2.3'
 gem 'prawn', '>= 2.4.0'
 gem 'execjs'
 gem 'oj'
-gem 'will_paginate', '>= 3.3.1'
 gem 'nokogiri', '>= 1.13.2'
 gem "figaro"
 gem "foreman"
