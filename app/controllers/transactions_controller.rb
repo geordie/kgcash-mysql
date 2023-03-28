@@ -11,7 +11,7 @@ class TransactionsController < ApplicationController
 
 		sJoinsAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 
-		@transactions = @user.transactions
+		@pagy, @transactions = pagy(@user.transactions
 			.joins(sJoinsAccounts)
 			.select("transactions.id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, "\
 			"IF(accts_cr.account_type = 'Expense', 'credit', 'debit') as txType "\
@@ -22,8 +22,7 @@ class TransactionsController < ApplicationController
 				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
 			.where(parent_id: params[:id])
-			.paginate(:page => params[:page])
-			.order(sort_column + ' ' + sort_direction)
+			.order(sort_column + ' ' + sort_direction))
 
 		respond_to do |format|
 			format.html #show.html.erb
@@ -109,11 +108,10 @@ class TransactionsController < ApplicationController
 		category = params.has_key?(:category) ? params[:category].to_i : nil
 		account = params.has_key?(:account) ? params[:account].to_i : nil
 
-		@transactions = @user.transactions
+		@pagy, @transactions = pagy(@user.transactions
 			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
 			.in_year(@year)
-			.paginate(:page => params[:page])
-			.order(sort_column + ' ' + sort_direction)
+			.order(sort_column + ' ' + sort_direction))
 
 		respond_to do |format|
 			format.html #index.html.erb
