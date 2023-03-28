@@ -19,7 +19,6 @@ class AssetTransfersController < ApplicationController
 			"AND acct_id_cr in (select id from accounts where account_type = 'Asset')) ")
 			.in_account( category )
 			.in_month_year(@month, @year)
-			#.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction)
 
 		respond_to do |format|
