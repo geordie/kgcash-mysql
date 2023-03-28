@@ -22,7 +22,6 @@ class ExpensesController < ApplicationController
 				"AND acct_id_dr in (select id from accounts where account_type = 'Expense'))")
 			.in_account( @category )
 			.in_month_year(@month, @year)
-			#.paginate(:page => params[:page])
 			.order(sort_column + ' ' + sort_direction))
 
 		# Build a total value spent on the category per account
@@ -69,13 +68,12 @@ class ExpensesController < ApplicationController
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 		@month = params.has_key?(:month) ? params[:month].to_i : nil
 
-		@transactions = @user.transactions
+		@pagy, @transactions = pagy(@user.transactions
 			.select("id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, 'debit' as 'txType'")
 			.is_expense()
 			.where("(acct_id_dr IS NULL)")
 			.in_month_year(@month, @year)
-			.paginate(:page => params[:page])
-			.order(sort_column + ' ' + sort_direction)
+			.order(sort_column + ' ' + sort_direction))
 
 		respond_to do |format|
 			format.html #index.html.erb

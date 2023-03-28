@@ -92,7 +92,7 @@ RSpec.describe ExpensesController, :type => :controller do
 			get :uncategorized
 
 			expect(response.status).to eq(200)
-			expect(assigns(:transactions).count).to eq 1
+			expect(assigns(:transactions).length).to eq 1
 		end
 
 	end
