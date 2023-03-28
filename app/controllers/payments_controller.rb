@@ -9,14 +9,13 @@ class PaymentsController < ApplicationController
 
 		sJoinsAccounts = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
 
-		@transactions = @user.transactions
+		@pagy, @transactions = pagy(@user.transactions
 			.joins(sJoinsAccounts)
 			.select("transactions.id, tx_date, credit, debit, debit as 'amount', tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id")
 			.is_payment()
 			.where("(acct_id_cr IS NULL or acct_id_cr not in (select id from accounts where account_type = 'Liability'))")
 			.in_year(@year)
-			.paginate(:page => params[:page])
-			.order(sort_column + ' ' + sort_direction)
+			.order(sort_column + ' ' + sort_direction))
 
 		respond_to do |format|
 			format.html #index.html.erb
