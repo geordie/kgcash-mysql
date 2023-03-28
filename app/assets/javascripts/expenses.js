@@ -39,6 +39,10 @@ function parseTableCell(cell){
 	} else if (dropdown){
 		text = '';
 	}
+	// Escape double-quote with double-double-quote
+	text = text.replace(/"/g, '""');
+	// Wrap in double quotes to ignore inner commas
+	text = '"' + text + '"';
 	return text;
 }
 
