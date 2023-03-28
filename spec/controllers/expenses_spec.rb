@@ -30,7 +30,6 @@ RSpec.describe ExpensesController, :type => :controller do
 	end
 
 	describe 'GET #index' do
-
 		it 'responds with 200' do
 			get :index
 			expect(response.status).to eq(200)
@@ -63,7 +62,7 @@ RSpec.describe ExpensesController, :type => :controller do
 			expect(response.status).to eq(200)
 
 			# Expect 1 since one of the added transactions is not an expense
-			expect(assigns(:transactions).count).to eq 1
+			expect(assigns(:transactions).length()).to eq 1
 		end
 	end
 
