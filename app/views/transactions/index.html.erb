@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
       <div class="col-md-10">
-          <%= will_paginate @transactions %>
+          <%== pagy_bootstrap_nav(@pagy) %>
       </div>
       <div class="col-md-2">
         <%= link_to "View Uncategorized", uncategorized_expenses_path %>
