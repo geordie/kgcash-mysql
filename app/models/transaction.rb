@@ -15,8 +15,6 @@ class Transaction < ApplicationRecord
 
 	before_validation :ensure_hash
 
-	self.per_page = 50
-
 	scope :in_year, lambda { |year|
 		if !year.nil?
 			where(
