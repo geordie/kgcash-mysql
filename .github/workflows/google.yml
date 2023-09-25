@@ -99,6 +99,9 @@ jobs:
 
     # Build the Docker image
     - name: Build
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
       run: |
         docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" --cache-from gcr.io/"$GKE_PROJECT"/"$IMAGE":latest .
 
