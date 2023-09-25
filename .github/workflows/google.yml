@@ -118,7 +118,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
+        tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
 
     # Remove DB Config file
     - name: Remove database config file
