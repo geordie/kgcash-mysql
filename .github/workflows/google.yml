@@ -44,6 +44,11 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
           
     steps:
+
+    - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0.3'
+          bundler-cache: true
          
     - name: Setup python
       uses: actions/setup-python@v4
@@ -99,12 +104,8 @@ jobs:
 
     # Build the Docker image
     - name: Build
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0.3'
-          bundler-cache: true
-      - run: |
-          docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" --cache-from gcr.io/"$GKE_PROJECT"/"$IMAGE":latest .
+      run: |
+        docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" --cache-from gcr.io/"$GKE_PROJECT"/"$IMAGE":latest .
 
     # Test
     - name: Test
