@@ -97,7 +97,7 @@ jobs:
         pwd
         echo "$DB_CONFIG" > ./config/database.yml
 
-    # Build the Docker image
+    # Build the Docker image with caching
 
     - uses: docker/setup-buildx-action@v1
     - uses: docker/build-push-action@v2
