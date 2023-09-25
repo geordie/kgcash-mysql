@@ -45,7 +45,8 @@ jobs:
           
     steps:
 
-    - uses: ruby/setup-ruby@v1
+    - name: gem caching
+      uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0.3'
           bundler-cache: true
