@@ -47,9 +47,9 @@ jobs:
 
     - name: gem caching
       uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.0.3'
-          bundler-cache: true
+      with:
+        ruby-version: '3.0.3'
+        bundler-cache: true
          
     - name: Setup python
       uses: actions/setup-python@v4
