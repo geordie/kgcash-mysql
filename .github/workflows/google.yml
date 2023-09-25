@@ -97,11 +97,14 @@ jobs:
         pwd
         echo "$DB_CONFIG" > ./config/database.yml
 
-    # Build the Docker image
-    - name: Build
+    # Use Ruby Gem caching
+    - name: Cache Ruby gems
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
+
+    # Build the Docker image
+    - name: Build
       run: |
         docker build -t gcr.io/"$GKE_PROJECT"/"$IMAGE" --cache-from gcr.io/"$GKE_PROJECT"/"$IMAGE":latest .
 
