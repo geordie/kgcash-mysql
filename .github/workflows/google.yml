@@ -103,24 +103,25 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         load: true
-        tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
+        tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:test
 
     # Test
     - name: Test
       run: |
-        docker run --net=host -e "RAILS_ENV=test" gcr.io/"$GKE_PROJECT"/"$IMAGE":latest /bin/bash -c "rake db:create; rake db:migrate; rspec"
+        docker run --net=host -e "RAILS_ENV=test" gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:test /bin/bash -c "rake db:create; rake db:migrate; rspec"
+        docker run --rm gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:test
 
     # Push the Docker image to Google Container Registry
-    - name: Publish
-      run: |
-        docker -- push gcr.io/"$GKE_PROJECT"/"$IMAGE"
+    #- name: Publish
+      #run: |
+        #docker -- push gcr.io/"$GKE_PROJECT"/"$IMAGE":latest
      
-   # - name: Push the docker image go GCR
-      #uses: docker/build-push-action@v2
-      #with:
-        #context: .
-        #push: true
-        #tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
+    - name: Push the docker image go GCR
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
 
     # Remove DB Config file
     - name: Remove database config file
