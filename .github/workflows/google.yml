@@ -102,6 +102,7 @@ jobs:
         context: .
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        load: true
         tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
 
     # Test
