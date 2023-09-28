@@ -112,7 +112,7 @@ jobs:
     # Push the Docker image to Google Container Registry
     # - name: Publish
       # run: |
-        #docker -- push gcr.io/"$GKE_PROJECT"/"$IMAGE"
+        #docker -- push gcr.io/"$GKE_PROJECT"/"$IMAGE" -
      
     - name: Push the docker image go GCR
       uses: docker/build-push-action@v2
