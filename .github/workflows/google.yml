@@ -114,12 +114,12 @@ jobs:
       # run: |
         #docker -- push gcr.io/"$GKE_PROJECT"/"$IMAGE" -
      
-    - name: Push the docker image go GCR
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
+   # - name: Push the docker image go GCR
+      #uses: docker/build-push-action@v2
+      #with:
+        #context: .
+        #push: true
+        #tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
 
     # Remove DB Config file
     - name: Remove database config file
@@ -127,9 +127,9 @@ jobs:
         rm ./config/database.yml
 
     # Deploy the Docker image to the GKE cluster
-    - name: Deploy
-      run: |
-        sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
-        gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-        kubectl delete deployments --all
-        kubectl create -f ./kubernetes/kgcash-2018-frontend.yaml
+    #- name: Deploy
+      #run: |
+        #sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+        #gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+        #kubectl delete deployments --all
+        #kubectl create -f ./kubernetes/kgcash-2018-frontend.yaml
