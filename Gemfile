@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '3.0.3' # NOTE: also update this in GitHub Action config file
+ruby '3.0.3'
 
 gem 'thin'
-gem 'rails', '6.1.7.6'
+gem 'rails', '6.0.6.1'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -15,6 +15,7 @@ gem 'prawn', '>= 2.4.0'
 gem 'execjs'
 gem 'oj'
 gem 'nokogiri', '>= 1.13.2'
+gem "figaro"
 gem "foreman"
 gem 'yaml_db', '~> 0.7.0'
 gem 'pagy', '~> 6.0' # omit patch digit
@@ -22,14 +23,14 @@ gem 'pagy', '~> 6.0' # omit patch digit
 # Gems used only for assets and not required
 # in production environments by default.
 #group :assets do
-gem 'railties', ">= 6.1.7.6"
+gem 'railties', ">= 6.0.6.1"
 gem 'sassc-rails'
 gem 'coffee-rails'
 gem 'uglifier'
 #end
 
 gem 'jquery-rails'
-gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
+gem "best_in_place", '>= 3.1.0'
 
 gem 'gon'
 
