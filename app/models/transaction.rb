@@ -232,6 +232,38 @@ class Transaction < ApplicationRecord
 			.order( Arel.sql(sTimeAggregate) )
 	end
 
+	def self.expenses_by_spending_account(user, year=nil)
+		sTimeAggregate = "year(tx_date)"
+		sGroupBy = "account, " + sTimeAggregate
+
+		sJoinsExpenseA = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
+		sJoinsExpenseB = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
+
+		sSelectExpense = "YEAR(tx_date) as year, "\
+		"(CASE "\
+			"WHEN accts_cr.import_class IS NOT NULL THEN accts_cr.name "\
+			"WHEN accts_dr.import_class IS NOT NULL THEN accts_dr.name "\
+			"ELSE NULL "\
+		"END) as 'account', "\
+		"SUM(IF(accts_dr.account_type = 'Expense', debit, credit*-1)) as 'expenses' "
+
+		sYearFilter = !year.nil? && year.is_a?(Integer) ? "year(tx_date) = " + year.to_s : ""
+
+		return user.transactions
+			.joins( sJoinsExpenseA )
+			.joins( sJoinsExpenseB )
+			.select(sSelectExpense)
+			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
+					"OR "\
+				"(acct_id_cr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
+				"AND acct_id_dr in (select id from accounts where account_type = 'Expense')) "
+				)
+			.where( sYearFilter )
+			.group( sGroupBy )
+			.order( Arel.sql(sTimeAggregate), expenses: :desc )
+	end
+
 	def self.revenues_all_time(user, year=nil)
 		sTimeAggregate = "year(tx_date)"
 
