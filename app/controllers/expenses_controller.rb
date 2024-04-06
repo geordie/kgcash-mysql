@@ -24,7 +24,14 @@ class ExpensesController < ApplicationController
 			.in_month_year(@month, @year)
 			.order(sort_column + ' ' + sort_direction))
 
-		# Build a total value spent on the category per account
+		if !@category.nil?
+			cat = @user.accounts.find(@category)
+			if !cat.nil?
+				@category_name = cat.name
+			end
+		end
+
+		# Get the accounts that could have been used to spend in this category
 		@accountTotals = Hash.new()
 		accounts_importable = @user.accounts.importable
 
@@ -32,6 +39,7 @@ class ExpensesController < ApplicationController
 			@accountTotals[acct_importable.id] = [acct_importable.name, 0]
 		end
 
+		# Build a total value spent on the category per account
 		if !@category.nil?
 			total = 0
 			@transactions.each do |t|
