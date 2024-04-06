@@ -43,3 +43,28 @@
 		</div>
 	</div>
 </div>
+
+<div class="container">
+	<div class="card-deck mb-3 text-center">
+		<div class="card mb-12 box-shadow">
+			<div class="card-header">
+				<h4 class="my-0 font-weight-normal">Spend by Account</h4>
+
+			</div>
+			<div class="card-body">
+				<table class="table table-striped table-condensed">
+					<tr>
+						<th>Account</th>
+						<th>Amount</th>
+					</tr>
+					<% @spending_accounts.each do |item| %>
+						<tr>
+							<td><%= item[:account] %></td>
+							<td><%= number_to_currency(item[:expenses]) %></td>
+						</tr>
+					<% end %>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

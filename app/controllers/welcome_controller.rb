@@ -53,6 +53,9 @@ class WelcomeController < ApplicationController
 		respond_to do |format|
 			format.html #index.html.erb
 		end
+
+		# Get a breakdown of spending by spending instrument
+		@spending_accounts = Transaction.expenses_by_spending_account(@user, @year)
 	end
 
 end
