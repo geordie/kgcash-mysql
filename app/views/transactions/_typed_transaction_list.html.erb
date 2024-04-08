@@ -44,7 +44,7 @@
 						<% if transactionType == 'expense'%>
 							<a class="dropdown-item" href="<%= split_expenses_path(:id => transaction.id)%>">Split</a>
 						<% end %>
-						<% if !transaction.attachment.attached? %>
+						<% if transaction[:attachments] == 0 %>
 							<%= link_to( "Add Attachment", transaction_new_attachment_path(:transaction_id => transaction.id), {:remote => true, 'data-toggle' => 'modal', 'data-backdrop'=>'static','data-target' => '#modal-window', class: "dropdown-item"})  %>
 						<% end %>
 						<%= link_to( "Delete", transaction, method: :delete, data: { confirm: 'Delete Transaction?' }, class: "dropdown-item") %>
@@ -52,7 +52,7 @@
 				</div>
 				<div class="dropdown d-flex justify-content-between">
 					<div class="float-start">
-						<% if transaction.attachment.attached? %>
+						<% if transaction[:attachments] > 0 %>
 							<a href="#" id="attachmentDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<%= image_tag("attachment.png", height: '16', width: '16') %>
 							</a>

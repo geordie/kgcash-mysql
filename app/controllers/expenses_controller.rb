@@ -13,7 +13,8 @@ class ExpensesController < ApplicationController
 		@pagy, @transactions = pagy(@user.transactions
 			.joins(sJoinsAccounts)
 			.select("transactions.id, tx_date, credit, credit as 'amount', debit, tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, "\
-			"IF(accts_cr.account_type = 'Expense', 'credit', 'debit') as txType "\
+			"IF(accts_cr.account_type = 'Expense', 'credit', 'debit') as txType, "\
+			"(SELECT COUNT(*) from active_storage_attachments A WHERE A.record_id = transactions.id AND A.record_type = 'Transaction' and A.name = 'attachment' ) as attachments"
 			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Liability') "\
 				"AND acct_id_cr in (select id from accounts where account_type = 'Expense')) "\
@@ -196,7 +197,7 @@ class ExpensesController < ApplicationController
 	private
 
 	def expense_params
-		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :debit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date)
+		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :debit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date, :items)
 	end
 
 end
