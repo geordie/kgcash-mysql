@@ -13,7 +13,8 @@ class IncomesController < ApplicationController
 		@pagy, @transactions = pagy(@user.transactions
 			.joins(sJoinsIncome)
 			.select("transactions.id, tx_date, credit, debit, debit as 'amount', tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, " \
-			"IF(accts_cr.account_type = 'Income', 'credit', 'debit') as txType "\
+			"IF(accts_cr.account_type = 'Income', 'credit', 'debit') as txType, "\
+			"(SELECT COUNT(*) from active_storage_attachments A WHERE A.record_id = transactions.id AND A.record_type = 'Transaction' and A.name = 'attachment' ) as attachments"
 			)
 			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset') "\
 			"AND acct_id_cr in (select id from accounts where account_type = 'Income')) "\
@@ -36,7 +37,10 @@ class IncomesController < ApplicationController
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
 		@pagy, @transactions = pagy(@user.transactions
-			.select("id, tx_date, credit, debit, debit as 'amount', tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id, 'credit' as txType")
+			.select("id, tx_date, credit, debit, debit as 'amount', tx_type, details, notes, "\
+				"acct_id_cr, acct_id_dr, parent_id, 'credit' as txType, "\
+				"(SELECT COUNT(*) from active_storage_attachments A WHERE A.record_id = transactions.id AND A.record_type = 'Transaction' and A.name = 'attachment' ) as attachments"
+			)
 			.is_liability()
 			.where("(acct_id_cr IS NULL)")
 			.in_year(@year)
