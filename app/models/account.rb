@@ -5,6 +5,9 @@ class Account < ActiveRecord::Base
 	has_many :budget_categories
 	has_many :budgets, :through => :budget_categories
 
+	has_many :credit_transactions, class_name: 'Transaction', foreign_key: 'acct_id_cr'
+	has_many :debit_transactions, class_name: 'Transaction', foreign_key: 'acct_id_dr'
+
 	SupportedFormats = ["Vancity","RBC Visa","Vancity Visa","Vancity Visa (New)","RBC Chequing"]
 	AccountTypes = ["Expense","Income","Asset","Liability"]
 

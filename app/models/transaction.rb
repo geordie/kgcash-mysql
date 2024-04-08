@@ -9,7 +9,10 @@ class Transaction < ApplicationRecord
 
 	belongs_to :category
 	belongs_to :user
-	belongs_to :account, primary_key: 'id', foreign_key: 'acct_id_dr'
+	#belongs_to :account, primary_key: 'id', foreign_key: 'acct_id_dr'
+	#belongs_to :account_credit, primary_key: 'id', foreign_key: 'acct_id_cr'
+	belongs_to :credit_account, foreign_key: 'acct_id_cr', class_name: 'Account', optional: true
+	belongs_to :debit_account, foreign_key: 'acct_id_dr', class_name: 'Account', optional: true
 
 	before_save :ensure_hash
 
@@ -136,29 +139,30 @@ class Transaction < ApplicationRecord
 
 	def self.income_by_account(user,year=nil, month=nil)
 		sTimeAggregate = year.nil? ? " " : "year(tx_date)"
-		sTimeAggregate += month.nil? ? "" : "month(tx_date)"
-
-		sJoinsIncomeAccounts = "LEFT JOIN accounts as accts_dr ON accts_dr.id = transactions.acct_id_dr"
+		sTimeAggregate += month.nil? ? "" : ", month(tx_date)"
 
 		sSelectIncome = sTimeAggregate + " as quanta, " +\
-		"accts_dr.name, " +\
-		"accts_dr.id, " +\
+		"accounts.name, " +\
+		"accounts.id, " +\
 		"SUM(credit) as 'credit'"
 
-		sGroupIncomeAccount = sTimeAggregate + ", accts_dr.id"
+		sGroupIncomeAccount = sTimeAggregate + ", accounts.id"
 
-		return user.transactions
-			.joins( sJoinsIncomeAccounts )
+		results = user.transactions
+			.joins( :debit_account )
 			.select(sSelectIncome)
 			.where("(acct_id_cr in (select id from accounts where account_type = 'Income'))")
 			.in_month_year(month, year)
 			.group( sGroupIncomeAccount )
 			.order( sTimeAggregate )
+
+		return results
+
 	end
 
 	def self.cash_spend_by_account(user,year=nil, month=nil)
 		sTimeAggregate = year.nil? ? " " : "year(tx_date)"
-		sTimeAggregate += month.nil? ? "" : "month(tx_date)"
+		sTimeAggregate += month.nil? ? "" : ", month(tx_date)"
 
 		sJoinsIncomeAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 
@@ -183,7 +187,7 @@ class Transaction < ApplicationRecord
 
 	def self.credit_spend_by_account(user,year=nil, month=nil)
 		sTimeAggregate = year.nil? ? " " : "year(tx_date)"
-		sTimeAggregate += month.nil? ? "" : "month(tx_date)"
+		sTimeAggregate += month.nil? ? "" : ", month(tx_date)"
 
 		sJoinsIncomeAccounts = "LEFT JOIN accounts as accts_cr ON accts_cr.id = transactions.acct_id_cr"
 
