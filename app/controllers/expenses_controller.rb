@@ -44,7 +44,7 @@ class ExpensesController < ApplicationController
 		if !@category.nil?
 			total = 0
 			@transactions.each do |t|
-				if t.acct_id_dr == @category
+				if t.acct_id_dr == @category && !t.debit.nil?
 					acct = Account.find(t.acct_id_cr)
 					if @accountTotals.has_key?(t.acct_id_cr)
 						@accountTotals[t.acct_id_cr][1] += t.debit
@@ -52,14 +52,14 @@ class ExpensesController < ApplicationController
 						@accountTotals[t.acct_id_cr] = [acct.name, t.debit]
 					end
 					total += t.debit
-				else
+				elsif !t.credit.nil?
 					acct = Account.find(t.acct_id_dr)
-					if @accountTotals.has_key?(t.acct_id_dr)
+					if @accountTotals.has_key?(t.acct_id_dr) && !t.credit.nil?
 						@accountTotals[t.acct_id_dr][1] -= t.credit
 					else
 						@accountTotals[t.acct_id_dr] = [acct.name, t.credit * -1]
 					end
-					total -= t.debit
+					total -= t.credit
 				end
 			end
 			@accountTotals[-1] = ["Total", total]
