@@ -2,8 +2,6 @@ class Account < ActiveRecord::Base
 	include Comparable
 
 	has_and_belongs_to_many :users
-	has_many :budget_categories
-	has_many :budgets, :through => :budget_categories
 
 	has_many :credit_transactions, class_name: 'Transaction', foreign_key: 'acct_id_cr'
 	has_many :debit_transactions, class_name: 'Transaction', foreign_key: 'acct_id_dr'
