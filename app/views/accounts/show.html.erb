@@ -1,20 +1,29 @@
-<p id="notice"><%= notice %></p>
+<div class="row px-4">
+  <div class="col-md-3">
+    <h3>Account Details:</h3>
 
-<p>
-  <b>Name:</b>
-  <%= @account.name %>
-</p>
+    <table class="table">
+      <tbody>
+        <tr>
+          <td class="bg-light"><strong>Name</strong></td>
+          <td><%= @account.name %></td>
+        </tr>
+        <tr>
+          <td class="bg-light"><strong>Description</strong></td>
+          <td><%= @account.description %></td>
+        </tr>
+        <tr>
+          <td class="bg-light"><strong>Account Type</strong></td>
+          <td><%= @account.account_type %></td>
+        </tr>
+        <tr>
+          <td class="bg-light"><strong>Import Class</strong></td>
+          <td><%= @account.import_class %></td>
+        </tr>
+      </tbody>
+    </table>
 
-<p>
-  <b>Description:</b>
-  <%= @account.description %>
-</p>
-
-<p>
-  <b>Account Type:</b>
-  <%= @account.account_type %>
-</p>
-
-
-<%= link_to 'Edit', edit_account_path(@account) %> |
-<%= link_to 'Back', accounts_path %>
+    <%= link_to 'Edit', edit_account_path(@account), class: 'btn btn-primary' %>
+    <%= link_to 'Back to Accounts', accounts_path, class: 'btn btn-secondary' %>
+  </div>
+</div>
