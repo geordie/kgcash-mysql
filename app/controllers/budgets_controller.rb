@@ -16,7 +16,6 @@ class BudgetsController < ApplicationController
 	def show
 		@user = current_user
 		@budget = @user.budgets.find(params[:id])
-		@budget_categories = BudgetCategory.includes(:category).where(:budget_id => @budget.id)
 
 		respond_to do |format|
 			format.html # show.html.erb
