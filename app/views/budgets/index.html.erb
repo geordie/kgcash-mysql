@@ -13,7 +13,6 @@
   <tr>
     <td><%= best_in_place budget, :name%></td>
     <td><%= best_in_place budget, :description%></td>
-    <td><%= link_to 'Details', budget_categories_path(budget) %></td>
     <td><%= link_to 'Delete', budget_path(budget), confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>

@@ -1,28 +1,3 @@
 <p id="notice"><%= notice %></p>
 
 <h3>Budget: <%= @budget.name %></h3>
-
-<table class="table table-striped">
-  <tr>
-    <th>Category</th>
-    <th>Amount</th>
-    <th>Period</th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @budget_total = 0 %>
-<% @budget_categories.each do |bc| %>
-  <tr>
-    <td><%= bc.category.nil? ? 'invalid(' +  bc.id.to_s + ')' : bc.category.name %></td>
-    <td><%= best_in_place bc, :amount, :path => budget_category_path(@budget.id,bc), :display_with => :number_to_currency, :helper_options => {:precision => 0} %></td>
-    <td><%= bc.period %></td>
-    <td><%= link_to 'Show', budget_category_path(@budget.id,bc) %> <%= link_to 'Delete', budget_category_url(@budget, bc), confirm: 'Are you sure?', method: :delete %></td>
-    <% @budget_total += bc.amount.nil? ? 0 : bc.amount %>
-  </tr>
-<% end %>
-  <tr><td colspan='4' align='right'>Total: <%= number_to_currency( @budget_total, :precision => 0) %></td>
-  </tr>
-</table>
-
-<%= link_to 'New Budget Category', new_budget_category_path(@budget) %>
