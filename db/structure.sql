@@ -22,7 +22,7 @@ CREATE TABLE `accounts` (
   `cat_id` int DEFAULT NULL,
   `import_class` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `accounts_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -32,7 +32,7 @@ CREATE TABLE `accounts_users` (
   `account_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=409 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1506 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `active_storage_attachments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -88,21 +88,6 @@ CREATE TABLE `ar_internal_metadata` (
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `budget_categories`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `budget_categories` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `amount` decimal(10,0) DEFAULT NULL,
-  `period` varchar(255) DEFAULT NULL,
-  `budget_id` int DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `account_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `index_budget_categories_on_budget_id` (`budget_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `budgets`;
@@ -187,7 +172,7 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_category_id` (`category_id`),
   KEY `index_transactions_on_user_id` (`user_id`),
   KEY `index_transactions_on_account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -239,6 +224,7 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20210516211419'),
 ('20211128214519'),
 ('20240610173301'),
-('20240610173302');
+('20240610173302'),
+('20240620130500');
 
 
