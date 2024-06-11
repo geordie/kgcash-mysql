@@ -1,6 +1,6 @@
 class DropBudgetCategories < ActiveRecord::Migration[4.2]
   def up
-    drop_table :budget_categories
+    drop_table :budget_categories, if_exists: true
   end
 
   def down
