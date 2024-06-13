@@ -10,8 +10,10 @@ class ReportsController < ApplicationController
 
 	def income
 
+		year_current = Date.today.year
+
 		@user = current_user
-		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+		@year = params.has_key?(:year) ? [params[:year].to_i , year_current].min : year_current
 
 		income = Transaction.income_by_category(@user, @year)
 		catSummaryIncome = CategorySummary.new( income, "income", @year )
