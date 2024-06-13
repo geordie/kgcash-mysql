@@ -1,62 +1,66 @@
-<%= form_for (@transaction) do |f| %>
-  <% if @transaction.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+<%= form_with(model: @transaction, local: true) do |form| %>
+  <div class="row px-4">
+    <div class="col-md-3">
+      <h3>Edit Transaction:</h3>
 
-      <ul>
-      <% @transaction.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="bg-light"><strong>Transaction Date</strong></td>
+            <td><%= form.text_field :tx_date, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Posting Date</strong></td>
+            <td><%= form.text_field :posting_date, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Account ID (Credit)</strong></td>
+            <td><%= form.select :acct_id_cr, @accounts, {}, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Credit Amount</strong></td>
+            <td><%= form.text_field :credit, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Account ID (Debit)</strong></td>
+            <td><%= form.select :acct_id_dr, @accounts, {}, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Debit Amount</strong></td>
+            <td><%= form.text_field :debit, class: 'form-control' %></td>
+          </tr>
+
+          <tr>
+            <td class="bg-light"><strong>Details</strong></td>
+            <td><%= form.text_field :details, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Notes</strong></td>
+            <td><%= form.text_field :notes, class: 'form-control' %></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <td>
+              <%= link_to 'Save', '#', class: 'btn btn-primary', id: 'submit-form' %>
+              <% if !@transaction.id.nil? %>
+                <%= link_to 'Delete', transaction_path(@transaction), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              <% end %>
+              <%= link_to "Back to transactions", transactions_path, class: 'btn btn-secondary' %>
+            </td>
+          </tr>
+        </thead>
+      </table>
     </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= f.label :tx_date %><br />
-    <%= f.text_field :tx_date, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :posting_date %><br />
-    <%= f.text_field :posting_date, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :acct_id_cr %><br />
-    <%= f.select :acct_id_cr, @accounts, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :debit %><br />
-    <%= f.text_field :debit, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :credit %><br />
-    <%= f.text_field :credit, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :tx_type %><br />
-    <%= f.text_field :tx_type, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :details %><br />
-    <%= f.text_field :details, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :acct_id_dr %><br />
-    <%= f.select :acct_id_dr, @accounts, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :notes %><br />
-    <%= f.text_field :notes, class: "form-control" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
   </div>
 <% end %>
+
+<script>
+  document.getElementById('submit-form').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector('form').submit();
+  });
+</script>
