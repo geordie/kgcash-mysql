@@ -1,34 +1,49 @@
-<%= form_for(@account) do |f| %>
-  <% if @account.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
+<%= form_with(model: @account, local: true) do |form| %>
+  <div class="row px-4">
+    <div class="col-md-3">
+      <h3>Edit Account:</h3>
 
-      <ul>
-      <% @acount.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td class="bg-light"><strong>Name</strong></td>
+            <td><%= form.text_field :name, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Description</strong></td>
+            <td><%= form.text_area :description, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Account Type</strong></td>
+            <td><%= form.select :account_type, Account::AccountTypes, {}, class: 'form-control' %></td>
+          </tr>
+          <tr>
+            <td class="bg-light"><strong>Import Class</strong></td>
+            <td><%= form.select :import_class, Account::SupportedFormats, {}, class: 'form-control' %></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <td>
+              <%= link_to 'Save', '#', class: 'btn btn-primary', id: 'submit-form' %>
+              <% if !@account.id.nil? %>
+                <%= link_to 'Delete', account_path(@account), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              <% end %>
+              <%= link_to "Back to accounts", accounts_path, class: 'btn btn-secondary' %>
+            </td>
+          </tr>
+        </thead>
+      </table>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
-  </div>
-  <div class="field form-group">
-    <%= f.label :account_type %><br />
-    <%= f.select :account_type, Account::AccountTypes, { :class => 'form-control' } %>
-  </div>
-  <div class="field">
-    <%= f.label :import_class %><br />
-    <%= f.select :import_class, Account::SupportedFormats %>
-  </div>
-  <br/>
-  <div class="actions">
-    <%= f.submit %>
   </div>
 <% end %>
+
+<script>
+  document.getElementById('submit-form').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector('form').submit();
+  });
+</script>
