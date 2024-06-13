@@ -1,4 +1,5 @@
 class PaymentsController < ApplicationController
+	include TransactionControllerConcern
 
 	helper_method :sort_column, :sort_direction
 
@@ -25,19 +26,4 @@ class PaymentsController < ApplicationController
 			format.csv {}
 		end
 	end
-
-	private
-
-	def expense_params
-		params.require(:income).permit(:name, :description, :account_type)
-	end
-
-	def sort_column
-		['tx_date','account','details','notes','amount'].include?(params[:sort]) ? params[:sort] : "tx_date"
-	end
-
-	def sort_direction
-		%w[asc desc].include?(params[:direction]) ?  params[:direction] : "desc"
-	end
-
 end
