@@ -8,8 +8,6 @@
 		<th>Most Recent</th>
 		<th>Transactions</th>
 		<th></th>
-		<th></th>
-		<th></th>
 	</tr>
 
 	<% @accounts_array.each do |account_info| %>
@@ -27,9 +25,11 @@
 
 			<td><%= account_info["tx_count"] %></td>
 
-			<td><%= link_to 'Show', account %></td>
-			<td><%= link_to 'Edit', edit_account_path(account) %></td>
-			<td><%= link_to 'Delete', account, confirm: 'Are you sure?', method: :delete %></td>
+			<td>
+				<%= link_to 'Show', account_path(account), class: 'btn btn-primary' %>
+				<%= link_to 'Edit', edit_account_path(account), class: 'btn btn-warning' %>
+				<%= link_to 'Delete', account_path(account), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+			</td>
 		</tr>
 	<% end %>
 
