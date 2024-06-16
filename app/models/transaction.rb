@@ -59,26 +59,6 @@ class Transaction < ApplicationRecord
 	scope :is_asset, lambda{ where("acct_id_cr in (select id from accounts where account_type = 'Asset')") }
 	scope :is_payment, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Liability')") }
 
-	def self.income_by_category_OLD( user, year )
-		return user.transactions
-			.joins( "LEFT JOIN accounts ON accounts.id = transactions.acct_id_cr")
-			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_cr")
-			.where("(acct_id_dr in (select id from accounts where account_type = 'Asset' or account_type = 'Expense'))")
-			.where("(acct_id_cr IS NULL or acct_id_cr in (select id from accounts where account_type = 'Income'))")
-			.in_month_year(nil, year)
-			.group("acct_id_cr")
-	end
-
-	def self.expenses_by_category_OLD( user, year )
-		return user.transactions
-			.joins( "LEFT JOIN accounts ON accounts.id = transactions.acct_id_dr")
-			.select("sum(credit) as credit, sum(debit) as debit, accounts.name, acct_id_dr")
-			.where("(acct_id_cr in (select id from accounts where account_type = 'Liability' or account_type = 'Asset'))")
-			.where("(acct_id_dr IS NULL or acct_id_dr in (select id from accounts where account_type = 'Expense'))")
-			.in_month_year(nil, year)
-			.group("acct_id_dr")
-	end
-
 	def self.income_by_category( user, year=nil, month = nil )
 		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
 
