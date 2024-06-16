@@ -19,7 +19,7 @@
           </tr>
           <tr>
             <td class="bg-light"><strong>Import Class</strong></td>
-            <td><%= form.select :import_class, Account::SupportedFormats, {}, class: 'form-control' %></td>
+            <td><%= form.select :import_class, Account::SupportedFormats, {:include_blank => ''}, class: 'form-control' %></td>
           </tr>
         </tbody>
       </table>
