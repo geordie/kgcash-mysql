@@ -1,6 +1,8 @@
 class Account < ActiveRecord::Base
 	include Comparable
 
+	before_save :filter_import_type
+
 	has_and_belongs_to_many :users
 
 	has_many :credit_transactions, class_name: 'Transaction', foreign_key: 'acct_id_cr'
@@ -26,5 +28,13 @@ class Account < ActiveRecord::Base
 		return 1 if !name
 		return -1 if !other.name
 		name.downcase <=> other.name.downcase
+	end
+
+	private
+
+	def filter_import_type
+		if import_class == ""
+			self.import_class = nil
+		end
 	end
 end
