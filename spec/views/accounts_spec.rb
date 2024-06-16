@@ -5,9 +5,10 @@ describe "accounts/index.html.erb", type: :view do
 	assign( :year, 2020 )
 	
     assign( :accounts_array, Array.new(0) )
+    assign( :allAccounts, Array.new(0) )
     
     render
 
-    expect(rendered).to match(/My Accounts/)
+    expect(rendered).to match(/My Spending Accounts/)
   end
 end
