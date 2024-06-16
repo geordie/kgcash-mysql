@@ -84,8 +84,6 @@ class AccountsController < ApplicationController
 		@user = current_user
 		@account = Account.new
 
-		@user.accounts << @account
-
 		respond_to do |format|
 			format.html # new.html.erb
 			format.json {render json: @account}
