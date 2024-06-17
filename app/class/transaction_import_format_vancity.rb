@@ -103,8 +103,6 @@ class TransactionImportFormatVancity
 			:acct_id_dr => (debit.nil? ? nil : account_id)
 			)
 
-		# @transaction.category_id = cat
-
 		return @transaction
 
 	end
