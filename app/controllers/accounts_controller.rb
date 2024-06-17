@@ -26,6 +26,10 @@ class AccountsController < ApplicationController
 		end
 
 		@allAccounts = @user.sortedAccounts
+		@expenseAccounts = @user.accounts.expense
+		@incomeAccounts = @user.accounts.income
+		@assetAccounts = @user.accounts.asset
+		@liabilityAccounts = @user.accounts.liability
 
 		respond_to do |format|
 			format.html #index.html.erb
