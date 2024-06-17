@@ -23,10 +23,6 @@ class Account < ActiveRecord::Base
 		months = (last_tx_date.year * 12 + last_tx_date.month) - (first_tx_date.year * 12 + first_tx_date.month)
 	end
 
-	def transactions_per_month
-		(transactions.count / active_months).to_i
-	end
-
 	def <=> other
 		return 0 if !name && !other.name
 		return 1 if !name
