@@ -24,20 +24,27 @@ class AccountsController < ApplicationController
 		@accounts_array = Array.new(0)
 
 		accounts.each do |a|
-			transactions = Transaction.all.in_account(a.id).order(:tx_date)
-			tx_count = transactions.count
+			transactions = Transaction.select("min(tx_date) as tx_first, max(tx_date) as tx_last, sum(credit) as credit, sum(debit) as debit, count(*) as tx_count")
+				.where("acct_id_dr = " + a.id.to_s + " OR acct_id_cr = " + a.id.to_s )
 
-			hashAccountInfo = Hash.new
+			accountInfo = nil
+			unless transactions.nil? or transactions.length < 0
+				accountInfo = transactions[0]
 
-			hashAccountInfo["account"] = a
-			hashAccountInfo["tx_count"] = tx_count
+				hashAccountInfo = {
+					"account" => a,
+					"tx_count" => accountInfo.tx_count,
+					"debit" => accountInfo.debit,
+					"credit" => accountInfo.credit,
+				}
 
-			if tx_count > 0
-				hashAccountInfo["tx_first"] = transactions[0].tx_date
-				hashAccountInfo["tx_last"] = transactions[tx_count-1].tx_date
+				if accountInfo.tx_count > 0
+					hashAccountInfo["tx_first"] = accountInfo.tx_first
+					hashAccountInfo["tx_last"] = accountInfo.tx_last
+				end
+
+				@accounts_array << hashAccountInfo
 			end
-
-			@accounts_array.push(hashAccountInfo)
 		end
 
 		respond_to do |format|
