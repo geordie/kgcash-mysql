@@ -24,7 +24,7 @@ class AccountsController < ApplicationController
 		@accounts_array = Array.new(0)
 
 		accounts.each do |a|
-			transactions = Transaction.select("min(tx_date) as tx_first, max(tx_date) as tx_last, sum(credit) as credit, sum(debit) as debit, count(*) as tx_count")
+			transactions = Transaction.select("min(tx_date) as tx_first, max(tx_date) as tx_last, count(*) as tx_count")
 				.where("acct_id_dr = " + a.id.to_s + " OR acct_id_cr = " + a.id.to_s )
 
 			accountInfo = nil
@@ -34,8 +34,6 @@ class AccountsController < ApplicationController
 				hashAccountInfo = {
 					"account" => a,
 					"tx_count" => accountInfo.tx_count,
-					"debit" => accountInfo.debit,
-					"credit" => accountInfo.credit,
 				}
 
 				if accountInfo.tx_count > 0

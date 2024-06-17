@@ -9,8 +9,6 @@
 			<th>First Transaction</th>
 			<th>Most Recent</th>
 			<th>Transactions</th>
-			<th>Credits</th>
-			<th>Debits</th>
 			<th></th>
 		</tr>
 
@@ -28,8 +26,6 @@
 				<% end %>
 
 				<td><%= account_info["tx_count"] %></td>
-				<td><%= number_to_currency(account_info["credit"], precision: 0) %></td>
-				<td><%= number_to_currency(account_info["debit"], precision: 0) %></td>
 
 				<td>
 					<%= link_to 'Show', account_path(account), class: 'btn btn-primary' %>
