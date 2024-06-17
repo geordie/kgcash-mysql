@@ -19,9 +19,15 @@
         <ul class="navbar-nav">
 
         <% if current_user %>
-          <li class="nav-item">
-            <%= link_to 'Accounts', accounts_path, { :class=>"nav-link" } %>
-          </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Accounts
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
+              <%= link_to "All Accounts", accounts_path, { :class=>"dropdown-item" } %>
+              <%= link_to "Spending Accounts", spending_accounts_path, { :class=>"dropdown-item" } %>
+            </div>
+            </li>
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTransactions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
