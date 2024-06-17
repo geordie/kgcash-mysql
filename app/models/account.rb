@@ -12,6 +12,10 @@ class Account < ActiveRecord::Base
 	AccountTypes = ["Expense","Income","Asset","Liability"]
 
 	scope :importable, lambda {where("import_class IS NOT NULL")}
+	scope :expense, lambda {where("account_type = 'Expense'")}
+	scope :income, lambda {where("account_type = 'Income'")}
+	scope :asset, lambda {where("account_type = 'Asset'")}
+	scope :liability, lambda {where("account_type = 'Liability'")}
 
 	def active_months
 		last_tx_date = transactions[0].tx_date
