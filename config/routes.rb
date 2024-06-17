@@ -49,7 +49,11 @@ resources :reports do
   end
 end
 
-resources :accounts
+resources :accounts do
+  collection do
+    get 'spending'
+  end
+end
 
 resources :categories
 

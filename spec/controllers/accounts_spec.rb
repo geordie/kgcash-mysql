@@ -28,9 +28,9 @@ RSpec.describe AccountsController, :type => :controller do
 		login_user
 	end
 
-	describe 'GET #index' do
+	describe 'GET spending' do
 
-		it "loads @accounts" do
+		it "loads @accounts_array" do
 
 			tx_amount = get_tx_amount()
 
@@ -52,7 +52,7 @@ RSpec.describe AccountsController, :type => :controller do
 				debit: tx_amount + 1.01
 			)
 
-			get :index
+			get :spending
 
 			expect(response.status).to eq(200)
 			expect(assigns(:accounts_array).count).to eq(@user.accounts.importable.count)

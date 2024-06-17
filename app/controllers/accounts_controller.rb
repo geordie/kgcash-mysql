@@ -4,6 +4,21 @@ class AccountsController < ApplicationController
 
 		@user = current_user
 
+		@expenseAccounts = @user.accounts.expense
+		@incomeAccounts = @user.accounts.income
+		@assetAccounts = @user.accounts.asset
+		@liabilityAccounts = @user.accounts.liability
+
+		respond_to do |format|
+			format.html #index.html.erb
+			format.json {render json: @accounts }
+		end
+	end
+
+	def spending
+
+		@user = current_user
+
 		accounts = @user.accounts.importable
 
 		@accounts_array = Array.new(0)
@@ -25,17 +40,10 @@ class AccountsController < ApplicationController
 			@accounts_array.push(hashAccountInfo)
 		end
 
-		@allAccounts = @user.sortedAccounts
-		@expenseAccounts = @user.accounts.expense
-		@incomeAccounts = @user.accounts.income
-		@assetAccounts = @user.accounts.asset
-		@liabilityAccounts = @user.accounts.liability
-
 		respond_to do |format|
 			format.html #index.html.erb
 			format.json {render json: @accounts }
 		end
-
 	end
 
 	def edit

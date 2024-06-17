@@ -1,44 +1,7 @@
-<div class="col-md-6 mx-auto">
-
-	<h3>My Spending Accounts</h3>
-
-	<table class="table table-striped table-condensed">
-		<tr>
-			<th>Name</th>
-			<th>Account Type</th>
-			<th>First Transaction</th>
-			<th>Most Recent</th>
-			<th>Transactions</th>
-			<th></th>
-		</tr>
-
-		<% @accounts_array.each do |account_info| %>
-			<% account = account_info["account"] %>
-			<tr>
-				<td><%= account.name %></td>
-				<td><%= account.account_type %></td>
-
-				<% if account_info["tx_count"] > 0 %>
-					<td><%= account_info["tx_first"].strftime('%b %e, %Y') %></td>
-					<td><%= account_info["tx_last"].strftime('%b %e, %Y') %></td>
-				<% else %>
-					<td>-</td><td>-</td>
-				<% end %>
-
-				<td><%= account_info["tx_count"] %></td>
-
-				<td>
-					<%= link_to 'Show', account_path(account), class: 'btn btn-primary' %>
-					<%= link_to 'Edit', edit_account_path(account), class: 'btn btn-warning' %>
-					<%= link_to 'Delete', account_path(account), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-				</td>
-			</tr>
-		<% end %>
-
-	</table>
-</div>
 
 <div class="col-md-6 mx-auto">
+
+	<h3>My Accounts</h3>
 
 	<%= render partial: 'accountGroup', locals: { title: 'Expense Accounts', id: 'expenses', accounts: @expenseAccounts }  %>
 	<%= render partial: 'accountGroup', locals: { title: 'Income Accounts', id: 'income', accounts: @incomeAccounts }  %>
