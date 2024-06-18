@@ -12,13 +12,22 @@
 	</div>
 </div>
 
-<%== pagy_bootstrap_nav(@pagy) %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+        <%== pagy_bootstrap_nav(@pagy) %>
+    </div>
+    <div class="col-md-2">
+      <%= link_to "View Uncategorized", uncategorized_expenses_path %>
+    </div>
+  </div>
+</div>
 
 <%= render partial: "transactions/typed_transaction_list", locals: {txType: 'expense'} %>
 
-<div class="row float-right">
-	<div class="col-md-12">
-		<%= link_to "View Uncategorized", uncategorized_expenses_path, class: "btn mb-1" %>
+<div class="row">
+	<div class="col-md-12 text-right">
 		<button id="exportCsv" type="submit" class="btn mb-1" onclick="exportCsv()">Download as CSV</button>
 	</div>
 </div>
