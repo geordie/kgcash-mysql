@@ -173,6 +173,7 @@ class TransactionsController < ApplicationController
 			.order(sort_column + ' ' + sort_direction))
 
 		@display_type = @tx_type == 'credit' ? 'income' : 'expense'
+		@title = "Uncategorized " + @display_type[0].capitalize + @display_type[1..-1] + " Transactions"
 
 		respond_to do |format|
 			format.html #index.html.erb
