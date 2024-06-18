@@ -23,6 +23,20 @@ class Account < ActiveRecord::Base
 		months = (last_tx_date.year * 12 + last_tx_date.month) - (first_tx_date.year * 12 + first_tx_date.month)
 	end
 
+	def credits(year=nil)
+		if year.nil?
+			year = Time.now.year
+		end
+		credit_transactions.where("year(tx_date) = ?", year).sum(:credit)
+	end
+
+	def debits(year=nil)
+		if year.nil?
+			year = Time.now.year
+		end
+		debit_transactions.where("year(tx_date) = ?", year).sum(:debit)
+	end
+
 	def <=> other
 		return 0 if !name && !other.name
 		return 1 if !name
