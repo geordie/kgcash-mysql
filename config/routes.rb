@@ -22,9 +22,6 @@ resources :transaction_imports
 
 resources :expenses do
   collection do
-    get 'uncategorized'
-  end
-  collection do
     post 'split_commit'
   end
   collection do
@@ -32,11 +29,7 @@ resources :expenses do
   end
 end
 
-resources :incomes do
-  collection do
-    get 'uncategorized'
-  end
-end
+resources :incomes
 
 resources :payments
 

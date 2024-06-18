@@ -110,4 +110,35 @@ RSpec.describe TransactionsController, :type => :controller do
 			expect(response.status).to eq(302)
 		end
 	end
+
+		describe 'GET #uncategorized' do
+
+		it 'loads the right number of uncategorized transactions' do
+			tx_amount = get_tx_amount()
+
+			# Add an uncategorized expense
+			Fabricate(:transaction,
+				user_id: @user.id,
+				acct_id_cr: @acct_asset.id,
+				credit: tx_amount,
+				acct_id_dr: nil,
+				debit: tx_amount
+			)
+
+			# Add a categorized expense
+			Fabricate(:transaction,
+				user_id: @user.id,
+				acct_id_cr: @acct_asset.id,
+				credit: tx_amount + 1,
+				acct_id_dr: @acct_expense.id,
+				debit: tx_amount +1
+			)
+
+			get :uncategorized
+
+			expect(response.status).to eq(200)
+			expect(assigns(:transactions).length).to eq 1
+		end
+
+	end
 end
