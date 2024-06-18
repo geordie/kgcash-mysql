@@ -3,7 +3,7 @@
 
 	<h3>My Accounts</h3>
 
-	<%= render partial: 'expenses/year_navigator', locals: { year: @year } %>
+	<%= render partial: 'transactions/year_navigator', locals: { year: @year } %>
 
 	<%= render partial: 'accountGroup', locals: { title: 'Expense Accounts', id: 'expenses', accounts: @expenseAccounts, year: @year }  %>
 	<%= render partial: 'accountGroup', locals: { title: 'Income Accounts', id: 'income', accounts: @incomeAccounts, year: @year }  %>
