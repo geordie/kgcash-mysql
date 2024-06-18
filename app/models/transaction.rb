@@ -276,7 +276,6 @@ class Transaction < ApplicationRecord
 	def self.uncategorized_expenses(user, year=nil)
 		return user.transactions
 			.select("year(tx_date) as year, count(*) as count, sum(credit) as uncategorized_expenses")
-			.is_expense()
 			.where("(acct_id_dr IS NULL)")
 			.in_year(year)
 			.group('year(tx_date)')
@@ -285,7 +284,6 @@ class Transaction < ApplicationRecord
 	def self.uncategorized_revenue(user, year=nil)
 		return user.transactions
 			.select("year(tx_date) as year, count(*) as count, sum(debit) as uncategorized_revenue")
-			.is_liability()
 			.where("(acct_id_cr IS NULL)")
 			.in_year(year)
 			.group('year(tx_date)')
