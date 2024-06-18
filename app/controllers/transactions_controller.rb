@@ -152,6 +152,33 @@ class TransactionsController < ApplicationController
 		end
 	end
 
+	def uncategorized
+		@user = current_user
+		@tx_type = (params.has_key?(:tx_type) && params[:tx_type] == 'credit') ? 'credit' : 'debit'
+
+		nullField = @tx_type == 'credit' ? 'acct_id_cr' : 'acct_id_dr'
+		amountField = @tx_type == 'credit' ? "debit as 'amount'" : "credit as 'amount'"
+		txTypeField = @tx_type == 'credit' ? "'credit' as 'txType'" : "'debit' as 'txType'"
+
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+		@month = params.has_key?(:month) ? params[:month].to_i : nil
+
+		@pagy, @transactions = pagy(@user.transactions
+			.select("id, tx_date, credit, debit, " + amountField + ", tx_type, details, notes, "\
+				"acct_id_cr, acct_id_dr, parent_id, " + txTypeField + ", "\
+				"(SELECT COUNT(*) from active_storage_attachments A WHERE A.record_id = transactions.id AND A.record_type = 'Transaction' and A.name = 'attachment' ) as attachments"
+			)
+			.where("(" + nullField + " IS NULL)")
+			.in_month_year(@month, @year)
+			.order(sort_column + ' ' + sort_direction))
+
+		@display_type = @tx_type == 'credit' ? 'income' : 'expense'
+
+		respond_to do |format|
+			format.html #index.html.erb
+		end
+	end
+
 	private
 
 	def transaction_params
