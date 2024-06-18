@@ -198,7 +198,7 @@ class ExpensesController < ApplicationController
 	private
 
 	def expense_params
-		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :debit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date, :items)
+		params.permit(:name, :description, :account_type, :year, :id, :credit, :debit, :acct_id_dr, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date, :items, :page)
 	end
 
 end
