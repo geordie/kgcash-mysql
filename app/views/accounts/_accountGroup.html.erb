@@ -27,7 +27,7 @@
 		  <% debits = acct.debits(year)%>
 		  <% balance = (credits - debits).abs%>
 			<tr>
-			  <td><%= acct.name %></td>
+			  <td><%= link_to acct.name, account_path(acct)%></td>
 			  <td><%= acct.description %></td>
 			  <td><%= number_to_currency( credits, precision:0) %></td>
 			  <td><%= number_to_currency( debits, precision: 0) %></td>
