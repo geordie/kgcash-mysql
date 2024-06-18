@@ -71,26 +71,6 @@ class ExpensesController < ApplicationController
 		end
 	end
 
-	def uncategorized
-		@user = current_user
-
-		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
-		@month = params.has_key?(:month) ? params[:month].to_i : nil
-
-		@pagy, @transactions = pagy(@user.transactions
-			.select("id, tx_date, credit, debit, credit as 'amount', tx_type, details, notes, "\
-				"acct_id_cr, acct_id_dr, parent_id, 'debit' as 'txType', "\
-				"(SELECT COUNT(*) from active_storage_attachments A WHERE A.record_id = transactions.id AND A.record_type = 'Transaction' and A.name = 'attachment' ) as attachments"
-			)
-			.where("(acct_id_dr IS NULL)")
-			.in_month_year(@month, @year)
-			.order(sort_column + ' ' + sort_direction))
-
-		respond_to do |format|
-			format.html #index.html.erb
-		end
-	end
-
 	def split
 		@id = params.has_key?(:id) ? params[:id].to_i : 0
 
