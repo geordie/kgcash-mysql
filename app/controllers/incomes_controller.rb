@@ -41,7 +41,6 @@ class IncomesController < ApplicationController
 				"acct_id_cr, acct_id_dr, parent_id, 'credit' as txType, "\
 				"(SELECT COUNT(*) from active_storage_attachments A WHERE A.record_id = transactions.id AND A.record_type = 'Transaction' and A.name = 'attachment' ) as attachments"
 			)
-			.is_liability()
 			.where("(acct_id_cr IS NULL)")
 			.in_year(@year)
 			.order(sort_column + ' ' + sort_direction))

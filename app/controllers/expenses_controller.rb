@@ -82,7 +82,6 @@ class ExpensesController < ApplicationController
 				"acct_id_cr, acct_id_dr, parent_id, 'debit' as 'txType', "\
 				"(SELECT COUNT(*) from active_storage_attachments A WHERE A.record_id = transactions.id AND A.record_type = 'Transaction' and A.name = 'attachment' ) as attachments"
 			)
-			.is_expense()
 			.where("(acct_id_dr IS NULL)")
 			.in_month_year(@month, @year)
 			.order(sort_column + ' ' + sort_direction))
