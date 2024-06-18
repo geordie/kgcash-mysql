@@ -110,7 +110,7 @@ class TransactionsController < ApplicationController
 		account = params.has_key?(:account) ? params[:account].to_i : nil
 
 		@pagy, @transactions = pagy(@user.transactions
-			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr")
+			.select("id, tx_date, credit, debit, tx_type, details, notes, acct_id_cr, acct_id_dr, parent_id")
 			.in_year(@year)
 			.order(sort_column + ' ' + sort_direction))
 
