@@ -11,6 +11,9 @@ resources :transactions do
   get 'new_attachment'
   patch 'update_attachment'
   delete 'delete_attachment'
+  collection do
+    get 'uncategorized'
+  end
 end
 
 resources :documents
