@@ -4,10 +4,12 @@ class AccountsController < ApplicationController
 
 		@user = current_user
 
-		@expenseAccounts = @user.accounts.expense
-		@incomeAccounts = @user.accounts.income
-		@assetAccounts = @user.accounts.asset
-		@liabilityAccounts = @user.accounts.liability
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
+
+		@expenseAccounts = @user.accounts.expense.order(:name)
+		@incomeAccounts = @user.accounts.income.order(:name)
+		@assetAccounts = @user.accounts.asset.order(:name)
+		@liabilityAccounts = @user.accounts.liability.order(:name)
 
 		respond_to do |format|
 			format.html #index.html.erb
@@ -122,7 +124,7 @@ class AccountsController < ApplicationController
 	private
 
 	def account_params
-		params.require(:account).permit(:name, :description, :account_type, :import_class)
+		params.require(:account).permit(:name, :description, :account_type, :import_class, :year)
 	end
 
 end
