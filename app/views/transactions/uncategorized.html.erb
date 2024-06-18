@@ -1,0 +1,23 @@
+<h3>Expenses</h3>
+
+<div class="row lead">
+	<div class="col-md-3">
+		<%= render 'year_navigator' %>
+	</div>
+</div>
+
+<div class="row lead">
+	<div class="col-md-3">
+		<%= render 'month_navigator' %>
+	</div>
+</div>
+
+<div class="container">
+  <div class="row">
+      <div class="col-md-10">
+          <%== pagy_bootstrap_nav(@pagy) %>
+      </div>
+  </div>
+</div>
+
+<%= render partial: "transactions/typed_transaction_list", locals: {txType: @display_type } %>
