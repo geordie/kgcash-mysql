@@ -24,3 +24,9 @@
 </div>
 
 <%= render partial: "transactions/typed_transaction_list", locals: {txType: 'income'} %>
+
+<div class="row">
+	<div class="col-md-12 text-right">
+		<button id="exportCsv" type="submit" class="btn mb-1" onclick="exportCsv()">Download as CSV</button>
+	</div>
+</div>
