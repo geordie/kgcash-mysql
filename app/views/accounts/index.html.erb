@@ -3,12 +3,12 @@
 
 	<h3>My Accounts</h3>
 
-	<%= render partial: 'accountGroup', locals: { title: 'Expense Accounts', id: 'expenses', accounts: @expenseAccounts }  %>
-	<%= render partial: 'accountGroup', locals: { title: 'Income Accounts', id: 'income', accounts: @incomeAccounts }  %>
-	<%= render partial: 'accountGroup', locals: { title: 'Asset Accounts', id: 'asset', accounts: @assetAccounts }  %>
-	<%= render partial: 'accountGroup', locals: { title: 'Liability Accounts', id: 'liability', accounts: @liabilityAccounts }  %>
+	<%= render partial: 'expenses/year_navigator', locals: { year: @year } %>
 
-
+	<%= render partial: 'accountGroup', locals: { title: 'Expense Accounts', id: 'expenses', accounts: @expenseAccounts, year: @year }  %>
+	<%= render partial: 'accountGroup', locals: { title: 'Income Accounts', id: 'income', accounts: @incomeAccounts, year: @year }  %>
+	<%= render partial: 'accountGroup', locals: { title: 'Asset Accounts', id: 'asset', accounts: @assetAccounts, year: @year }  %>
+	<%= render partial: 'accountGroup', locals: { title: 'Liability Accounts', id: 'liability', accounts: @liabilityAccounts, year: @year }  %>
 
 	<%= link_to 'New Account', new_account_path %>
 </div>

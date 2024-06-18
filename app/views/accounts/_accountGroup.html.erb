@@ -16,13 +16,22 @@
 		  <tr>
 			<th>Name</th>
 			<th>Description</th>
+			<th>Credit</th>
+			<th>Debit</th>
+			<th>Balance</th>
 			<th>Action</th>
 		  </tr>
 
 		  <% accounts.each do |acct| %>
+		  <% credits = acct.credits(year)%>
+		  <% debits = acct.debits(year)%>
+		  <% balance = (credits - debits).abs%>
 			<tr>
 			  <td><%= acct.name %></td>
 			  <td><%= acct.description %></td>
+			  <td><%= number_to_currency( credits, precision:0) %></td>
+			  <td><%= number_to_currency( debits, precision: 0) %></td>
+			  <td><%= number_to_currency( balance, precision:0) %></td>
 			  <td>
 				<div class="dropdown">
 				  <a class="btn btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
