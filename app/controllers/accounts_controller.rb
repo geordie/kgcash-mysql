@@ -75,11 +75,12 @@ class AccountsController < ApplicationController
 
 	def show
 		@user = current_user
+		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
 
 		@account = @user.accounts.find(params[:id])
 
-		debits_monthly = @account.debits_monthly
-		credits_monthly = @account.credits_monthly
+		debits_monthly = @account.debits_monthly(@year)
+		credits_monthly = @account.credits_monthly(@year)
 
 		# chart data structure
 		barData = Array.new(0)
