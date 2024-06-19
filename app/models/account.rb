@@ -37,6 +37,20 @@ class Account < ActiveRecord::Base
 		debit_transactions.where("year(tx_date) = ?", year).sum(:debit)
 	end
 
+	def debits_monthly(year=nil)
+		if year.nil?
+			year = Time.now.year
+		end
+		debit_transactions.where("year(tx_date) = ?", year).group('month(tx_date)').sum(:debit)
+	end
+
+	def credits_monthly(year=nil)
+		if year.nil?
+			year = Time.now.year
+		end
+		credit_transactions.where("year(tx_date) = ?", year).group('month(tx_date)').sum(:credit)
+	end
+
 	def <=> other
 		return 0 if !name && !other.name
 		return 1 if !name
