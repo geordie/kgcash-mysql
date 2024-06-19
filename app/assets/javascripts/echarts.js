@@ -22,12 +22,15 @@ function getEchartsMultibarOptions( multiBarData ) {
         'Credits': false,
         'Debits': false
       }
-    },
-    xAxis: {
-      type: 'category',
-      data: []
-    },
-    yAxis: {
+        },
+        xAxis: {
+          type: 'category',
+          data: [],
+          name: '', // Add a title to the x Axis
+          nameLocation: 'middle', // Center the title below the xAxis
+          nameGap: 30 // Adjust the gap between the title and the xAxis
+        },
+        yAxis: {
       type: 'value',
       axisLabel: {
         formatter: function(value) {
