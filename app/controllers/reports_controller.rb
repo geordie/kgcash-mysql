@@ -217,12 +217,8 @@ class ReportsController < ApplicationController
 		end
 
 		# Populate the echart options data structure
-		data_echart["grid"] = {"left": "3%","right": "4%","bottom": "3%","containLabel": true};
-		data_echart["legend"] = {};
 		data_echart["series"] = seriesArray;
-		data_echart["tooltip"] = {"trigger":'axis',"axisPointer":{"type":'shadow'},"extraCssText":'text-align:left'};
 		data_echart["xAxis"] = {"type":"category","data":xAxis};
-		data_echart["yAxis"] = {"type":"value"};
 
 		return data_echart;
 	end

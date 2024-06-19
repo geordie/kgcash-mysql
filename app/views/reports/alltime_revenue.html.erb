@@ -1,11 +1,14 @@
-<h2>All Time Revenue</h2>
+<script type="text/javascript">
+	var multiBarOptions = getEchartsMultibarOptions([]);
+	multiBarOptions.series = gon.echart.series;
+	multiBarOptions.xAxis = gon.echart.xAxis;
+	multiBarOptions.legend = {};
+</script>
 
-<div class="container">
+<h2>All Time Revenue</h2>
 
 <%= render partial: "multiBarChart", locals: {
 	domId: "revenue",
-	data: "gon.echart"
+	data: "multiBarOptions"
 	}
 %>
-
-</div>
