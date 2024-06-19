@@ -25,7 +25,7 @@ function getEchartsMultibarOptions( multiBarData ) {
     },
     xAxis: {
       type: 'category',
-      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      data: []
     },
     yAxis: {
       type: 'value',
