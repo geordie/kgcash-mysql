@@ -1,6 +1,7 @@
 <script>
 	var multiBarOptions = getEchartsMultibarOptions(gon.echart);
 	multiBarOptions.xAxis.data = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	multiBarOptions.xAxis.name = <%= @year %>;
 </script>
 
 <div class="row px-4">
