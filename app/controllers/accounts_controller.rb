@@ -78,6 +78,46 @@ class AccountsController < ApplicationController
 
 		@account = @user.accounts.find(params[:id])
 
+		debits_monthly = @account.debits_monthly
+		credits_monthly = @account.credits_monthly
+
+		# chart data structure
+		barData = Array.new(0)
+		barDataDebits = {name: "Debits", values: Array.new(0)}
+		barDataCredits = {name: "Credits", values: Array.new(0)}
+		barDataBalance = {name: "Balance", values: Array.new(0)}
+
+		# table data structure
+		@monthly_balance = Array.new(0)
+
+		(1..12).each do |month|
+
+			monthHash = {month: Date::MONTHNAMES[month][0..2]}
+
+			monthDebit = 0
+			if debits_monthly.has_key?(month)
+				monthDebit = debits_monthly[month]
+			end
+
+			barDataDebits[:values] << monthDebit
+			monthHash[:debits] = monthDebit
+
+			monthCredit = 0
+			if credits_monthly.has_key?(month)
+				monthCredit = credits_monthly[month]
+			end
+
+			monthHash[:credits] = monthCredit
+			barDataCredits[:values] << monthCredit
+
+			monthHash[:balance] = (monthCredit - monthDebit).abs
+			barDataBalance[:values] << (monthCredit - monthDebit).abs
+
+			@monthly_balance << monthHash
+		end
+
+		gon.echart = barData << barDataDebits << barDataCredits << barDataBalance
+
 		respond_to do |format|
 			format.html #show.html.erb
 			format.json {render json: @account}
