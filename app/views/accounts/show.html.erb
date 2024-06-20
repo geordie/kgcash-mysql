@@ -4,6 +4,38 @@
 	multiBarOptions.xAxis.name = <%= @year %>;
 </script>
 
+<script>
+	$(document).ready(function() {
+
+		// Set the active tab in local storage and show the tab when a tab is clicked
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+			localStorage.setItem('activeTab', $(e.target).attr('href'));
+			$('.tab-pane').hide();
+			var tab = $($(e.target).attr('href'));
+			tab.show();
+
+			// Redraw the chart if the shown tab is the chart tab
+			if ($(e.target).attr('href') === '#chart') {
+				myChart.resize();
+			}
+		});
+
+		// Check if there's a saved tab
+		var activeTab = localStorage.getItem('activeTab');
+		if (activeTab) {
+			$('#myTab a[href="' + activeTab + '"]').tab('show');
+			$(activeTab).show();
+
+		} else {
+			// Show the default tab if no tab is saved
+			$('#myTab a[href="#chart"]').tab('show');
+			$('#chart').show();
+		}
+
+	});
+</script>
+
+
 <div class="row">
 	<div class="col-md-4">
 		<h3>Account Details:</h3>
@@ -49,11 +81,11 @@
 			<a class="nav-link" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="false">Table</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link active" id="chart-tab" data-toggle="tab" href="#chart" role="tab" aria-controls="chart" aria-selected="true">Chart</a>
+			<a class="nav-link" id="chart-tab" data-toggle="tab" href="#chart" role="tab" aria-controls="chart" aria-selected="true">Chart</a>
 		</li>
 	</ul>
 	<div class="tab-content" id="myTabContent">
-		<div class="tab-pane fade show active" id="chart" role="tabpanel" aria-labelledby="chart-tab">
+		<div class="tab-pane fade" id="chart" role="tabpanel" aria-labelledby="chart-tab">
 			<%= render partial: "reports/multiBarChart", locals: {
 				domId: "monthlyBalanceChart",
 				data: "multiBarOptions",
