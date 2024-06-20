@@ -117,7 +117,7 @@ class AccountsController < ApplicationController
 			@monthly_balance << monthHash
 		end
 
-		gon.echart = barData << barDataDebits << barDataCredits << barDataBalance
+		gon.echartMonthly = barData << barDataDebits << barDataCredits << barDataBalance
 
 		respond_to do |format|
 			format.html #show.html.erb
