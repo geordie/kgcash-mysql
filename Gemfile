@@ -9,7 +9,7 @@ gem 'rails', '6.1.7.8'
 
 gem "google-cloud-storage", "~> 1.8", require: false
 gem 'mysql2', '~> 0.5.3'
-gem 'sorcery', '~> 0.16.1'
+gem 'sorcery', '~> 0.17'
 gem 'json', '~> 2.3'
 gem 'prawn', '>= 2.4.0'
 gem 'execjs'
