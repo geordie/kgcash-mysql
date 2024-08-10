@@ -59,12 +59,10 @@ RSpec.describe TransactionsController, :type => :controller do
 		end
 	end
 
-	describe 'GET #show' do
-		it 'responds with 200' do
-
-			get :index
-
-			expect(response.status).to eq(200)
+	describe 'GET #new' do
+		it 'returns a success response' do
+			get :new
+			expect(response).to have_http_status(:success)
 		end
 	end
 
@@ -84,7 +82,7 @@ RSpec.describe TransactionsController, :type => :controller do
 			get :edit, params: { id: tx.id }
 
 			expect(assigns(:transaction).id).to eq(tx.id)
-			expect(response.status).to eq(200)
+			expect(response).to have_http_status(:success)
 		end
 	end
 
@@ -111,7 +109,7 @@ RSpec.describe TransactionsController, :type => :controller do
 		end
 	end
 
-		describe 'GET #uncategorized' do
+	describe 'GET #uncategorized' do
 
 		it 'loads the right number of uncategorized transactions' do
 			tx_amount = get_tx_amount()
