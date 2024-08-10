@@ -87,7 +87,6 @@ RSpec.describe ExpensesController, :type => :controller do
 			expect(response.status).to eq(200)
 			expect(assigns(:transaction_new).posting_date).to eq tx_posting_date
 		end
-
 	end
 
 	describe 'GET #show' do
