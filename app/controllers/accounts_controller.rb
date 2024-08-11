@@ -88,8 +88,9 @@ class AccountsController < ApplicationController
 		barDataCredits = {name: "Credits", values: Array.new(0)}
 		barDataBalance = {name: "Balance", values: Array.new(0)}
 
-		# table data structure
+		# table data structures
 		@monthly_balance = Array.new(0)
+		@yearly_balance = Array.new(0)
 
 		(1..12).each do |month|
 
@@ -118,6 +119,51 @@ class AccountsController < ApplicationController
 		end
 
 		gon.echartMonthly = barData << barDataDebits << barDataCredits << barDataBalance
+
+		debits_yearly = @account.debits_yearly()
+		credits_yearly = @account.credits_yearly()
+
+		# Get the full set of years covered by each hash
+		years = Array.new(0)
+		debits_yearly.keys.each do |year|
+			years << year
+		end
+		credits_yearly.keys.each do |year|
+			years << year
+		end
+		# Process the arrays into a single array by removing duplicates, nils sorting
+		# and filling in any gaps
+		years = years.compact.uniq.sort
+		if years.length > 1 && years.min < years.max
+			years = (years.min..years.max).to_a
+		end
+
+		years.each do |year|
+			yearHash = {year: year}
+
+			yearDebit = 0
+			if debits_yearly.has_key?(year)
+				yearDebit = debits_yearly[year]
+			else
+				yearDebit = 0
+			end
+
+			yearHash[:debits] = yearDebit
+
+			yearCredit = 0
+			if credits_yearly.has_key?(year)
+				yearCredit = credits_yearly[year]
+			else
+				yearCredit = 0
+			end
+
+			yearHash[:credits] = yearCredit
+
+			yearHash[:balance] = (yearCredit - yearDebit).abs
+
+			@yearly_balance << yearHash
+
+		end
 
 		respond_to do |format|
 			format.html #show.html.erb
