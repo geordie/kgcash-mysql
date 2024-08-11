@@ -169,13 +169,46 @@ class AccountsController < ApplicationController
 			@yearly_balance << yearHash
 		end
 
+		## Calculate the projected balance for this year
 		@projected_this_year = DateMath.annualize_ytd_amount( balance_this_year )
 
+		## Calculate the average annual balance
 		annualized_yearly_balance = @yearly_balance.reject { |year_hash| year_hash[:year] == Date.today.year }
 		annualized_yearly_balance << {year: Date.today.year, balance: @projected_this_year}
 		total_balance = annualized_yearly_balance.sum { |year_hash| year_hash[:balance] }
 		@average_yearly_balance = total_balance.to_f / annualized_yearly_balance.size
 
+		## Calculate the average annual growth rate
+		prev_year_amount = 0
+		annualized_yearly_balance.each do |year_hash|
+			if prev_year_amount == 0
+				year_hash[:change] = 0
+			else
+				year_hash[:change] = (year_hash[:balance] - prev_year_amount) / prev_year_amount
+			end
+			prev_year_amount = year_hash[:balance]
+		end
+
+		count = 0
+		total_change = 0
+		annualized_yearly_balance.each do |year_hash|
+			if year_hash[:change] != 0
+				total_change += year_hash[:change]
+				count += 1
+			end
+		end
+
+		@aagr = total_change.to_f / count
+
+		## Calculate the CAGR
+		start_value = annualized_yearly_balance[0][:balance]
+		end_value = annualized_yearly_balance[annualized_yearly_balance.size - 1][:balance]
+		@cagr = 0
+		if start_value != 0 && annualized_yearly_balance.size > 0
+			@cagr = ((end_value / start_value) ** (1/annualized_yearly_balance.size.to_f)) - 1
+		end
+
+		## Calculate the monthly average
 		@monthly_average = @projected_this_year / 12
 
 

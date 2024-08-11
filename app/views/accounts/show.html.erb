@@ -48,7 +48,6 @@
 	</div>
 </div>
 
-
 <div class="row">
 	<div class="col-md-3">
 		<table class="table">
@@ -152,6 +151,14 @@
 				<tr>
 					<td class="bg-light" style="width: 30%;"><strong>10 Year Average</strong></td>
 					<td><%= number_to_currency(@average_yearly_balance, precision: 0) %></td>
+				</tr>
+				<tr>
+					<td class="bg-light" style="width: 30%;"><strong>10 Year CAGR</strong></td>
+					<td><%= number_to_percentage(@cagr * 100, precision: 2) %></td>
+				</tr>
+				<tr>
+					<td class="bg-light" style="width: 30%;"><strong>10 Year AAGR</strong></td>
+					<td><%= number_to_percentage(@aagr * 100, precision: 2) %></td>
 				</tr>
 				<tr>
 					<td class="bg-light" style="width: 30%;"><strong><%= Date.today.year %> Monthly</strong></td>
