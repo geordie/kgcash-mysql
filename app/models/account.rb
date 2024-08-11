@@ -51,6 +51,14 @@ class Account < ActiveRecord::Base
 		credit_transactions.where("year(tx_date) = ?", year).group('month(tx_date)').sum(:credit)
 	end
 
+	def debits_yearly()
+		debit_transactions.group('year(tx_date)').sum(:debit)
+	end
+
+	def credits_yearly()
+		credit_transactions.group('year(tx_date)').sum(:credit)
+	end
+
 	def <=> other
 		return 0 if !name && !other.name
 		return 1 if !name
