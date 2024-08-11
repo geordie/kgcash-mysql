@@ -51,12 +51,16 @@ class Account < ActiveRecord::Base
 		credit_transactions.where("year(tx_date) = ?", year).group('month(tx_date)').sum(:credit)
 	end
 
-	def debits_yearly()
-		debit_transactions.group('year(tx_date)').sum(:debit)
+	def debits_yearly(max_years=10)
+		debit_transactions
+			.where('year(tx_date) > ? ', Date.today.year - max_years)
+			.group('year(tx_date)').sum(:debit)
 	end
 
-	def credits_yearly()
-		credit_transactions.group('year(tx_date)').sum(:credit)
+	def credits_yearly(max_years=10)
+		credit_transactions
+			.where('year(tx_date) > ? ', Date.today.year - max_years)
+			.group('year(tx_date)').sum(:credit)
 	end
 
 	def <=> other
