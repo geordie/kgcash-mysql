@@ -116,8 +116,16 @@
 						</tr>
 						<tr>
 							<th>Balance</th>
-							<% @monthly_balance.each do |month| %>
-								<th><%= number_to_currency(month[:balance], precision: 0) %></th>
+							<% @monthly_balance.each_with_index do |month, i| %>
+								<td>
+									<% if @account.account_type == "Expense" %>
+										<%= link_to number_to_currency(month[:balance], precision: 0), expenses_path({category: @account.id.to_s, year: @year, month: i+1}) %>
+									<% elsif @account.account_type == "Income" %>
+										<%= link_to number_to_currency(month[:balance], precision: 0), incomes_path({category: @account.id.to_s, year: @year, month: i+1}) %>
+									<% else %>
+										<%= number_to_currency(month[:balance], precision: 0) %>
+									<% end %>
+								</td>
 							<% end %>
 						</tr>
 					</table>
