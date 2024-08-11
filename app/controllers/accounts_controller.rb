@@ -138,6 +138,7 @@ class AccountsController < ApplicationController
 			years = (years.min..years.max).to_a
 		end
 
+		balance_this_year = 0
 		years.each do |year|
 			yearHash = {year: year}
 
@@ -161,9 +162,22 @@ class AccountsController < ApplicationController
 
 			yearHash[:balance] = (yearCredit - yearDebit).abs
 
-			@yearly_balance << yearHash
+			if year == Date.today.year
+				balance_this_year = yearHash[:balance]
+			end
 
+			@yearly_balance << yearHash
 		end
+
+		@projected_this_year = DateMath.annualize_ytd_amount( balance_this_year )
+
+		annualized_yearly_balance = @yearly_balance.reject { |year_hash| year_hash[:year] == Date.today.year }
+		annualized_yearly_balance << {year: Date.today.year, balance: @projected_this_year}
+		total_balance = annualized_yearly_balance.sum { |year_hash| year_hash[:balance] }
+		@average_yearly_balance = total_balance.to_f / annualized_yearly_balance.size
+
+		@monthly_average = @projected_this_year / 12
+
 
 		respond_to do |format|
 			format.html #show.html.erb
