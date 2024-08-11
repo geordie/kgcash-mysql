@@ -62,4 +62,10 @@ module DateMath
 		end
 		return 0
 	end
+
+	def self.annualize_ytd_amount( amount )
+		day_of_year = Date.today.yday
+		days_in_year = Date.new(Date.today.year,12,31).yday
+		return (amount / day_of_year) * days_in_year
+	end
 end
