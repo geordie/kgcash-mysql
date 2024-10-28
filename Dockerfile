@@ -1,4 +1,4 @@
-FROM ruby:3.0.3-alpine
+FROM ruby:3.2.5-alpine
 
 RUN apk update && apk upgrade && \
   apk add build-base mariadb-client mariadb-dev nodejs git bash tzdata && \

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '3.0.3'
+ruby '3.2.5'
 
 gem 'thin'
 gem 'rails', '6.1.7.8'
