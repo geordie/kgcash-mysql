@@ -106,7 +106,6 @@ class TransactionsController < ApplicationController
 		@user = current_user
 
 		@year = params.has_key?(:year) ? params[:year].to_i : Date.today.year
-		category = params.has_key?(:category) ? params[:category].to_i : nil
 		account = params.has_key?(:account) ? params[:account].to_i : nil
 
 		@pagy, @transactions = pagy(@user.transactions
