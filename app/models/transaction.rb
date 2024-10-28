@@ -7,7 +7,6 @@ class Transaction < ApplicationRecord
 	validates_uniqueness_of :tx_hash, case_sensitive: false
 	validates_presence_of :tx_date
 
-	belongs_to :category
 	belongs_to :user
 	#belongs_to :account, primary_key: 'id', foreign_key: 'acct_id_dr'
 	#belongs_to :account_credit, primary_key: 'id', foreign_key: 'acct_id_cr'
