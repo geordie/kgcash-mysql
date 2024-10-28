@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '3.2.5'
 
 gem 'thin'
-gem 'rails', '6.1.7.8'
+gem 'rails', '7.0.8.6'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -18,6 +18,7 @@ gem 'nokogiri', '>= 1.13.2'
 gem "foreman"
 gem 'yaml_db', '~> 0.7.0'
 gem 'pagy', '~> 6.0' # omit patch digit
+gem "sprockets-rails"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -29,7 +30,8 @@ gem 'uglifier'
 #end
 
 gem 'jquery-rails'
-gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
+# gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
+gem 'best_in_place', '~> 4.0'
 
 gem 'gon'
 
