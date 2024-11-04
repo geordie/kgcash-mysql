@@ -1,0 +1,33 @@
+<div class="col-md-6 mx-auto">
+
+	<h3>My Notes</h3>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Text</th>
+				<th>Amount</th>
+				<th>Transaction</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @notes.each do |note| %>
+				<tr>
+					<td><%= note.note_text %></td>
+					<td><%= note.amount %></td>
+					<td><%= note.related_transaction&.name %></td>
+					<td>
+						<%= link_to 'Show', note_path(note), class: 'btn btn-info btn-sm' %>
+						<%= link_to 'Edit', edit_note_path(note), class: 'btn btn-primary btn-sm' %>
+						<%= link_to 'Delete', note_path(note), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+
+	<%= link_to 'New Note', new_note_path, class: 'btn btn-success' %>
+</div>
+
+<br />
