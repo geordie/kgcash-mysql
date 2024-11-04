@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
 	has_many :transactions
 	has_and_belongs_to_many :documents
 	has_and_belongs_to_many :accounts
+	has_many :notes
 
 	def sortedCategories
 		return categories.to_a.sort!{|a,b| a.name.downcase <=> b.name.downcase }
