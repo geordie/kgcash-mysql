@@ -2,7 +2,7 @@ class NotesController < ApplicationController
   before_action :set_note, only: [:show, :edit, :update, :destroy]
 
   def index
-    @notes = Note.all
+    @notes = current_user.notes
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @notes }
@@ -17,7 +17,7 @@ class NotesController < ApplicationController
   end
 
   def create
-    @note = Note.new(note_params)
+    @note = current_user.notes.build(note_params)
     if @note.save
       respond_to do |format|
         format.html { redirect_to @note, notice: 'Note was successfully created.' }
@@ -32,12 +32,9 @@ class NotesController < ApplicationController
   end
 
   def edit
-		@user = current_user
-		#@note = @user.notes.find(params[:id])
-	end
+  end
 
   def new
-    @user = current_user
     @note = Note.new
 
     respond_to do |format|
@@ -71,7 +68,8 @@ class NotesController < ApplicationController
   private
 
   def set_note
-    @note = Note.find(params[:id])
+    @user = current_user
+    @note = current_user.notes.find(params[:id])
   end
 
   def note_params
