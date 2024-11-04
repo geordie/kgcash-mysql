@@ -12,19 +12,11 @@
         </tr>
         <tr>
           <td></td>
-            <td class="text-right">
-            <%= link_to 'Submit', '#', class: 'btn btn-primary', id: 'submit-form' %>
-            </td>
+          <td class="text-right">
+            <%= form.submit 'Submit', id: :login, class: 'btn btn-primary' %>
+          </td>
         </tr>
       </tbody>
     </table>
 
 <% end %>
-
-<script>
-  document.getElementById('submit-form').addEventListener('click', login);
-  function login(e) {
-    e.preventDefault();
-    document.querySelector('form').submit();
-  }
-</script>
