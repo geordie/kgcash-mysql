@@ -5,6 +5,7 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
+				<th class="text-center">Date</th>
 				<th>Note Text</th>
 				<th class="text-center">Amount</th>
 				<th class="text-center">Transaction</th>
@@ -14,6 +15,7 @@
 		<tbody>
 			<% @notes.each do |note| %>
 				<tr>
+					<td class="text-center"><%= note.updated_at.strftime("%b %d, %Y") %></td>
 					<td><%= note.note_text %></td>
 					<td class="text-center"><%= number_to_currency(note.amount) %></td>
 					<td class="text-center"><%= note.related_transaction&.name %></td>
