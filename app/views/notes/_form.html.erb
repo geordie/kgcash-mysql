@@ -1,35 +1,31 @@
 <%= form_with(model: @note, local: true) do |form| %>
   <div class="row px-4">
-    <div class="col-md-3">
-      <h3>Edit Note:</h3>
+    <table class="table">
+      <tbody>
+        <tr>
+          <td class="bg-light"><strong>Text</strong></td>
+          <td><%= form.text_area :note_text, class: 'form-control' %></td>
+        </tr>
+        <tr>
+          <td class="bg-light"><strong>Amount</strong></td>
+          <td><%= form.number_field :amount, class: 'form-control' %></td>
+        </tr>
+      </tbody>
+    </table>
 
-      <table class="table">
-        <tbody>
-          <tr>
-            <td class="bg-light"><strong>Text</strong></td>
-            <td><%= form.text_area :note_text, class: 'form-control' %></td>
-          </tr>
-          <tr>
-            <td class="bg-light"><strong>Amount</strong></td>
-            <td><%= form.number_field :amount, class: 'form-control' %></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-borderless">
-        <thead>
-          <tr>
-            <td>
-              <%= link_to 'Save', '#', class: 'btn btn-primary', id: 'submit-form' %>
-              <% if !@note.id.nil? %>
-                <%= link_to 'Delete', note_path(@note), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-              <% end %>
-              <%= link_to "Back to notes", notes_path, class: 'btn btn-secondary' %>
-            </td>
-          </tr>
-        </thead>
-      </table>
-    </div>
+    <table class="table table-borderless">
+      <thead>
+        <tr>
+          <td>
+            <%= link_to 'Save', '#', class: 'btn btn-primary', id: 'submit-form' %>
+            <% if !@note.id.nil? %>
+              <%= link_to 'Delete', note_path(@note), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            <% end %>
+            <%= link_to "Back to notes", notes_path, class: 'btn btn-secondary' %>
+          </td>
+        </tr>
+      </thead>
+    </table>
   </div>
 <% end %>
 
