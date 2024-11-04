@@ -15,7 +15,7 @@
 			<% @notes.each do |note| %>
 				<tr>
 					<td><%= note.note_text %></td>
-					<td><%= note.amount %></td>
+					<td><%= number_to_currency(note.amount) %></td>
 					<td><%= note.related_transaction&.name %></td>
 					<td>
 						<%= link_to 'Show', note_path(note), class: 'btn btn-info btn-sm' %>
