@@ -1,13 +1,30 @@
-<%= form_tag user_sessions_path, :method => :post do %>
-  <div class="field">
-    <%= label_tag :email %><br />
-    <%= text_field_tag :email %>
-  </div>
-  <div class="field">
-    <%= label_tag :password %><br />
-    <%= password_field_tag :password %>
-  </div>
-  <div class="actions">
-    <%= submit_tag "Login", :id => "login" %>
-  </div>
+<%= form_with(url: user_sessions_path, id: :login_form, local: true) do |form| %>
+  <div class="row px-4">
+    <table class="table">
+      <tbody>
+        <tr>
+          <td class="bg-light"><strong>Email</strong></td>
+          <td><%= form.text_field :email, class: 'form-control' %></td>
+        </tr>
+        <tr>
+          <td class="bg-light"><strong>Password</strong></td>
+          <td><%= form.password_field :password, class: 'form-control' %></td>
+        </tr>
+        <tr>
+          <td></td>
+            <td class="text-right">
+            <%= link_to 'Submit', '#', class: 'btn btn-primary', id: 'submit-form' %>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+
 <% end %>
+
+<script>
+  document.getElementById('submit-form').addEventListener('click', login);
+  function login(e) {
+    e.preventDefault();
+    document.querySelector('form').submit();
+  }
+</script>
