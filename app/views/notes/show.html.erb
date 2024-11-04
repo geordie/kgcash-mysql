@@ -1,58 +1,31 @@
-<script>
-	$(document).ready(function() {
-		// Set the active tab in local storage and show the tab when a tab is clicked
-		$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-			localStorage.setItem('activeTab', $(e.target).attr('href'));
-			$('.tab-pane').hide();
-			var tab = $($(e.target).attr('href'));
-			tab.show();
-		});
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<h2>Note Details</h2>
+			<table class="table">
+				<tbody>
+					<tr>
+						<td class="bg-light" style="width: 30%;"><strong>Date</strong></td>
+						<td><%= @note.updated_at.strftime("%b %d, %Y") %></td>
+					</tr>
+					<tr>
+						<td class="bg-light" style="width: 30%;"><strong>Note Text</strong></td>
+						<td><%= @note.note_text %></td>
+					</tr>
+					<tr>
+						<td class="bg-light" style="width: 30%;"><strong>Amount</strong></td>
+						<td><%= @note.amount %></td>
+					</tr>
+					<tr>
+						<td class="bg-light" style="width: 30%;"><strong>Transaction</strong></td>
+						<td><%= @note.related_transaction&.name %></td>
+					</tr>
+				</tbody>
+			</table>
 
-		// Check if there's a saved tab
-		var activeTab = localStorage.getItem('activeTab');
-		if (activeTab) {
-			$('#myTab a[href="' + activeTab + '"]').tab('show');
-			$(activeTab).show();
-		} else {
-			// Show the default tab if no tab is saved
-			$('#myTab a[href="#details"]').tab('show');
-			$('#details').show();
-		}
-	});
-</script>
-
-<div class="row">
-	<div class="col-md-3">
-		<h3>Note Details</h3>
-	</div>
-	<div class="col-md-7">
-		<h3>Note Content</h3>
-	</div>
-	<div class="col-md-2">
-		<h3></h3>
+			<%= link_to 'Edit', edit_note_path(@note), class: 'btn btn-primary' %>
+			<%= link_to 'Back to Notes', notes_path, class: 'btn btn-secondary' %>
+		</div>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-6">
-		<table class="table">
-			<tbody>
-				<tr>
-					<td class="bg-light" style="width: 30%;"><strong>Text</strong></td>
-					<td><%= @note.note_text %></td>
-				</tr>
-				<tr>
-					<td class="bg-light" style="width: 30%;"><strong>Amount</strong></td>
-					<td><%= @note.amount %></td>
-				</tr>
-				<tr>
-					<td class="bg-light" style="width: 30%;"><strong>Transaction</strong></td>
-					<td><%= @note.related_transaction&.name %></td>
-				</tr>
-			</tbody>
-		</table>
-
-		<%= link_to 'Edit', edit_note_path(@note), class: 'btn btn-primary' %>
-		<%= link_to 'Back to Notes', notes_path, class: 'btn btn-secondary' %>
-	</div>
-</div>
