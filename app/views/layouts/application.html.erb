@@ -56,10 +56,12 @@
           </li>
 
           <li class="nav-item dropdown">
+
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               My Profile
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
+              <%= link_to "Notes", notes_path, { :class=>"dropdown-item" } %>
               <%= link_to "Edit Profile", edit_user_path(current_user.id), { :class=>"dropdown-item" } %>
               <%= link_to "Logout", :logout, { :class=>"dropdown-item" } %>
             </div>
