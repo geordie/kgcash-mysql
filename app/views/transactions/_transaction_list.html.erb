@@ -1,34 +1,34 @@
 <% transactionType = '' %>
 <table id="transactions" class="table table-striped table-condensed">
   <tr>
-	<th width="200px"><%= sortable "tx_date", "Date" %></th>
-	<th width="75px">Debit Account</th>
-	<th  width="75px"><%= sortable "debit", "Amount" %></th>
+	<th width="140px"><%= sortable "tx_date", "Date" %></th>
+	<th>Debit Account</th>
+	<th class="text-center"><%= sortable "debit", "Amount" %></th>
 	<th>Credit Account</th>
-	<th class="text-center" width="75px"><%= sortable "credit", "Amount" %></th>
+	<th class="text-center"><%= sortable "credit", "Amount" %></th>
 	<th><%= sortable "details" %></th>
 	<th><%= sortable "notes" %></th>
-	<th width="48" class="text-center">Details</th>
+	<th class="text-center">Details</th>
   </tr>
 
 <% @transactions.each_with_index do |transaction, idx| %>
 <% txCredit = (transaction.credit.nil? ? 0 : transaction.credit) %>
 <% txDebit = (transaction.debit.nil? ? 0 : transaction.debit) %>
   <tr>
-	<td><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
-	<td><%= form_for transaction, :remote => true do |f| %>
-		<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'transaction_update', tabindex: ((idx+1)*2)+1 %>
+	<td class="align-middle"><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
+	<td class="align-middle"><%= form_for transaction, :remote => true do |f| %>
+		<%= f.select :acct_id_dr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_dr), { :include_blank => "select type"}, :class => 'transaction_update mt-0', tabindex: ((idx+1)*2)+1 %>
 	<% end %>
 	</td>
-	<td class="debit"><%= number_to_currency(txDebit) %></td>
-	<td><%= form_for transaction, :remote => true do |f| %>
-			<%= f.select :acct_id_cr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_cr), {}, :class => 'transaction_update', tabindex: "-1" %>
+	<td class="debit text-center align-middle"><%= number_to_currency(txDebit) %></td>
+	<td class="align-middle"><%= form_for transaction, :remote => true do |f| %>
+			<%= f.select :acct_id_cr, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction.acct_id_cr), {}, :class => 'transaction_update mt-0', tabindex: "-1" %>
 		<% end %>
 	</td>	
-	<td class="credit"><%= number_to_currency(txCredit) %></td>
-	<td><%= best_in_place transaction, :details, :as => :textarea %></td>
-	<td><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
-	<td class="text-center tx">
+	<td class="credit text-center align-middle"><%= number_to_currency(txCredit) %></td>
+	<td class="align-middle"><%= best_in_place transaction, :details, :as => :textarea %></td>
+	<td class="align-middle"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
+	<td class="text-center tx align-middle">
 		<div class="d-flex justify-content-between">
 			<div class="dropdown">
 				<a class="btn btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
