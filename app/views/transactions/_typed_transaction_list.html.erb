@@ -20,20 +20,20 @@
 	<% txAmountClass = transaction.respond_to?(:txType) ? transaction.txType :  'credit'%>
 
 	<tr>
-		<td class="tx"><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
-		<td class="tx"><%= form_for transaction, :remote => true do |f| %>
+		<td class="tx align-middle"><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
+		<td class="tx align-middle"><%= form_for transaction, :remote => true do |f| %>
 				<%= f.select txAccountType, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction[txAccountType]), {}, :class => 'transaction_update select', tabindex: "-1" %>
 			<% end %>
 		</td>
-		<td class="tx"><%= best_in_place transaction, :details, :as => :textarea %></td>
-		<td class="tx"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
-		<td class="text-center tx <%= txAmountClass %>"><%= number_to_currency(transaction.amount) %></td>
-		<td class="tx"><%= form_for transaction, :remote => true do |f| %>
+		<td class="tx align-middle"><%= best_in_place transaction, :details, :as => :textarea %></td>
+		<td class="tx align-middle"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
+		<td class="text-center tx align-middle <%= txAmountClass %>"><%= number_to_currency(transaction.amount) %></td>
+		<td class="tx align-middle"><%= form_for transaction, :remote => true do |f| %>
 				<%= f.hidden_field txAmountToUpdate, value: [transaction.debit.to_f, transaction.credit.to_f].max() %>
 				<%= f.select categoryAccountType, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction[categoryAccountType]), { :include_blank => "select type"}, :class => 'transaction_update select', tabindex: ((idx+1)*2)+1 %>
 			<% end %>
 		</td>
-		<td class="text-center tx">
+		<td class="text-center tx align-middle">
 			<div class="d-flex justify-content-between">
 				<div class="dropdown">
 					<a class="btn btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
