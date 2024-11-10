@@ -7,7 +7,7 @@ resources :user_sessions
 
 resources :users
 
-resources :transactions do
+resources :transactions, constraints: { id: /\d+/ } do
   get 'new_attachment'
   patch 'update_attachment'
   delete 'delete_attachment'
@@ -15,6 +15,8 @@ resources :transactions do
     get 'uncategorized'
   end
 end
+
+get 'transactions/search', to: 'transactions#search'
 
 resources :documents
 
