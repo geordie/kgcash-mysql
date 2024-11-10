@@ -179,10 +179,23 @@ class TransactionsController < ApplicationController
 		end
 	end
 
+	def search
+		@user = current_user
+		query = params[:q]
+
+		@pagy, @transactions = pagy(@user.transactions
+						 .where("MATCH(details, notes) AGAINST(?)", query)
+						 .order(sort_column + ' ' + sort_direction))
+
+		respond_to do |format|
+			format.html { render :index }
+		end
+	end
+
 	private
 
 	def transaction_params
-		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :debit, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date)
+		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :debit, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date, :q)
 	end
 
 end
