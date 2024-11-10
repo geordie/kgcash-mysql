@@ -5,7 +5,25 @@
       <div class="col-md-10">
           <%== pagy_bootstrap_nav(@pagy) %>
       </div>
+      <div class="col-md-2">
+          <input type="text" id="transaction-search" class="form-control mt-0" placeholder="Search transactions...">
+      </div>
   </div>
 </div>
 
 <%= render "transaction_list" %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchBox = document.getElementById("transaction-search");
+
+    searchBox.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        const query = searchBox.value;
+        if (query.length > 2) {
+          window.location.href = `/transactions/search?q=${query}`;
+        }
+      }
+    });
+  });
+</script>

@@ -11,7 +11,7 @@
 	<th class="text-center">Details</th>
   </tr>
 
-<% @transactions.each_with_index do |transaction, idx| %>
+<% (defined?(transactions) ? transactions : @transactions).each_with_index do |transaction, idx| %>
 <% txCredit = (transaction.credit.nil? ? 0 : transaction.credit) %>
 <% txDebit = (transaction.debit.nil? ? 0 : transaction.debit) %>
   <tr>
