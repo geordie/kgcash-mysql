@@ -8,8 +8,6 @@ class Transaction < ApplicationRecord
 	validates_presence_of :tx_date
 
 	belongs_to :user
-	#belongs_to :account, primary_key: 'id', foreign_key: 'acct_id_dr'
-	#belongs_to :account_credit, primary_key: 'id', foreign_key: 'acct_id_cr'
 	belongs_to :credit_account, foreign_key: 'acct_id_cr', class_name: 'Account', optional: true
 	belongs_to :debit_account, foreign_key: 'acct_id_dr', class_name: 'Account', optional: true
 
@@ -52,11 +50,6 @@ class Transaction < ApplicationRecord
 					max == 0 ? 10000000 : max,
 					min == 0 ? -10000000 : min,
 					max == 0 ? 10000000 : max)}
-
-	scope :is_expense, lambda{ where("acct_id_cr in (select id from accounts where account_type = 'Liability' or account_type = 'Asset')") }
-	scope :is_liability, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Asset')") }
-	scope :is_asset, lambda{ where("acct_id_cr in (select id from accounts where account_type = 'Asset')") }
-	scope :is_payment, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Liability')") }
 
 	def self.income_by_category( user, year=nil, month = nil )
 		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
