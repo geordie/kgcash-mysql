@@ -6,6 +6,7 @@ class Transaction < ApplicationRecord
 
 	validates_uniqueness_of :tx_hash, case_sensitive: false
 	validates_presence_of :tx_date
+	validates :dr_categorizer, :cr_categorizer, length: { maximum: 255 }
 
 	belongs_to :user
 	belongs_to :credit_account, foreign_key: 'acct_id_cr', class_name: 'Account', optional: true
