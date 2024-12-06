@@ -111,7 +111,7 @@ jobs:
     # docker run --rm gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:test
     - name: Test
       run: |
-        docker run --net=host -e "RAILS_ENV=test" gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:test /bin/bash -c "rake db:create; RAILS_ENV=test rails db:setup; rake db:migrate RAILS_ENV=test; rspec"
+        docker run --net=host -e "RAILS_ENV=test" gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:test /bin/bash -c "RAILS_ENV=test rails db:setup; rspec"
 
     # Push the Docker image to Google Container Registry 
     - name: Push the docker image go GCR
