@@ -155,12 +155,14 @@ CREATE TABLE `transactions` (
   `acct_id_cr` int DEFAULT NULL,
   `acct_id_dr` int DEFAULT NULL,
   `parent_id` int DEFAULT NULL,
-  `dr_categorizer` varchar(255) DEFAULT NULL,
-  `cr_categorizer` varchar(255) DEFAULT NULL,
+  `acct_id_cr_proposed` varchar(255) DEFAULT NULL,
+  `acct_id_dr_proposed` varchar(255) DEFAULT NULL,
+  `acct_id_cr_proposed_source` varchar(255) DEFAULT NULL,
+  `acct_id_dr_proposed_source` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_transactions_on_user_id` (`user_id`),
-  KEY `index_transactions_on_dr_categorizer` (`dr_categorizer`),
-  KEY `index_transactions_on_cr_categorizer` (`cr_categorizer`),
+  KEY `index_transactions_on_acct_id_cr_proposed_source` (`acct_id_cr_proposed_source`),
+  KEY `index_transactions_on_acct_id_dr_proposed_source` (`acct_id_dr_proposed_source`),
   FULLTEXT KEY `fulltext_index_details_notes` (`details`,`notes`)
 ) ENGINE=InnoDB AUTO_INCREMENT=156732 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;

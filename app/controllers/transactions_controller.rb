@@ -164,7 +164,7 @@ class TransactionsController < ApplicationController
 
 		@pagy, @transactions = pagy(@user.transactions
 			.select("id, tx_date, credit, debit, " + amountField + ", tx_type, details, notes, "\
-				"acct_id_cr, acct_id_dr, parent_id, " + txTypeField + ", "\
+				"acct_id_cr, acct_id_dr, acct_id_dr_proposed, acct_id_cr_proposed, parent_id, " + txTypeField + ", "\
 				"(SELECT COUNT(*) from active_storage_attachments A WHERE A.record_id = transactions.id AND A.record_type = 'Transaction' and A.name = 'attachment' ) as attachments"
 			)
 			.where("(" + nullField + " IS NULL)")
@@ -192,10 +192,63 @@ class TransactionsController < ApplicationController
 		end
 	end
 
+	def autocategorize
+		@user = current_user
+
+		tx_ids = params.has_key?(:transactions) ? JSON.parse(params[:transactions]) : nil
+
+		@user.transactions.where(id: tx_ids).each do |tx|
+
+			# Find a good searchable string
+			details = tx.details.nil? ? "" : tx.details.gsub(/Vancouver BC/i, "")
+			longest_substring = details.scan(/[a-zA-Z\s\.\*']+/).max_by(&:length).strip
+
+			# Find similar transactions using the search string
+			tx_similar = @user.transactions
+				.where("MATCH(details, notes) AGAINST(?)", longest_substring)
+				.where("acct_id_cr = ?", tx.acct_id_cr)
+				.where("YEAR(tx_date) > ?", Date.today.year - 2)
+
+			# Count the instances of each account category
+			hash_similar = {}
+			tx_count = 0
+			tx_similar.each do |tx_sim|
+				if !tx_sim.acct_id_dr.nil?
+					hash_similar.has_key?(tx_sim.acct_id_dr) ? hash_similar[tx_sim.acct_id_dr] += 1 : hash_similar[tx_sim.acct_id_dr] = 1
+					tx_count += 1
+				end
+			end
+
+			next if hash_similar.empty?
+
+			hash_similar = hash_similar.sort_by { |k, v| v }.reverse.to_h
+			hash_similar.each do |k, v|
+				hash_similar[k] = v / tx_count.to_f
+			end
+
+			best_guess = {}
+			hash_similar.each do |k, v|
+				if v > 0.3
+					best_guess[k] = v
+				end
+			end
+
+			next if best_guess.empty?
+
+			tx.update(acct_id_dr_proposed: best_guess, acct_id_dr_proposed_source: "search")
+
+		end
+
+		page = params.has_key?(:page) ? params[:page] : 1
+		redirect_to uncategorized_transactions_path, page: page, notice: 'Transactions have been autocategorized.'
+	end
+
 	private
 
 	def transaction_params
-		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit, :acct_id_dr, :debit, :tx_type, :details, :notes, :acct_id_cr, :tx_date, :posting_date, :q)
+		params.require(:transaction).permit(:name, :description, :account_type, :year, :id, :credit,
+			:acct_id_dr, :acct_id_dr_proposed, :debit, :tx_type, :details, :notes, 
+			:acct_id_cr, :acct_id_cr_proposed, :tx_date, :posting_date, :q)
 	end
 
 end

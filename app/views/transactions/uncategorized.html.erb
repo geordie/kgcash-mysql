@@ -4,11 +4,11 @@
 	<div class="col-md-3">
 		<%= render 'year_navigator' %>
 	</div>
-</div>
-
-<div class="row lead">
 	<div class="col-md-3">
 		<%= render 'month_navigator' %>
+	</div>
+	<div class="col-md-3">
+		<%= button_to 'Autocategorize', autocategorize_transactions_path(transactions: @transactions.pluck(:id).to_s, month: @month, year: @year), method: :post, class: 'btn btn-primary' %>
 	</div>
 </div>
 

@@ -1,4 +1,3 @@
-
 <% transactionType = (local_assigns[:txType]) ? txType : 'expense' %>
 <% categoryAccountType = transactionType == 'expense' ? 'acct_id_dr' : 'acct_id_cr' %>
 <% txAccountType = transactionType == 'expense' ? 'acct_id_cr' : 'acct_id_dr' %>
@@ -13,12 +12,21 @@
 		<th><%= sortable "notes" %></th>
 		<th class="text-center" width="75px"><%= sortable txAmountSortColumn, "Amount" %></th>
 		<th>Category</th>
+		<th>Suggested</th>
 		<th width="48" class="text-center">Details</th>
 	</tr>
 
+<% tabIndex = 1%>
+
 <% @transactions.each_with_index do |transaction, idx| %>
 	<% txAmountClass = transaction.respond_to?(:txType) ? transaction.txType :  'credit'%>
-
+	<% has_acct_dr_proposed = false%>
+	<% tabIndex = tabIndex+4%>
+	<% tx_dr_id = transaction.acct_id_dr %>
+	<% if transaction.acct_id_dr.nil? && !transaction.acct_id_dr_proposed.nil? %>
+		<% has_acct_dr_proposed = true %>
+		<% tx_dr_proposed = Hash[transaction.acct_id_dr_proposed.tr("{} ", "").split(',').map { |pair| pair.split('=>') }] %>
+	<% end %>
 	<tr>
 		<td class="tx align-middle"><%= best_in_place transaction, :tx_date, :as => :date, :display_as => :format_date %></td>
 		<td class="tx align-middle"><%= form_for transaction, :remote => true do |f| %>
@@ -26,13 +34,33 @@
 			<% end %>
 		</td>
 		<td class="tx align-middle"><%= best_in_place transaction, :details, :as => :textarea %></td>
-		<td class="tx align-middle"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: (idx+1)*2 %></td>
+		<td class="tx align-middle"><%= best_in_place transaction, :notes, :class => 'expense_note', tabindex: tabIndex %></td>
 		<td class="text-center tx align-middle <%= txAmountClass %>"><%= number_to_currency(transaction.amount) %></td>
-		<td class="tx align-middle"><%= form_for transaction, :remote => true do |f| %>
-				<%= f.hidden_field txAmountToUpdate, value: [transaction.debit.to_f, transaction.credit.to_f].max() %>
-				<%= f.select categoryAccountType, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction[categoryAccountType]), { :include_blank => "select type"}, :class => 'transaction_update select', tabindex: ((idx+1)*2)+1 %>
+		<td class="tx align-middle" style="width: 1px; white-space: nowrap;"><%= form_for transaction, :remote => true do |f| %>
+			<%= f.hidden_field txAmountToUpdate, value: [transaction.debit.to_f, transaction.credit.to_f].max() %>
+			<%= f.hidden_field categoryAccountType + "_proposed", value: nil %>
+			<%= f.select categoryAccountType, options_from_collection_for_select(@user.sortedAccounts,'id','name', transaction[categoryAccountType]), { :include_blank => "select type"},
+				:id => categoryAccountType + '-' + transaction.id.to_s, :class => 'transaction_update select', tabindex: tabIndex+1 %>
+		<% end %>
+		</td>
+		<td class="tx align-middle align-left">
+			<% if has_acct_dr_proposed %>
+				<% tx_dr_proposed.each_with_index do |(k,v),idx|%>
+					<% certainty = v.to_f > 0.9 ? "success" : "info"%>
+					<%= form_for transaction, :remote => true, :class => 'float:right' do |f| %>
+						<span id=<%= categoryAccountType + "-" + transaction.id.to_s + "-" + k.to_s %>
+							class="badge <%= "badge-" + certainty %> transaction_pill"
+							tabindex=<%=tabIndex+2%>>
+							<%= @user.sortedAccounts.find { |account| account.id == tx_dr_proposed.keys[idx].to_i }.name %>
+						</span>
+						<%= f.hidden_field categoryAccountType, value: tx_dr_proposed.keys[idx] %>
+						<%= f.hidden_field categoryAccountType + "_proposed", value: nil %>
+						<input type="hidden" name="page" value="<%=params[:page]%>">
+					<%end%>
+				<%end%>
 			<% end %>
 		</td>
+
 		<td class="text-center tx align-middle">
 			<div class="d-flex justify-content-between">
 				<div class="dropdown">

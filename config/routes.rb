@@ -13,6 +13,7 @@ resources :transactions, constraints: { id: /\d+/ } do
   delete 'delete_attachment'
   collection do
     get 'uncategorized'
+    post 'autocategorize'
   end
 end
 
