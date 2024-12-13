@@ -51,6 +51,8 @@ class Transaction < ApplicationRecord
 					min == 0 ? -10000000 : min,
 					max == 0 ? 10000000 : max)}
 
+	scope :is_payment, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Liability')") }
+
 	def self.income_by_category( user, year=nil, month = nil )
 		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
 
