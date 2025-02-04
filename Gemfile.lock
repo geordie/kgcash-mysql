@@ -113,6 +113,7 @@ GEM
       logger
     faraday-net_http (3.3.0)
       net-http
+    ffi (1.17.0-x86_64-linux-gnu)
     ffi (1.17.0-x86_64-linux-musl)
     foreman (0.88.1)
     globalid (1.2.1)
@@ -168,7 +169,7 @@ GEM
     jwt (2.9.3)
       base64
     logger (1.6.1)
-    loofah (2.23.1)
+    loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -198,7 +199,9 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.16.7-x86_64-linux)
+    nokogiri (1.18.2-x86_64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.2-x86_64-linux-musl)
       racc (~> 1.4)
     oauth (1.1.0)
       oauth-tty (~> 1.0, >= 1.0.1)
@@ -251,9 +254,9 @@ GEM
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.6.0)
+    rails-html-sanitizer (1.6.1)
       loofah (~> 2.21)
-      nokogiri (~> 1.14)
+      nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
     railties (7.0.8.6)
       actionpack (= 7.0.8.6)
       activesupport (= 7.0.8.6)
@@ -350,6 +353,7 @@ GEM
     zeitwerk (2.7.1)
 
 PLATFORMS
+  x86_64-linux
   x86_64-linux-musl
 
 DEPENDENCIES
