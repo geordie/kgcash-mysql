@@ -1,4 +1,4 @@
-To move a copy of the production database to your development environment:
+To create a backup of the production database:
 
 1. Login to Google Cloud Console
 2. From the main menu choose **SQL**
@@ -11,11 +11,6 @@ To move a copy of the production database to your development environment:
 9. Click the **Export** button.
 10. Navigate to the Cloud Storage bucket to which you saved the Export.
 11. Download the Export to your local machine
-12. Open the exported file and, if necessary, change the name of the database in the Export to match the name of your local database (ex. change "kgcash" to "kgcash_dev") in both the "CREATE DATABASE" and "use \[database\]" SQL statements near the top of the file.
-13. Open SequelPro
-14. Connect to your local database
-15. Choose **File > Import**
-16. In the file selection window, select the file that contains your downloaded export
-17. Click **OK**
 
-Your product database has now been copied to your local development environment.
+You now have a local SQL script which constitues local backup of your database.
+
