@@ -1,1 +1,1 @@
-web: rm -f /kgcash/tmp/pids/server.pid && export SECRET_KEY_BASE=`bundle exec rake secret` && rails db:create RAILS_ENV=production && rails db:migrate RAILS_ENV=production && bundle exec rails server -u thin -p 8080 -e production
+web: rm -f /kgcash/tmp/pids/server.pid && export SECRET_KEY_BASE=`bundle exec rails secret` && rails db:create RAILS_ENV=production && rails db:migrate RAILS_ENV=production && bundle exec rails server -u thin -p 8080 -e production

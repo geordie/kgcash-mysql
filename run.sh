@@ -3,7 +3,7 @@
 set -e
 
 rm -f tmp/pids/server.pid
-export SECRET_KEY_BASE="$(bundle exec rake secret)"
+export SECRET_KEY_BASE="$(bundle exec rails secret)"
 
 # configure database
 bundle exec rake db:create
