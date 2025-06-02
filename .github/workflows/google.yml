@@ -71,12 +71,13 @@ jobs:
     # Setup gcloud CLI
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
+      uses: 'google-github-actions/auth@v0.4.0'
       with:
-        credentials_json: ${{ secrets.GKE_KEY }}
+        workload_identity_provider: 'projects/567189324080/locations/global/workloadIdentityPools/kgcash-identity-pool/attribute.repository/geordie/kgcash'
+        service_account: 'gcp-auth-for-github-action@kgcash-176905.iam.gserviceaccount.com'
 
     - id: 'get-credentials'
-      uses: 'google-github-actions/get-gke-credentials@v1'
+      uses: google-github-actions/get-gke-credentials@v0.4.0
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
