@@ -46,6 +46,7 @@ group :test do
   # Pretty printed test output
   gem 'turn', :require => false
   gem "minitest"
+  gem "rack", ">= 2.2.14"
   gem 'capybara', '~> 3.2'
   gem 'fabrication'
 end
