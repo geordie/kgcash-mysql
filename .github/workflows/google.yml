@@ -85,8 +85,7 @@ jobs:
 
     # Configure docker to use the gcloud command-line tool as a credential helper
     - name: Set up docker to authenticate via gcloud
-      run: |-
-        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+      run: |
         gcloud auth configure-docker gcr.io --key-file="${{ steps.auth.outputs.credentials_file_path }}"
 
     # Create tmp DB_CONFIG file for building into Docker container
