@@ -119,11 +119,13 @@ jobs:
 
     # Push the Docker image to Google Container Registry 
     - name: Push the docker image go GCR
-      uses: docker/build-push-action@v5
-      with:
-        push: true
-        provenance: false
-        tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
+      run: |
+        gcloud docker push gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
+      #uses: docker/build-push-action@v5
+      #with:
+        #push: true
+        #provenance: false
+        #tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
 
     # Remove DB Config file
     - name: Remove database config file
