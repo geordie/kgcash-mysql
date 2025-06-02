@@ -74,7 +74,7 @@ jobs:
       uses: 'google-github-actions/auth@v0.4.0'
       with:
         workload_identity_provider: 'projects/567189324080/locations/global/workloadIdentityPools/kgcash-identity-pool/providers/kgcash-identity-provider'
-        service_account: 'gcp-auth-for-github-action@kgcash-176905.iam.gserviceaccount.com'
+        service_account: 'k8s-service-account@kgcash-176905.iam.gserviceaccount.com'
 
     - id: 'get-credentials'
       uses: google-github-actions/get-gke-credentials@v0.4.0
