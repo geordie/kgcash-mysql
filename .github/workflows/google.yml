@@ -73,6 +73,7 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v0.4.0'
       with:
+        create_credentials_file: 'true'
         workload_identity_provider: 'projects/567189324080/locations/global/workloadIdentityPools/kgcash-identity-pool-github/providers/kgcash-identity-provider'
         service_account: 'kgcash-github-actions@kgcash-176905.iam.gserviceaccount.com'
 
@@ -84,7 +85,8 @@ jobs:
 
     # Configure docker to use the gcloud command-line tool as a credential helper
     - name: Set up docker to authenticate via gcloud
-      run: |
+      run: |-
+        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         gcloud auth configure-docker gcr.io
 
     # Create tmp DB_CONFIG file for building into Docker container
