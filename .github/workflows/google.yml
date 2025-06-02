@@ -73,7 +73,7 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v0.4.0'
       with:
-        workload_identity_provider: 'projects/567189324080/locations/global/workloadIdentityPools/kgcash-identity-pool/attribute.repository/geordie/kgcash'
+        workload_identity_provider: 'projects/567189324080/locations/global/workloadIdentityPools/kgcash-identity-pool/providers/kgcash-identity-provider/attribute.repository/geordie/kgcash'
         service_account: 'gcp-auth-for-github-action@kgcash-176905.iam.gserviceaccount.com'
 
     - id: 'get-credentials'
