@@ -25,7 +25,7 @@ env:
   GKE_ZONE: us-west1-b
   GKE_CLUSTER: kgcash-2018-10
   IMAGE: kgcash
-  USE_GKE_GCLOUD_AUTH_PLUGIN: true
+  # USE_GKE_GCLOUD_AUTH_PLUGIN: true
 
 jobs:
   setup-build-publish-deploy:
