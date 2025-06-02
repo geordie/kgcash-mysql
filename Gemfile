@@ -17,7 +17,7 @@ gem 'oj'
 gem 'nokogiri', '>= 1.18.4'
 gem "foreman"
 gem 'yaml_db', '~> 0.7.0'
-gem 'pagy', '~> 6.0' # omit patch digit
+gem 'pagy', '>= 9.3' # omit patch digit
 gem "sprockets-rails"
 
 # Gems used only for assets and not required
