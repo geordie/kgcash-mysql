@@ -126,7 +126,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        provenance: false
+        provenance: true
         tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
 
     # Remove DB Config file
