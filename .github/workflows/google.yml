@@ -120,13 +120,12 @@ jobs:
         docker run --net=host -e "RAILS_ENV=test" gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:test /bin/bash -c "rails db:create; rails db:migrate; rspec"
 
     # Push the Docker image to Google Container Registry 
-    - name: Push the docker image go GCR
-      #run: |
-      #  gcloud docker push gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
+    - name: Push the docker image go Google Artifact Registry
       uses: docker/build-push-action@v5
       with:
+        context: .
         push: true
-        provenance: true
+        provenance: false
         tags: gcr.io/${{ env.GKE_PROJECT }}/${{ env.IMAGE }}:latest
 
     # Remove DB Config file
