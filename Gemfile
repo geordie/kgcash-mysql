@@ -14,7 +14,7 @@ gem 'json', '~> 2.3'
 gem 'prawn', '>= 2.4.0'
 gem 'execjs'
 gem 'oj'
-gem 'nokogiri', '>= 1.18.4'
+gem 'nokogiri', '>= 1.18.9'
 gem "foreman"
 gem 'yaml_db', '~> 0.7.0'
 gem 'pagy', '>= 9.3' # omit patch digit
