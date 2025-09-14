@@ -35,7 +35,8 @@ class TransactionImportFormatRbcVisa
 		sDate = date.strftime( '%y-%m-%d' )
 
 		# Get credit and debit amounts
-		@amount = BigDecimal( fields[6].delete("$\",") )
+		rawAmount = fields[6].delete("$\", \t\r\n")
+		@amount = BigDecimal( rawAmount )
 
 		# Get the description
 		details = fields[4]
