@@ -22,7 +22,7 @@ CREATE TABLE `accounts` (
   `account_type` varchar(255) DEFAULT NULL,
   `import_class` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `accounts_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -32,7 +32,7 @@ CREATE TABLE `accounts_users` (
   `account_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `active_storage_attachments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -60,23 +60,10 @@ CREATE TABLE `active_storage_blobs` (
   `content_type` varchar(255) DEFAULT NULL,
   `metadata` text,
   `byte_size` bigint NOT NULL,
-  `checksum` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `checksum` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,
-  `service_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_active_storage_blobs_on_key` (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `active_storage_variant_records`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `active_storage_variant_records` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `blob_id` bigint NOT NULL,
-  `variation_digest` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `index_active_storage_variant_records_uniqueness` (`blob_id`,`variation_digest`),
-  CONSTRAINT `fk_rails_993965df05` FOREIGN KEY (`blob_id`) REFERENCES `active_storage_blobs` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ar_internal_metadata`;
@@ -164,7 +151,7 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_acct_id_cr_proposed_source` (`acct_id_cr_proposed_source`),
   KEY `index_transactions_on_acct_id_dr_proposed_source` (`acct_id_dr_proposed_source`),
   FULLTEXT KEY `fulltext_index_details_notes` (`details`,`notes`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -179,7 +166,7 @@ CREATE TABLE `users` (
   `updated_at` datetime DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -192,40 +179,36 @@ CREATE TABLE `users` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 INSERT INTO `schema_migrations` (version) VALUES
-('20121112001008'),
-('20121112213631'),
-('20121113022247'),
-('20121114062837'),
-('20121120073201'),
-('20121126044735'),
-('20121204072740'),
-('20121204080350'),
-('20130203060617'),
-('20130822041111'),
-('20131117201519'),
-('20150503060156'),
-('20170213202356'),
-('20170829212356'),
-('20170918225056'),
-('20171103233556'),
-('20171112235456'),
-('20180429223856'),
-('20190901223856'),
-('20210513202356'),
-('20210516024208'),
-('20210516211419'),
-('20211128214519'),
-('20230616143456'),
-('20240610173301'),
-('20240610173302'),
-('20240610180500'),
-('20240611120500'),
-('20240616120500'),
-('20240616130500'),
-('20240617130500'),
-('20241104123456'),
-('20241109123456'),
 ('20241123123456'),
-('20241207031023');
-
+('20241109123456'),
+('20241104123456'),
+('20240617130500'),
+('20240616130500'),
+('20240616120500'),
+('20240611120500'),
+('20240610180500'),
+('20230616143456'),
+('20211128214519'),
+('20210516211419'),
+('20210516024208'),
+('20210513202356'),
+('20190901223856'),
+('20180429223856'),
+('20171112235456'),
+('20171103233556'),
+('20170918225056'),
+('20170829212356'),
+('20170213202356'),
+('20150503060156'),
+('20131117201519'),
+('20130822041111'),
+('20130203060617'),
+('20121204080350'),
+('20121204072740'),
+('20121126044735'),
+('20121120073201'),
+('20121114062837'),
+('20121113022247'),
+('20121112213631'),
+('20121112001008');
 
