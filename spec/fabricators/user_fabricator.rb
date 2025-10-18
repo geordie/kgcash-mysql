@@ -1,5 +1,4 @@
 Fabricator(:user, :class_name => "User") do
-	id { sequence }
 	accounts(count: 9){
 		|attrs, i|
 			case i
@@ -15,9 +14,9 @@ Fabricator(:user, :class_name => "User") do
 				Fabricate(:expense)
 			end
 	}
-	username { "admin" }
+	username { sequence(:username) { |i| "user#{i}" } }
 	password { "admin" }
-	email { "whatever@whatever.com" }
+	email { sequence(:email) { |i| "user#{i}@example.com" } }
 	salt { "asdasdastr4325234324sdfds" }
 	crypted_password { Sorcery::CryptoProviders::BCrypt.encrypt("secret", "asdasdastr4325234324sdfds") }
 end
