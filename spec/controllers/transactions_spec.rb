@@ -38,14 +38,14 @@ RSpec.describe TransactionsController, :type => :controller do
 
 			# Add transactions
 			Fabricate(:transaction,
-				user_id: @user.id,
+				user: @user,
 				tx_date: DateTime.now,
 				credit: tx_amount,
 				debit: tx_amount
 			)
 
 			Fabricate(:transaction,
-				user_id: @user.id,
+				user: @user,
 				tx_date: DateTime.now,
 				credit: tx_amount + 2,
 				debit: tx_amount + 2
@@ -74,7 +74,7 @@ RSpec.describe TransactionsController, :type => :controller do
 
 			# Add a transaction
 			tx = Fabricate(:transaction,
-				user_id: @user.id,
+				user: @user,
 				credit: tx_amount,
 				debit: tx_amount
 			)
@@ -116,7 +116,7 @@ RSpec.describe TransactionsController, :type => :controller do
 
 			# Add an uncategorized expense
 			Fabricate(:transaction,
-				user_id: @user.id,
+				user: @user,
 				acct_id_cr: @acct_asset.id,
 				credit: tx_amount,
 				acct_id_dr: nil,
@@ -125,7 +125,7 @@ RSpec.describe TransactionsController, :type => :controller do
 
 			# Add a categorized expense
 			Fabricate(:transaction,
-				user_id: @user.id,
+				user: @user,
 				acct_id_cr: @acct_asset.id,
 				credit: tx_amount + 1,
 				acct_id_dr: @acct_expense.id,

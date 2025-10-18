@@ -41,7 +41,7 @@ RSpec.describe ExpensesController, :type => :controller do
 
 			# Add an expense transaction
 			Fabricate(:transaction,
-				user_id: @user.id,
+				user: @user,
 				acct_id_cr: @acct_asset.id,
 				credit: tx_amount,
 				acct_id_dr: @acct_expense.id,
@@ -50,7 +50,7 @@ RSpec.describe ExpensesController, :type => :controller do
 
 			# Add a revenue transaction
 			Fabricate(:transaction,
-				user_id: @user.id,
+				user: @user,
 				acct_id_cr: @acct_income.id,
 				credit: tx_amount + 2,
 				acct_id_dr: @acct_asset.id,
@@ -74,7 +74,7 @@ RSpec.describe ExpensesController, :type => :controller do
 
 			# Add a categorized expense
 			tx = Fabricate(:transaction,
-				user_id: @user.id,
+				user: @user,
 				acct_id_cr: @acct_asset.id,
 				credit: tx_amount + 1,
 				acct_id_dr: @acct_expense.id,
