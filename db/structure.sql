@@ -22,7 +22,7 @@ CREATE TABLE `accounts` (
   `account_type` varchar(255) DEFAULT NULL,
   `import_class` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=978 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2653 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `accounts_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -32,7 +32,7 @@ CREATE TABLE `accounts_users` (
   `account_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5682 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3425 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `active_storage_attachments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -123,6 +123,29 @@ CREATE TABLE `schema_migrations` (
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `transaction_entries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `transaction_entries` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `transaction_id` int NOT NULL,
+  `account_id` int NOT NULL,
+  `debit_amount` decimal(12,2) DEFAULT NULL,
+  `credit_amount` decimal(12,2) DEFAULT NULL,
+  `memo` text,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_transaction_entries_on_transaction_id` (`transaction_id`),
+  KEY `index_transaction_entries_on_account_id` (`account_id`),
+  KEY `index_transaction_entries_on_transaction_and_account` (`transaction_id`,`account_id`),
+  CONSTRAINT `fk_rails_193a661540` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`),
+  CONSTRAINT `fk_rails_2120a732d5` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`),
+  CONSTRAINT `credit_non_negative` CHECK (((`credit_amount` is null) or (`credit_amount` >= 0))),
+  CONSTRAINT `debit_non_negative` CHECK (((`debit_amount` is null) or (`debit_amount` >= 0))),
+  CONSTRAINT `one_amount_required` CHECK ((((`debit_amount` is not null) and (`credit_amount` is null)) or ((`debit_amount` is null) and (`credit_amount` is not null))))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -146,12 +169,14 @@ CREATE TABLE `transactions` (
   `acct_id_dr_proposed` varchar(255) DEFAULT NULL,
   `acct_id_cr_proposed_source` varchar(255) DEFAULT NULL,
   `acct_id_dr_proposed_source` varchar(255) DEFAULT NULL,
+  `split_at` datetime(6) DEFAULT NULL COMMENT 'Timestamp when transaction was split into multiple entries',
+  `split_source_ids` text COMMENT 'JSON array of original child transaction IDs (for migration audit trail)',
   PRIMARY KEY (`id`),
   KEY `index_transactions_on_user_id` (`user_id`),
   KEY `index_transactions_on_acct_id_cr_proposed_source` (`acct_id_cr_proposed_source`),
   KEY `index_transactions_on_acct_id_dr_proposed_source` (`acct_id_dr_proposed_source`),
   FULLTEXT KEY `fulltext_index_details_notes` (`details`,`notes`)
-) ENGINE=InnoDB AUTO_INCREMENT=793 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=637 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -166,7 +191,7 @@ CREATE TABLE `users` (
   `updated_at` datetime DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -179,6 +204,8 @@ CREATE TABLE `users` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 INSERT INTO `schema_migrations` (version) VALUES
+('20251018130000'),
+('20251018120000'),
 ('20241123123456'),
 ('20241109123456'),
 ('20241104123456'),
