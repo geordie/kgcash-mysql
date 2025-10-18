@@ -1,15 +1,7 @@
 require 'spec_helper'
 
 RSpec.feature 'CSV Import', type: :feature do
-  # Note: Import parsers currently hardcode user_id = 1, so we must use that ID
-  let(:user) do
-    # Delete any existing user with ID 1 and create our test user with ID 1
-    User.where(id: 1).delete_all
-    user = Fabricate.build(:user)
-    user.id = 1
-    user.save!
-    user
-  end
+  let(:user) { Fabricate(:user) }
   let(:rbc_visa_account) do
     account = Fabricate(:liability, name: 'RBC Visa', import_class: 'RBC Visa')
     user.accounts << account unless user.accounts.include?(account)

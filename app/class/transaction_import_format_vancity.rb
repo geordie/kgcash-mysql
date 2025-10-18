@@ -28,7 +28,7 @@ class TransactionImportFormatVancity
 		"CANADA SAFEW" => 2
 	}
 
-	def buildTransaction( csvline, account_id )
+	def buildTransaction( csvline, account_id, user_id )
 		fields = csvline.split(',')
 		# field[0]: account
 		# field[3]: cheque #
@@ -94,7 +94,7 @@ class TransactionImportFormatVancity
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
-			:user_id => 1,
+			:user_id => user_id,
 			:tx_type => @type,
 			:details => @details,
 			:credit => credit,

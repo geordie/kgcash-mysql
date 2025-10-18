@@ -19,7 +19,7 @@ class TransactionImport
 		false
 	end
 
-	def save
+	def save(user_id)
 
 		if account_id.nil?
 			errors.add :base, "Please select an account for the transactions being imported"
@@ -44,7 +44,7 @@ class TransactionImport
 
 			next if idx == 0 && transaction_import_format.skip_first_line
 
-			@transaction = transaction_import_format.buildTransaction( csvline, account_id )
+			@transaction = transaction_import_format.buildTransaction( csvline, account_id, user_id )
 
 			if @transaction.nil?
 				# do nothing

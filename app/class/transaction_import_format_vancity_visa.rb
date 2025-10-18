@@ -7,7 +7,7 @@ class TransactionImportFormatVancityVisa
 	# 02/01/2013,03/01/2013,$178.08,"RESORT RESERVATIONS WHIST","BURNABY",BC,0000000000, "74064493002820133211288",D,7299
 	# 02/01/2013,04/01/2013,$26.52,"PECKINPAH RESTAURANTS LTD","VANCOUVER",BC,0000000000, "74064493003820104911717",D,5812
 
-	def buildTransaction( csvline, account_id )
+	def buildTransaction( csvline, account_id, user_id )
 		csvline.gsub!(/,[ ]{1,}\"/, ",\"")
 		fields = CSV.parse(csvline)[0]
 
@@ -34,7 +34,7 @@ class TransactionImportFormatVancityVisa
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
-			:user_id => 1,
+			:user_id => user_id,
 			:details => details,
 			:debit => (@flag == "C" ? @amount : nil),
 			:acct_id_dr => (@flag == "C" ? account_id : nil),

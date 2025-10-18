@@ -22,7 +22,7 @@ class TransactionImportFormatRbcVisa
 	# replace /2014
 	# with /2014,,
 
-	def buildTransaction( csvline, account_id )
+	def buildTransaction( csvline, account_id, user_id )
 		fields = CSV.parse(csvline)[0]
 
 		# Get date
@@ -51,7 +51,7 @@ class TransactionImportFormatRbcVisa
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
-			:user_id => 1,
+			:user_id => user_id,
 			:details => details,
 			:debit => debit,
 			:acct_id_dr => (debit.nil? ? nil : account_id),

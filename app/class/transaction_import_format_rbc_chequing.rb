@@ -7,7 +7,7 @@ class TransactionImportFormatRbcChequing
 	# "Account Type","Account Number","Transaction Date","Cheque Number","Description 1","Description 2","CAD$","USD$"
 	# Chequing,00010-5858402,1/11/2022,,"MONTHLY FEE",,-10.95,,
 
-	def buildTransaction( csvline, account_id )
+	def buildTransaction( csvline, account_id, user_id )
 		fields = CSV.parse(csvline)[0]
 
 		# Get date
@@ -35,7 +35,7 @@ class TransactionImportFormatRbcChequing
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
-			:user_id => 1,
+			:user_id => user_id,
 			:details => details,
 			:debit => debit,
 			:acct_id_dr => (debit.nil? ? nil : account_id),

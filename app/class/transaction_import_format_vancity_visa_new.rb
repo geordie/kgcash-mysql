@@ -7,7 +7,7 @@ class TransactionImportFormatVancityVisaNew
 	# GEORDIE A HENDERSON,4789 01•• •••• 6773,2018-04-30,2018-04-30T00:00,AUTO PAYMENT DEDUCTION,CAD,,10.00
 	# GEORDIE A HENDERSON,4789 01•• •••• 6773,2018-04-12,2018-04-13T00:00,HEROKU MAR-16920959 HEROKU.COM CA,CAD,12.86,
 
-	def buildTransaction( csvline, account_id )
+	def buildTransaction( csvline, account_id, user_id )
 		
 		# Get rid of ", pair within lines
 		csvline.gsub!(/\",/, "")
@@ -38,7 +38,7 @@ class TransactionImportFormatVancityVisaNew
 		@transaction = Transaction.create(
 			:tx_date => date,
 			:posting_date => date,
-			:user_id => 1,
+			:user_id => user_id,
 			:details => details,
 			:debit => debit,
 			:acct_id_dr => (debit > 0 ? account_id : nil),

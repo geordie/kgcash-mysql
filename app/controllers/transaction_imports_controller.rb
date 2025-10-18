@@ -12,7 +12,7 @@ class TransactionImportsController < ApplicationController
     @accounts = @user.account_selector
     @transaction_import = TransactionImport.new(params[:transaction_import])
 
-    if @transaction_import.save
+    if @transaction_import.save(@user.id)
       redirect_to root_path, notice: "Transactions imported successfully."
     else
       render :new

@@ -1,6 +1,6 @@
 class TransactionImportFormat
 
-	def buildTransaction
+	def buildTransaction(csvline, account_id, user_id)
 		raise "Not implemented"
 	end
 
