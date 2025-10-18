@@ -4,6 +4,9 @@ tmp/
 .sass-cache/
 .DS_Store
 
+# Ignore claude private journal
+.private-journal
+
 # Ignore application configuration
 config/application.yml
 config/database.yml
