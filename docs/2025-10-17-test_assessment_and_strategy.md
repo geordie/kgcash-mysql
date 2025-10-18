@@ -44,28 +44,32 @@
 
 ### Phase 2: Import & Categorization Workflow Tests (CRITICAL)
 
-**CSV Import End-to-End** (`spec/features/csv_import_spec.rb`)
-- [ ] Test successful CSV import creates transactions
-- [ ] Test imported transactions are uncategorized (NULL acct_id)
-- [ ] Test duplicate detection prevents re-importing same transactions
-- [ ] Test import with various CSV formats (RBC, Vancity, etc.)
-- [ ] Test import error handling (malformed CSV)
-- [ ] Test import assigns correct bank account
+**CSV Import End-to-End** (`spec/features/csv_import_spec.rb`) ✅ COMPLETE
+- [x] Test successful CSV import creates transactions (2 tests passing)
+- [x] Test imported transactions are uncategorized (NULL acct_id) (2 tests passing)
+- [x] Test duplicate detection prevents re-importing same transactions (2 tests passing)
+- [x] Test import with various CSV formats (RBC, Vancity, etc.) (2 tests passing)
+- [x] Test import error handling (malformed CSV) (3 tests passing)
+- [x] Test import assigns correct bank account (1 test passing)
+- [x] Test transaction hash generation (1 test passing)
+- **Result**: 13 passing, 0 failures ✅
 
-**Categorization Workflow** (`spec/features/categorization_spec.rb`)
-- [ ] Test viewing uncategorized transactions page
-- [ ] Test categorizing uncategorized expense as Expense account
-- [ ] Test categorizing uncategorized expense as Liability account (credit card payment)
-- [ ] Test categorizing uncategorized expense as Asset account (transfer)
-- [ ] Test categorizing uncategorized income as Income account
-- [ ] Test categorizing uncategorized income as Asset account (transfer)
-- [ ] Test bulk categorization
-- [ ] Test autocategorize feature
+**Categorization Workflow** (`spec/features/categorization_spec.rb`) ✅ COMPLETE
+- [x] Test viewing uncategorized transactions page (3 tests passing)
+- [x] Test categorizing uncategorized expense as Expense account (1 test passing)
+- [x] Test categorizing uncategorized expense as Liability account (credit card payment) (1 test passing)
+- [x] Test categorizing uncategorized expense as Asset account (transfer) (1 test passing)
+- [x] Test categorizing uncategorized income as Income account (1 test passing)
+- [x] Test categorizing uncategorized income as Asset account (transfer) (1 test passing)
+- [x] Test bulk categorization (1 test passing)
+- [x] Test autocategorize feature (4 tests passing)
+- [x] Test year and month filtering (1 test passing)
+- **Result**: 14 passing, 0 failures ✅
 
 **Import Parser Tests** (Already ~80% covered, verify)
-- [ ] Verify RBC Visa parser tests pass
-- [ ] Verify Vancity parser tests pass
-- [ ] Verify amount parsing with quotes and commas
+- [x] Verify RBC Visa parser tests pass ✅
+- [x] Verify Vancity parser tests pass ✅
+- [x] Verify amount parsing with quotes and commas ✅
 
 ### Phase 3: Regression Baseline Suite (MUST HAVE)
 
@@ -104,12 +108,12 @@
 
 ### Success Criteria (Must Complete Before Migration)
 
-- [ ] All Phase 1 tests written and passing ✅
-- [ ] All Phase 2 tests written and passing ✅
-- [ ] All Phase 3 tests written and passing ✅
-- [ ] SimpleCov shows ≥70% model coverage ✅
-- [ ] Zero test failures in full suite ✅
-- [ ] Regression baseline documented ✅
+- [x] All Phase 1 tests written and passing ✅ (12 tests passing)
+- [x] All Phase 2 tests written and passing ✅ (27 tests passing: 13 CSV import + 14 categorization)
+- [ ] All Phase 3 tests written and passing
+- [ ] SimpleCov shows ≥70% model coverage (currently ~54%)
+- [ ] Zero test failures in full suite
+- [ ] Regression baseline documented
 
 ---
 
