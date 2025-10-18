@@ -29,17 +29,18 @@
 - [ ] Test month/year filtering works correctly
 - [ ] Test query methods with empty results
 
-**Account Balance Tests** (`spec/models/account_balance_spec.rb`)
-- [ ] Test Asset account: increases with debits, decreases with credits
-- [ ] Test Liability account: increases with credits, decreases with debits
-- [ ] Test Expense account: increases with debits
-- [ ] Test Income account: increases with credits
-- [ ] Test `.debits(year)` calculation
-- [ ] Test `.credits(year)` calculation
-- [ ] Test `.debits_monthly(year)` aggregation
-- [ ] Test `.credits_monthly(year)` aggregation
-- [ ] Test `.debits_yearly(max_years)` aggregation
-- [ ] Test `.credits_yearly(max_years)` aggregation
+**Account Balance Tests** (`spec/models/account_balance_spec.rb`) ✅ COMPLETE
+- [x] Test Asset account: increases with debits, decreases with credits (3 tests passing)
+- [x] Test Liability account: increases with credits, decreases with debits (3 tests passing)
+- [x] Test Expense account: increases with debits (3 tests passing)
+- [x] Test Income account: increases with credits (3 tests passing)
+- [x] Test `.debits(year)` calculation (3 tests passing)
+- [x] Test `.credits(year)` calculation (3 tests passing)
+- [x] Test `.debits_monthly(year)` aggregation (4 tests passing)
+- [x] Test `.credits_monthly(year)` aggregation (4 tests passing)
+- [x] Test `.debits_yearly(max_years)` aggregation (4 tests passing)
+- [x] Test `.credits_yearly(max_years)` aggregation (4 tests passing)
+- **Result**: 34 passing, 0 failures ✅
 
 ### Phase 2: Import & Categorization Workflow Tests (CRITICAL)
 
