@@ -3,14 +3,10 @@ require 'spec_helper'
 RSpec.feature 'CSV Import', type: :feature do
   let(:user) { Fabricate(:user) }
   let(:rbc_visa_account) do
-    account = Fabricate(:liability, name: 'RBC Visa', import_class: 'RBC Visa')
-    user.accounts << account unless user.accounts.include?(account)
-    account
+    Fabricate(:liability, name: 'RBC Visa', import_class: 'RBC Visa', user: user)
   end
   let(:vancity_account) do
-    account = Fabricate(:asset, name: 'Vancity Chequing', import_class: 'Vancity')
-    user.accounts << account unless user.accounts.include?(account)
-    account
+    Fabricate(:asset, name: 'Vancity Chequing', import_class: 'Vancity', user: user)
   end
 
   before do

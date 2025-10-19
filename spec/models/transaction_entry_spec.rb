@@ -87,9 +87,10 @@ RSpec.describe TransactionEntry, type: :model do
   end
 
   describe "scopes" do
-    let!(:transaction) { Fabricate(:transaction) }
-    let!(:asset_account) { Fabricate(:asset) }
-    let!(:expense_account) { Fabricate(:expense) }
+    let!(:user) { Fabricate(:user) }
+    let!(:transaction) { Fabricate(:transaction, user: user) }
+    let!(:asset_account) { Fabricate(:asset, user: user) }
+    let!(:expense_account) { Fabricate(:expense, user: user) }
     let!(:debit_entry) { Fabricate(:debit_entry, parent_transaction: transaction, account: expense_account, debit_amount: 50) }
     let!(:credit_entry) { Fabricate(:credit_entry, parent_transaction: transaction, account: asset_account, credit_amount: 50) }
 

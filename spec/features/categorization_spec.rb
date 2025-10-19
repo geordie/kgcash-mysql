@@ -3,34 +3,22 @@ require 'spec_helper'
 RSpec.feature 'Transaction categorization workflow', type: :feature do
   let(:user) { Fabricate(:user) }
   let(:bank) do
-    account = Fabricate(:asset, name: 'Checking')
-    user.accounts << account unless user.accounts.include?(account)
-    account
+    Fabricate(:asset, name: 'Checking', user: user)
   end
   let(:credit_card) do
-    account = Fabricate(:liability, name: 'Visa')
-    user.accounts << account unless user.accounts.include?(account)
-    account
+    Fabricate(:liability, name: 'Visa', user: user)
   end
   let(:groceries) do
-    account = Fabricate(:expense, name: 'Groceries')
-    user.accounts << account unless user.accounts.include?(account)
-    account
+    Fabricate(:expense, name: 'Groceries', user: user)
   end
   let(:utilities) do
-    account = Fabricate(:expense, name: 'Utilities')
-    user.accounts << account unless user.accounts.include?(account)
-    account
+    Fabricate(:expense, name: 'Utilities', user: user)
   end
   let(:salary) do
-    account = Fabricate(:income, name: 'Salary')
-    user.accounts << account unless user.accounts.include?(account)
-    account
+    Fabricate(:income, name: 'Salary', user: user)
   end
   let(:savings) do
-    account = Fabricate(:asset, name: 'Savings')
-    user.accounts << account unless user.accounts.include?(account)
-    account
+    Fabricate(:asset, name: 'Savings', user: user)
   end
 
   before do

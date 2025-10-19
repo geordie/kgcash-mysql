@@ -4,24 +4,16 @@ RSpec.describe Account, type: :model do
   describe 'Account balance calculations' do
     let(:user) { Fabricate(:user) }
     let(:bank_account) do
-      account = Fabricate(:asset, name: 'Checking Account')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:asset, name: 'Checking Account', user: user)
     end
     let(:credit_card_account) do
-      account = Fabricate(:liability, name: 'Visa Card')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:liability, name: 'Visa Card', user: user)
     end
     let(:groceries_account) do
-      account = Fabricate(:expense, name: 'Groceries')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Groceries', user: user)
     end
     let(:salary_account) do
-      account = Fabricate(:income, name: 'Salary')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:income, name: 'Salary', user: user)
     end
 
     describe 'Asset account balances' do
@@ -214,8 +206,7 @@ RSpec.describe Account, type: :model do
       end
 
       it 'correctly sums multiple expense categories' do
-        utilities_account = Fabricate(:expense, name: 'Utilities')
-        user.accounts << utilities_account
+        utilities_account = Fabricate(:expense, name: 'Utilities', user: user)
 
         Transaction.create!(
           user: user,
@@ -276,8 +267,7 @@ RSpec.describe Account, type: :model do
       end
 
       it 'correctly sums multiple income categories' do
-        bonus_account = Fabricate(:income, name: 'Bonus')
-        user.accounts << bonus_account
+        bonus_account = Fabricate(:income, name: 'Bonus', user: user)
 
         Transaction.create!(
           user: user,
