@@ -31,7 +31,9 @@ end
 This ensures that all fabricated accounts have a valid user association, which is now required by the `belongs_to :user` relationship.
 
 ### TransactionEntry Spec
-Updated `spec/models/transaction_entry_spec.rb` scopes section to use a shared user for all accounts and transactions to ensure data consistency in tests.
+Updated `spec/models/transaction_entry_spec.rb`:
+- **Scopes section**: Added shared user for all accounts and transactions to ensure data consistency
+- **Database constraints section**: Added explicit user creation to ensure transaction and account share the same user, preventing validation errors in CI environments
 
 ## Note on Documents
 
