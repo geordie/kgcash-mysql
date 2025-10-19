@@ -33,7 +33,15 @@ This ensures that all fabricated accounts have a valid user association, which i
 ### TransactionEntry Spec
 Updated `spec/models/transaction_entry_spec.rb`:
 - **Scopes section**: Added shared user for all accounts and transactions to ensure data consistency
-- **Database constraints section**: Added explicit user creation to ensure transaction and account share the same user, preventing validation errors in CI environments
+- **Database constraints section**:
+  - Use `user_without_accounts` fabricator to prevent conflicts with auto-created accounts
+  - Changed `let` to `let!` for eager evaluation of fixtures
+  - Ensures transaction and account share the same user without interference from user fabricator's after_create hook
+
+### User Fabricator
+Added `user_without_accounts` fabricator for tests that need explicit control over account creation:
+- Inherits from `:user` but overrides the `after_create` hook
+- Prevents automatic creation of 9 accounts that can interfere with database constraint tests
 
 ## Note on Documents
 
