@@ -163,9 +163,9 @@ RSpec.describe TransactionEntry, type: :model do
   end
 
   describe "database constraints" do
-    let(:user) { Fabricate(:user) }
-    let(:transaction) { Fabricate(:transaction, user: user) }
-    let(:account) { Fabricate(:account, user: user) }
+    let!(:user) { Fabricate(:user_without_accounts) }
+    let!(:transaction) { Fabricate(:transaction, user: user) }
+    let!(:account) { Fabricate(:account, user: user) }
 
     context "when both amounts are present" do
       it "raises database constraint error" do

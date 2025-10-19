@@ -13,3 +13,8 @@ Fabricator(:user, :class_name => "User") do
 		3.times { Fabricate(:expense, user: user) }
 	}
 end
+
+# User without auto-created accounts, for tests that need explicit control
+Fabricator(:user_without_accounts, from: :user) do
+	after_create { }
+end
