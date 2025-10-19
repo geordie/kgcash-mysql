@@ -21,18 +21,11 @@ CREATE TABLE `accounts` (
   `updated_at` datetime DEFAULT NULL,
   `account_type` varchar(255) DEFAULT NULL,
   `import_class` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2653 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `accounts_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `accounts_users` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `account_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3425 DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`id`),
+  KEY `index_accounts_on_user_id` (`user_id`),
+  CONSTRAINT `fk_rails_b1e30bebc8` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10414 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `active_storage_attachments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -144,7 +137,7 @@ CREATE TABLE `transaction_entries` (
   CONSTRAINT `credit_non_negative` CHECK (((`credit_amount` is null) or (`credit_amount` >= 0))),
   CONSTRAINT `debit_non_negative` CHECK (((`debit_amount` is null) or (`debit_amount` >= 0))),
   CONSTRAINT `one_amount_required` CHECK ((((`debit_amount` is not null) and (`credit_amount` is null)) or ((`debit_amount` is null) and (`credit_amount` is not null))))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -176,7 +169,7 @@ CREATE TABLE `transactions` (
   KEY `index_transactions_on_acct_id_cr_proposed_source` (`acct_id_cr_proposed_source`),
   KEY `index_transactions_on_acct_id_dr_proposed_source` (`acct_id_dr_proposed_source`),
   FULLTEXT KEY `fulltext_index_details_notes` (`details`,`notes`)
-) ENGINE=InnoDB AUTO_INCREMENT=637 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=1951 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -191,7 +184,7 @@ CREATE TABLE `users` (
   `updated_at` datetime DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=821 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -204,6 +197,7 @@ CREATE TABLE `users` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 INSERT INTO `schema_migrations` (version) VALUES
+('20251018140000'),
 ('20251018130000'),
 ('20251018120000'),
 ('20241123123456'),
