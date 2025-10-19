@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 	has_many :categories
 	has_many :transactions
 	has_and_belongs_to_many :documents
-	has_and_belongs_to_many :accounts
+	has_many :accounts, dependent: :destroy
 	has_many :notes
 
 	after_create :create_suspense_accounts
@@ -65,20 +65,18 @@ class User < ActiveRecord::Base
 
 	def create_suspense_accounts
 		# Create Uncategorized Expenses account
-		expense_account = Account.create!(
+		accounts.create!(
 			name: 'Uncategorized Expenses',
 			account_type: 'Expense',
 			description: 'Temporary holding account for imported expenses awaiting categorization'
 		)
-		accounts << expense_account
 
 		# Create Uncategorized Income account
-		income_account = Account.create!(
+		accounts.create!(
 			name: 'Uncategorized Income',
 			account_type: 'Income',
 			description: 'Temporary holding account for imported income awaiting categorization'
 		)
-		accounts << income_account
 	end
 
 end
