@@ -73,7 +73,8 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v2'
       with:
-        token_format: access_token
+        #token_format: access_token
+        create_credentials_file: true
         workload_identity_provider: 'projects/567189324080/locations/global/workloadIdentityPools/kgcash-identity-pool-github/providers/kgcash-identity-provider'
         service_account: 'kgcash-github-actions@kgcash-176905.iam.gserviceaccount.com'
 
@@ -140,3 +141,5 @@ jobs:
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
         kubectl delete deployments --all
         kubectl create -f ./kubernetes/kgcash-2018-frontend.yaml
+
+
