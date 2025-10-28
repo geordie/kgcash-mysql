@@ -73,8 +73,7 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v2'
       with:
-        #token_format: access_token
-        create_credentials_file: true
+        token_format: access_token
         workload_identity_provider: 'projects/567189324080/locations/global/workloadIdentityPools/kgcash-identity-pool-github/providers/kgcash-identity-provider'
         service_account: 'kgcash-github-actions@kgcash-176905.iam.gserviceaccount.com'
 
