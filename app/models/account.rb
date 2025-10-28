@@ -3,7 +3,7 @@ class Account < ActiveRecord::Base
 
 	before_save :filter_import_type
 
-	has_and_belongs_to_many :users
+	belongs_to :user
 
 	has_many :credit_transactions, class_name: 'Transaction', foreign_key: 'acct_id_cr'
 	has_many :debit_transactions, class_name: 'Transaction', foreign_key: 'acct_id_dr'

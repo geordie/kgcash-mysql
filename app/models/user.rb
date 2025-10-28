@@ -10,8 +10,10 @@ class User < ActiveRecord::Base
 	has_many :categories
 	has_many :transactions
 	has_and_belongs_to_many :documents
-	has_and_belongs_to_many :accounts
+	has_many :accounts, dependent: :destroy
 	has_many :notes
+
+	after_create :create_suspense_accounts
 
 	def sortedCategories
 		return categories.to_a.sort!{|a,b| a.name.downcase <=> b.name.downcase }
@@ -47,6 +49,34 @@ class User < ActiveRecord::Base
 			result = self.role.to_sym
 		end
 		return result
+	end
+
+	# Helper method to get user's uncategorized expense account
+	def uncategorized_expense_account
+		accounts.find_by(name: 'Uncategorized Expenses')
+	end
+
+	# Helper method to get user's uncategorized income account
+	def uncategorized_income_account
+		accounts.find_by(name: 'Uncategorized Income')
+	end
+
+	private
+
+	def create_suspense_accounts
+		# Create Uncategorized Expenses account
+		accounts.create!(
+			name: 'Uncategorized Expenses',
+			account_type: 'Expense',
+			description: 'Temporary holding account for imported expenses awaiting categorization'
+		)
+
+		# Create Uncategorized Income account
+		accounts.create!(
+			name: 'Uncategorized Income',
+			account_type: 'Income',
+			description: 'Temporary holding account for imported income awaiting categorization'
+		)
 	end
 
 end

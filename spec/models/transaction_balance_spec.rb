@@ -4,24 +4,16 @@ RSpec.describe Transaction, type: :model do
   describe 'Transaction Balance Validation' do
     let(:user) { Fabricate(:user) }
     let(:bank_account) do
-      account = Fabricate(:asset, name: 'Checking Account')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:asset, name: 'Checking Account', user: user)
     end
     let(:groceries_account) do
-      account = Fabricate(:expense, name: 'Groceries')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Groceries', user: user)
     end
     let(:salary_account) do
-      account = Fabricate(:income, name: 'Salary')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:income, name: 'Salary', user: user)
     end
     let(:credit_card_account) do
-      account = Fabricate(:liability, name: 'Visa')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:liability, name: 'Visa', user: user)
     end
 
     describe 'debit equals credit' do

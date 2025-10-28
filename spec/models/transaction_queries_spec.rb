@@ -6,54 +6,38 @@ RSpec.describe Transaction, type: :model do
 
     # Asset accounts
     let(:checking_account) do
-      account = Fabricate(:asset, name: 'Checking Account', import_class: 'BankImporter')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:asset, name: 'Checking Account', import_class: 'BankImporter', user: user)
     end
 
     let(:savings_account) do
-      account = Fabricate(:asset, name: 'Savings Account')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:asset, name: 'Savings Account', user: user)
     end
 
     # Liability accounts
     let(:visa_account) do
-      account = Fabricate(:liability, name: 'Visa Card', import_class: 'VisaImporter')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:liability, name: 'Visa Card', import_class: 'VisaImporter', user: user)
     end
 
     # Income accounts
     let(:salary_account) do
-      account = Fabricate(:income, name: 'Salary')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:income, name: 'Salary', user: user)
     end
 
     let(:interest_account) do
-      account = Fabricate(:income, name: 'Interest Income')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:income, name: 'Interest Income', user: user)
     end
 
     # Expense accounts
     let(:groceries_account) do
-      account = Fabricate(:expense, name: 'Groceries')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Groceries', user: user)
     end
 
     let(:rent_account) do
-      account = Fabricate(:expense, name: 'Rent')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Rent', user: user)
     end
 
     let(:utilities_account) do
-      account = Fabricate(:expense, name: 'Utilities')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Utilities', user: user)
     end
 
     describe '.income_by_category' do

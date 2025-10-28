@@ -112,24 +112,16 @@ RSpec.describe 'Transaction behavior baseline (pre-migration)', :regression do
   describe 'Report generation consistency' do
     let(:user) { Fabricate(:user) }
     let(:bank) do
-      account = user.accounts.find { |a| a.account_type == 'Asset' } || Fabricate(:asset)
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      user.accounts.find { |a| a.account_type == 'Asset' } || Fabricate(:asset, user: user)
     end
     let(:groceries) do
-      account = Fabricate(:expense, name: 'Groceries')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Groceries', user: user)
     end
     let(:utilities) do
-      account = Fabricate(:expense, name: 'Utilities')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Utilities', user: user)
     end
     let(:salary) do
-      account = Fabricate(:income, name: 'Salary')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:income, name: 'Salary', user: user)
     end
 
     it 'generates consistent expense reports matching sum of individual transactions' do
@@ -224,19 +216,13 @@ RSpec.describe 'Transaction behavior baseline (pre-migration)', :regression do
   describe 'Account balance calculations' do
     let(:user) { Fabricate(:user) }
     let(:bank) do
-      account = Fabricate(:asset, name: 'Checking')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:asset, name: 'Checking', user: user)
     end
     let(:groceries) do
-      account = Fabricate(:expense, name: 'Groceries')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Groceries', user: user)
     end
     let(:salary) do
-      account = Fabricate(:income, name: 'Salary')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:income, name: 'Salary', user: user)
     end
 
     it 'account balances match sum of transaction entries' do
@@ -322,14 +308,10 @@ RSpec.describe 'Transaction behavior baseline (pre-migration)', :regression do
   describe 'Date filtering consistency' do
     let(:user) { Fabricate(:user) }
     let(:bank) do
-      account = Fabricate(:asset, name: 'Checking')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:asset, name: 'Checking', user: user)
     end
     let(:groceries) do
-      account = Fabricate(:expense, name: 'Groceries')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Groceries', user: user)
     end
 
     it 'produces consistent results when filtering by year' do
@@ -372,19 +354,13 @@ RSpec.describe 'Transaction behavior baseline (pre-migration)', :regression do
   describe 'Baseline metrics capture' do
     let(:user) { Fabricate(:user) }
     let(:bank) do
-      account = Fabricate(:asset, name: 'Checking')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:asset, name: 'Checking', user: user)
     end
     let(:groceries) do
-      account = Fabricate(:expense, name: 'Groceries')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:expense, name: 'Groceries', user: user)
     end
     let(:salary) do
-      account = Fabricate(:income, name: 'Salary')
-      user.accounts << account unless user.accounts.include?(account)
-      account
+      Fabricate(:income, name: 'Salary', user: user)
     end
 
     it 'captures baseline expense totals for comparison post-migration' do

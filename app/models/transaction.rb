@@ -11,6 +11,12 @@ class Transaction < ApplicationRecord
 	belongs_to :credit_account, foreign_key: 'acct_id_cr', class_name: 'Account', optional: true
 	belongs_to :debit_account, foreign_key: 'acct_id_dr', class_name: 'Account', optional: true
 
+	# New double-entry associations
+	has_many :entries, class_name: 'TransactionEntry', dependent: :destroy
+	has_many :accounts, through: :entries
+
+	accepts_nested_attributes_for :entries, allow_destroy: true
+
 	before_save :ensure_hash
 
 	before_validation :ensure_hash
@@ -52,6 +58,19 @@ class Transaction < ApplicationRecord
 					max == 0 ? 10000000 : max)}
 
 	scope :is_payment, lambda{ where("acct_id_dr in (select id from accounts where account_type = 'Liability')") }
+
+	# Scope to find transactions with uncategorized entries for a specific user
+	# Usage: user.transactions.uncategorized_for_user(user)
+	scope :uncategorized_for_user, ->(user) {
+		suspense_account_ids = [
+			user.uncategorized_expense_account&.id,
+			user.uncategorized_income_account&.id
+		].compact
+
+		return none if suspense_account_ids.empty?
+
+		joins(:entries).where(transaction_entries: { account_id: suspense_account_ids }).distinct
+	}
 
 	def self.income_by_category( user, year=nil, month = nil )
 		sTimeAggregate = year.nil? ? "year(tx_date)" : "month(tx_date)"
@@ -299,6 +318,61 @@ class Transaction < ApplicationRecord
 	def format_date
 		@date = self.tx_date
 		@date.strftime( '%d-%b-%Y')
+	end
+
+	# New double-entry helper methods
+	def total_debits
+		entries.sum(:debit_amount) || 0
+	end
+
+	def total_credits
+		entries.sum(:credit_amount) || 0
+	end
+
+	def balanced?
+		(total_debits - total_credits).abs < 0.01
+	end
+
+	def split?
+		split_at.present?
+	end
+
+	def multi_category?
+		entries.count > 2
+	end
+
+	def debit_entries
+		entries.where.not(debit_amount: nil)
+	end
+
+	def credit_entries
+		entries.where.not(credit_amount: nil)
+	end
+
+	# Check if transaction has uncategorized entries
+	# Note: Requires user context to check against user's suspense accounts
+	def uncategorized?(user)
+		suspense_account_ids = [
+			user.uncategorized_expense_account&.id,
+			user.uncategorized_income_account&.id
+		].compact
+
+		return false if suspense_account_ids.empty?
+
+		entries.where(account_id: suspense_account_ids).exists?
+	end
+
+	# Get uncategorized entries for this transaction
+	# Note: Requires user context to check against user's suspense accounts
+	def uncategorized_entries(user)
+		suspense_account_ids = [
+			user.uncategorized_expense_account&.id,
+			user.uncategorized_income_account&.id
+		].compact
+
+		return entries.none if suspense_account_ids.empty?
+
+		entries.where(account_id: suspense_account_ids)
 	end
 
 end
