@@ -163,66 +163,90 @@ RSpec.describe TransactionEntry, type: :model do
   end
 
   describe "database constraints" do
-    let!(:user) { Fabricate(:user_without_accounts) }
-    let!(:transaction) { Fabricate(:transaction, user: user) }
-    let!(:account) { Fabricate(:account, user: user) }
-
     context "when both amounts are present" do
       it "raises database constraint error" do
+        user = User.create!(
+          username: 'testuser',
+          email: 'test@example.com',
+          password: 'password',
+          salt: 'asdasdastr4325234324sdfds',
+          crypted_password: Sorcery::CryptoProviders::BCrypt.encrypt("secret", "asdasdastr4325234324sdfds")
+        )
+        transaction = Transaction.create!(user: user, tx_date: DateTime.now)
+        account = Account.create!(user: user, name: 'Test Account', account_type: 'Expense')
+
         expect {
           # Bypass Rails validation to test DB constraint
-          entry = TransactionEntry.new(
-            parent_transaction: transaction,
-            account: account,
-            debit_amount: 100,
-            credit_amount: 100
+          ActiveRecord::Base.connection.execute(
+            "INSERT INTO transaction_entries (transaction_id, account_id, debit_amount, credit_amount, created_at, updated_at)
+             VALUES (#{transaction.id}, #{account.id}, 100, 100, NOW(), NOW())"
           )
-          entry.save(validate: false)
         }.to raise_error(ActiveRecord::StatementInvalid, /one_amount_required/)
       end
     end
 
     context "when neither amount is present" do
       it "raises database constraint error" do
+        user = User.create!(
+          username: 'testuser2',
+          email: 'test2@example.com',
+          password: 'password',
+          salt: 'asdasdastr4325234324sdfds',
+          crypted_password: Sorcery::CryptoProviders::BCrypt.encrypt("secret", "asdasdastr4325234324sdfds")
+        )
+        transaction = Transaction.create!(user: user, tx_date: DateTime.now)
+        account = Account.create!(user: user, name: 'Test Account 2', account_type: 'Expense')
+
         expect {
           # Bypass Rails validation to test DB constraint
-          entry = TransactionEntry.new(
-            parent_transaction: transaction,
-            account: account,
-            debit_amount: nil,
-            credit_amount: nil
+          ActiveRecord::Base.connection.execute(
+            "INSERT INTO transaction_entries (transaction_id, account_id, debit_amount, credit_amount, created_at, updated_at)
+             VALUES (#{transaction.id}, #{account.id}, NULL, NULL, NOW(), NOW())"
           )
-          entry.save(validate: false)
         }.to raise_error(ActiveRecord::StatementInvalid, /one_amount_required/)
       end
     end
 
     context "when debit amount is negative" do
       it "raises database constraint error" do
+        user = User.create!(
+          username: 'testuser3',
+          email: 'test3@example.com',
+          password: 'password',
+          salt: 'asdasdastr4325234324sdfds',
+          crypted_password: Sorcery::CryptoProviders::BCrypt.encrypt("secret", "asdasdastr4325234324sdfds")
+        )
+        transaction = Transaction.create!(user: user, tx_date: DateTime.now)
+        account = Account.create!(user: user, name: 'Test Account 3', account_type: 'Expense')
+
         expect {
           # Bypass Rails validation to test DB constraint
-          entry = TransactionEntry.new(
-            parent_transaction: transaction,
-            account: account,
-            debit_amount: -50,
-            credit_amount: nil
+          ActiveRecord::Base.connection.execute(
+            "INSERT INTO transaction_entries (transaction_id, account_id, debit_amount, credit_amount, created_at, updated_at)
+             VALUES (#{transaction.id}, #{account.id}, -50, NULL, NOW(), NOW())"
           )
-          entry.save(validate: false)
         }.to raise_error(ActiveRecord::StatementInvalid, /debit_non_negative/)
       end
     end
 
     context "when credit amount is negative" do
       it "raises database constraint error" do
+        user = User.create!(
+          username: 'testuser4',
+          email: 'test4@example.com',
+          password: 'password',
+          salt: 'asdasdastr4325234324sdfds',
+          crypted_password: Sorcery::CryptoProviders::BCrypt.encrypt("secret", "asdasdastr4325234324sdfds")
+        )
+        transaction = Transaction.create!(user: user, tx_date: DateTime.now)
+        account = Account.create!(user: user, name: 'Test Account 4', account_type: 'Expense')
+
         expect {
           # Bypass Rails validation to test DB constraint
-          entry = TransactionEntry.new(
-            parent_transaction: transaction,
-            account: account,
-            debit_amount: nil,
-            credit_amount: -50
+          ActiveRecord::Base.connection.execute(
+            "INSERT INTO transaction_entries (transaction_id, account_id, debit_amount, credit_amount, created_at, updated_at)
+             VALUES (#{transaction.id}, #{account.id}, NULL, -50, NOW(), NOW())"
           )
-          entry.save(validate: false)
         }.to raise_error(ActiveRecord::StatementInvalid, /credit_non_negative/)
       end
     end
